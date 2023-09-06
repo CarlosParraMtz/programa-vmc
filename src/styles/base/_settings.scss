@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;0,800;1,500&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+/* //* sombra 3d: inset 1px 1px 2px rgba(255,255,255,.7), inset -1px -1px 2px rgba(0,0,0,.1), 1px 1px 3px rgba(0,0,0,.1) */
+
+$color_main: #965ff1;
+$color_sec: #ff5a89;
+$color_dark: #535459;
+$color_gray: #f3f2f7;
+$color_white: #f6faff;
+$color_bg: #e7e9f6;
+
+$sidebar-width-closed: 80px;
+$sidebar-width-open: 300px;
+
+$shadow-card: 1px 1px 5px #00000020;
+
+$header-height: 100px;
+
+
+:root {
+  font-family: Montserrat, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: $color_bg;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

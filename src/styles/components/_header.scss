@@ -1,0 +1,49 @@
+.header {
+    background-color: $color_bg;
+    height: $header-height;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 4px 4px 10px #eaeaea;
+
+    .card {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        padding: 10px 30px;
+        justify-content: space-between;
+    }
+
+    &_periodo {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        select {
+            text-align: center;
+            width: 250px;
+            padding: 8px;
+            border-radius: 40px;
+            background-color: #fff;
+            color: $color_dark;
+            box-shadow: 1px 1px 5px #00000020;
+            cursor: pointer;
+            appearance: none;
+
+            &:hover {
+                background-color: $color_main;
+                color: $color_white;
+            }
+
+            &:focus {
+                background-color: $color_gray;
+                color: $color_dark;
+            }
+
+            option {
+                height: 100px;
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+.dashboard {
+    display: flex;
+    background: $color_bg;
+    width: 100%;
+
+    &_content {
+        width: calc(100vw - $sidebar-width-closed);
+        margin-left: auto;
+        transition: 500ms all;
+        position: relative;
+
+
+        .header {
+            position: sticky;
+            background-color: $color_bg;
+            top: 0;
+            right: 0;
+            width: calc(100vw - $sidebar-width-closed);
+            transition: all 500ms ease;
+        }
+
+        &.open {
+            width: calc(100vw - $sidebar-width-open);
+            transition: 500ms all;
+
+            .header {
+                width: calc(100vw - $sidebar-width-open);
+            }
+        }
+
+
+
+    }
+
+}
