@@ -1,16 +1,17 @@
 import { atom } from "recoil";
 
-export const userState = atom({
+export const user = atom({
     key: 'userState',
     default: {
-        congregacion: "",
-        id:"",
+        congregacion: '',
+        id: '',
         signed: false,
-        perfil: null
+        perfil: null,
+        token: '',
     },
 })
 
-export const congregacionState = atom({
+export const congregacion = atom({
     key:'congregacionState',
     default: {
         nombre: '',
@@ -18,3 +19,8 @@ export const congregacionState = atom({
         id: ''        
     }
 })
+
+
+export default {
+    user, congregacion
+}

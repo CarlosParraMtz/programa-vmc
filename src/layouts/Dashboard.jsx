@@ -3,35 +3,36 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/layouts/Sidebar'
 import Header from '../components/layouts/Header'
 import { useRecoilState } from 'recoil';
-import { userState } from '../recoil/atoms';
-import { checkLoginStatus } from '../firebase/controllers/authController';
+import atoms from '../recoil/atoms';
+import toast from 'react-hot-toast';
+import auth from '../firebase/controllers/authController';
 
 
 
 export default function Dashboard() {
 
   const [open, setOpen] = useState(false)
-  const [user, setUser] = useRecoilState(userState)
+  const [user, setUser] = useRecoilState(atoms.user)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    checkLoginStatus()
-      .then((data) => { 
-        if (!user.signed) { 
-          setUser({...data, signed: true}) } 
-        })
-      .catch(() => { navigate("/login") })
-  }, [])
-
   useEffect(()=>{
-    if(user.signed && user.perfil === null) {
-      navigate("/dashboard/config")
+
+    if(!user.signed) {
+      auth.checkLoginStatus()
+      .then((u) => {
+        if (!user.signed) { setUser({ ...u }) }
+      })
+      .catch(() => {
+        navigate('/login')
+        toast.error('Inicia sesión para continuar')
+      })
       return
     }
 
-    if(user.signed && user.congregacion === "") {
-      console.log(user)
-      navigate('/configure-congregation')
+    if(user.signed && user.perfil === null) {
+      navigate("/dashboard/config")
+      toast.error("No existe el perfil para esta cuenta")
+      toast('Por favor, completa el perfil para continuar', {icon: '⚠️'})
     }
   },[user])
 

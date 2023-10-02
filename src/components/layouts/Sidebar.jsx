@@ -1,11 +1,11 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { userState } from '../../recoil/atoms';
+import atoms from '../../recoil/atoms';
 
 export default function Sidebar({ useOpen }) {
 
     const [open, setOpen] = useOpen;
-    const user = useRecoilValue(userState)
+    const user = useRecoilValue(atoms.user)
 
     return (
         <div className={`sidebar ${open ? "open" : ""}`}>
@@ -17,7 +17,7 @@ export default function Sidebar({ useOpen }) {
 
                     <div className="separator"></div>
 
-                    {(user.perfil != null || user.congregacion != "") &&
+                    {user.perfil != null &&
                         <nav className='sidebar_nav' >
                             <NavLink className='sidebar_link' to="/dashboard/" >
                                 <div className="sidebar_link-icon">

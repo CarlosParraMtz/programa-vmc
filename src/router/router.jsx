@@ -39,7 +39,7 @@ export default function Router() {
                     element: <Auth/>,
                     children: [
                         { path: "login", element: <Login /> },
-                        { path: "register", element: <></> }
+                        { path: "signup", element: <></> }
                     ]
                 },
                 { path:"configure-congregation", element: <ConfigureCongregation /> },

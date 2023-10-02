@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import { login } from '../../firebase/controllers/authController';
+import { useState, useEffect } from 'react'
+import auth from '../../firebase/controllers/authController';
 import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/atoms';
+import atoms from '../../recoil/atoms';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function Login() {
 
-    const [user, setUser] = useRecoilState(userState) // User's global state
+    const [user, setUser] = useRecoilState(atoms.user) // User's global state
     const [form, setForm] = useState({ email: "", pwd: "" });
     const [loading, setLoading] = useState(false)
     const [onError, setOnError] = useState(null)
@@ -15,17 +16,30 @@ export default function Login() {
     const goLogin = async (e) => {
         e.preventDefault();
         setLoading(true)
-        await login(form)
+        await auth.login(form)
             .then((res)=>{
                 setUser(res)
                 navigate("/dashboard")
                 setOnError(null)
             })
-            .catch(e => { setOnError( e ) }) 
+            .catch(e => { 
+                setOnError( e ) 
+                let textoError;
+                switch(e) {
+                    case 'auth/user-not-found':
+                        textoError = 'Usuario no encontrado'
+                        break;
+                    case 'auth/wrong-password':
+                        textoError = 'La contraseña es incorrecta'
+                        break;
+                    default:
+                        textoError = 'Ha ocurrido un error al iniciar sesión'
+                        break;
+                }
+                toast.error(textoError)
+            }) 
         setLoading(false)
     }
-
-    if (loading) { return <h1 className='text-center' >Iniciando sesión...</h1> }
 
     return (
         <div className="flex flex-col gap-5 w-full">
