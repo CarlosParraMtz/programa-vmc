@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import auth from '../../firebase/controllers/authController';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import atoms from '../../recoil/atoms';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import toast from '../../functions/toast';
 
 export default function Login() {
 
-    const [user, setUser] = useRecoilState(atoms.user) // User's global state
+    const setUser = useSetRecoilState(atoms.user) // User's global state
     const [form, setForm] = useState({ email: "", pwd: "" });
     const [loading, setLoading] = useState(false)
     const [onError, setOnError] = useState(null)
@@ -73,7 +73,7 @@ export default function Login() {
                     />
                     {onError === "auth/wrong-password" && <small>Contraseña incorrecta</small>}
                 </div>
-                <button type='submit' className="main-button">Iniciar sesión</button>
+                <button type='submit' className="main-button" disabled={loading} >Iniciar sesión</button>
             </form>
         </div>
     )
