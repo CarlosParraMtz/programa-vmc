@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import atoms from '../../recoil/atoms';
 
@@ -19,7 +19,7 @@ export default function Sidebar({ useOpen }) {
 
                     {user.perfil != null &&
                         <nav className='sidebar_nav' >
-                            <NavLink className='sidebar_link' to="/dashboard/" >
+                            <NavLink className='sidebar_link' to="/dashboard" end >
                                 <div className="sidebar_link-icon">
                                     <i className="fas fa-users"></i>
                                 </div>
