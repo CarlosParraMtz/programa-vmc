@@ -11,6 +11,10 @@
         transition: 500ms all;
         position: relative;
 
+        @media (max-width:767px) {
+            width: 100vw;
+            margin-left: 0;
+        }
 
         .header {
             position: sticky;
@@ -19,14 +23,26 @@
             right: 0;
             width: calc(100vw - $sidebar-width-closed);
             transition: all 500ms ease;
+
+            @media (max-width:767px) {
+                width: 100vw;
+            }
         }
 
         &.open {
             width: calc(100vw - $sidebar-width-open);
             transition: 500ms all;
 
+            @media (max-width:767px) {
+                width: 100vw;
+            }
+
             .header {
                 width: calc(100vw - $sidebar-width-open);
+
+                @media (max-width:767px) {
+                    width: 100vw;
+                }
             }
         }
 

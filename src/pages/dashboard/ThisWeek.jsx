@@ -10,14 +10,14 @@ const programa = [
 	},
 	{ 
 		nombre: 'Ubaldo Melchor', 
-		title: 'Busquemos perlas escondidas', 
-		section: 1 
+		titulo: 'Busquemos perlas escondidas', 
+		seccion: 1 
 	},
-	{ name: 'Nahúm González', title: 'Lectura de la Biblia', section: 1 },
-	{ name: 'Mish de Parra / Jimena Galván', title: 'Empiece conversaciones', section: 2 },
-	{ name: 'Bety de Galván / Jimena Galván', title: 'Empiece conversaciones', section: 2 },
-	{ name: '', title: '🎞️ 📽️🎬🎥Informe 4 del cuerpo gobernante', section: 3 },
-	{ name: 'Lorenzo Galván', title: 'Estudio bíblico de congregación', section: 3 },
+	{ nombre: 'Nahúm González', titulo: 'Lectura de la Biblia', seccion: 1 },
+	{ nombre: 'Mish de Parra / Jimena Galván', titulo: 'Empiece conversaciones', seccion: 2 },
+	{ nombre: 'Bety de Galván / Jimena Galván', titulo: 'Empiece conversaciones', seccion: 2 },
+	{ nombre: '', titulo: '🎞️ 📽️🎬🎥Informe 4 del cuerpo gobernante', seccion: 3 },
+	{ nombre: 'Lorenzo Galván', titulo: 'Estudio bíblico de congregación', seccion: 3 },
 
 ]
 
@@ -30,8 +30,8 @@ export default function ThisWeek() {
 			<div className="p-2.5">
 				<h1 className="text-2xl" >Esta semana</h1>
 			</div>
-			<div className='flex' >
-				<div className="w-2/4 p-2.5">
+			<div className='flex flex-col lg:flex-row w-full' >
+				<div className="w-full lg:w-3/5 xl:w-2/4 p-2.5">
 					<div className="card">
 						<div className="card_title">
 							<h2>
@@ -46,7 +46,7 @@ export default function ThisWeek() {
 						<Tablero programa={programa} sala={sala} />
 					</div>
 				</div>
-				<div className="w-1/4 p-2.5">
+				<div className="w-full lg:w-2/5 xl:w-1/4 p-2.5">
 					<div className="card p-5">
 						<h2>Personas asignadas:</h2>
 						<div className="separator"></div>
@@ -54,7 +54,7 @@ export default function ThisWeek() {
 							{
 								programa.map((i, index) =>
 									<p key={index} >
-										{i.name}
+										{i.nombre}
 									</p>
 								)
 							}

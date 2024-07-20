@@ -23,7 +23,7 @@ export default function Dashboard() {
       auth.checkLoginStatus()
         .then(async (u) => {
           if (!user) { setUser({ ...u }) }
-          
+
         })
         .catch(() => {
           navigate('/login')
@@ -40,7 +40,7 @@ export default function Dashboard() {
     if (typeof user.perfil.congregacion === "string" && user.perfil.congregacion.length > 0) {
       getCongregacion(user.perfil.congregacion)
         .then(congregacion => setCongregacion(congregacion))
-        .catch(()=>toast.error("Ha habido un error al intentar obtener la congregación"))
+        .catch(() => toast.error("Ha habido un error al intentar obtener la congregación"))
     }
   }, [user])
 
@@ -50,7 +50,7 @@ export default function Dashboard() {
     <div className='dashboard'>
       <Sidebar useOpen={[open, setOpen]} />
       <div className={`dashboard_content ${open ? "open" : ""}`}>
-        <Header />
+        <Header setOpen={setOpen} />
         <Outlet />
       </div>
     </div>

@@ -1,6 +1,20 @@
+import Modal from '../../components/common/Modal';
 import Tooltip from '../../components/common/Tooltip';
+import { useState } from 'react';
 
 export default function Programs() {
+
+	const [dialogAgregar, setDialogAgregar] = useState(false)
+
+
+	const abrirDialogAgregar = () => {
+		setDialogAgregar(true)
+	}
+
+	const cerrarDialogAgregar = () => {
+		setDialogAgregar(false)
+	}
+
 	return (
 		<>
 			<div className="p-2.5">
@@ -11,12 +25,19 @@ export default function Programs() {
 					<div className="card w-full">
 						<div className="card_title">
 							<h2><strong>Periodos</strong></h2>
-							<button className='icon-button' > <i className="fas fa-add"></i> </button>
+							<button className='icon-button'  >
+								<i className="fas fa-add"></i>
+							</button>
 						</div>
 						<div className="divider"></div>
 						<div className="flex flex-col items-center justify-center gap-5 p-16">
 							<p>No hay periodos agregados</p>
-							<button className='main-button' >Agregar uno</button>
+							<button
+								onClick={abrirDialogAgregar}
+								className='main-button'
+							>
+								Agregar uno
+							</button>
 						</div>
 					</div>
 				</div>
@@ -59,6 +80,10 @@ export default function Programs() {
 
 
 			</div>
+
+			<Modal id="modal-agregar-periodo" open={dialogAgregar} onClose={cerrarDialogAgregar}  >
+				aa
+			</Modal>
 		</>
 	)
 }

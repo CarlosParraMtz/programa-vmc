@@ -10,6 +10,10 @@
     left: 0;
     transition: all 500ms ease;
 
+    @media (max-width:767px) {
+        left: -100%;
+    }
+
     .card {
         display: flex;
         flex-direction: column;
@@ -87,6 +91,10 @@
 
     &.open {
         max-width: $sidebar-width-open;
+
+        @media (max-width:767px) {
+            left: 0;
+        }
 
         .sidebar_link-text {
             width: fit-content;

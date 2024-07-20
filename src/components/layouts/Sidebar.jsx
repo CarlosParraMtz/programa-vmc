@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import atoms from '../../recoil/atoms';
+import { AnimatePresence, motion } from 'framer-motion'
 
 export default function Sidebar({ useOpen }) {
 
@@ -8,8 +9,21 @@ export default function Sidebar({ useOpen }) {
     const user = useRecoilValue(atoms.user)
 
     return (
-        <div className={`sidebar ${open ? "open" : ""}`}>
-            <div className="card">
+        <div className={`sidebar ${open ? "open" : ""} z-40`}>
+            <AnimatePresence>
+                {
+                    open && <motion.div
+                        onClick={() => setOpen(false)}
+                        key="sidebar-bg"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 w-screen h-screen bg-[#00000060] md:hidden "
+                    >
+                    </motion.div>
+                }
+            </AnimatePresence>
+            <div className="card z-50">
                 <div>
                     <button onClick={() => setOpen(!open)} >
                         <i className="fas fa-bars"></i>

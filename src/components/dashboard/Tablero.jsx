@@ -6,11 +6,11 @@ export default function Tablero({programa, sala}) {
             {
                 programa
                     .map((i, index) => {
-                        if (i.section != section) return null;
+                        if (i.seccion != section) return null;
                         return (
-                            <div key={index} className="flex w-full items-center justify-between" >
-                                <p> {index + 1}. {i.title} </p>
-                                <p className="text-right" > {i.name} </p>
+                            <div key={index} className="flex flex-col w-full justify-between py-1" >
+                                <p className="text-xs lg:text-base"><strong> {index + 1}. {i.titulo} </strong></p>
+                                <p className="text-right" > {i.nombre} </p>
                             </div>
                         )
                     })
@@ -20,17 +20,17 @@ export default function Tablero({programa, sala}) {
 
     return (
         <div className="w-full flex flex-col" >
-            <div className="bg-program-treasures w-full text-white px-5 rounded-t-lg font-thin text-xl " >
+            <span className="bg-program-treasures w-full text-white px-5 py-2 rounded-t-lg font-thin text-md " >
                 Tesoros de la Biblia
-            </div>
+            </span>
             {getItems(1, "bg-[#3c7f8b22]")}
-            <div className="bg-program-teachers w-full text-white px-5 font-thin text-xl " >
+            <span className="bg-program-teachers w-full text-white px-5 py-2 font-thin text-md " >
                 Seamos mejores maestros
-            </div>
+            </span>
             {getItems(2, "bg-[#d68f0022]")}
-            <div className="bg-program-life w-full text-white px-5 font-thin text-xl " >
+            <span className="bg-program-life w-full text-white px-5 py-2 font-thin text-md " >
                 Nuestra vida cristiana
-            </div>
+            </span>
             {getItems(3, "bg-[#bf2f1322]")}
         </div>
     )
