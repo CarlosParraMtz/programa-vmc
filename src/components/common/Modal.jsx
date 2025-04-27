@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import IconButton from "./IconButton"
 
-export default function Modal({ id, onClose, open, children }) {
+export default function Modal({ id, onClose, open, children, title }) {
     return (
         <AnimatePresence>
             {open &&
@@ -19,7 +19,10 @@ export default function Modal({ id, onClose, open, children }) {
                         exit={{ opacity: 0, y: -25 }}
                         className="w-full max-w-lg p-5 rounded-xl bg-white shadow max-h-screen overflow-auto flex flex-col"
                     >
-                        <div className="flex justify-end mb-5">
+                        <div className={`flex mb-5 items-center ${title ? "justify-between" : "justify-end"}`}>
+                            {title &&
+                                <h3 className="text-xl" >{title}</h3>
+                            }
                             <IconButton onClick={onClose} >
                                 <i className="fas fa-close"></i>
                             </IconButton>

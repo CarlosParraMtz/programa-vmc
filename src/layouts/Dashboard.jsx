@@ -7,6 +7,8 @@ import atoms from '../recoil/atoms';
 import toast from '../functions/toast';
 import auth from '../firebase/controllers/authController';
 import { getCongregacion } from '../firebase/controllers/congregation.controller';
+import { onSnapshot, collection } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
 //TODO: Crear una función useEffect que detece cambios en el atom de congregación. Cuando cambie y lo encuentre, que descargue Matriculados, nombrados, periodos y reuniones.
 
@@ -14,7 +16,8 @@ export default function Dashboard() {
 
   const [open, setOpen] = useState(false)
   const [user, setUser] = useRecoilState(atoms.user)
-  const setCongregacion = useSetRecoilState(atoms.congregacion)
+  const [congregacion, setCongregacion] = useRecoilState(atoms.congregacion)
+  const setProgramas = useSetRecoilState(atoms.programas)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -43,6 +46,23 @@ export default function Dashboard() {
         .catch(() => toast.error("Ha habido un error al intentar obtener la congregación"))
     }
   }, [user])
+
+
+
+  useEffect(() => {
+    if (congregacion) {
+      return onSnapshot(
+        collection(db, `congregaciones/${congregacion.id}/programas`),
+        (snapshot) => {
+          let data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+          setProgramas(data.sort((a, b) => a.created - b.created))
+        })
+    }
+  },
+    [congregacion]
+  )
+
+
 
   if (!user) { return null }
 

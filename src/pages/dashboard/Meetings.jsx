@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Meetings() {
   return (
     <>
@@ -18,7 +16,7 @@ export default function Meetings() {
             <div className="divider"></div>
             <div className="p-16 flex flex-col items-center justify-center gap-5">
               <p>No hay reuniones agregadas a este periodo</p>
-              <button className="main-button">Agregar una</button>
+              <button className="btn main">Agregar una</button>
             </div>
           </div>
         </div>

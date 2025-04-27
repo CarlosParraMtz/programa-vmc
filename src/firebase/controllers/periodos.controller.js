@@ -1,22 +1,30 @@
 import { db } from '../config'
-import { getDoc, doc, updateDoc, addDoc, setDoc, collection } from 'firebase/firestore'
+import { doc, updateDoc, addDoc, collection, serverTimestamp, deleteDoc } from 'firebase/firestore'
 
 const dbPath = "programas";
 
-export function createPeriod(payload, congregacionId) {
-    return new Promise((resolve, reject) => {
-        const docRef = addDoc(
-            collection(db, dbPath),
-            { ...payload, congregacion: congregacionId }
-        ).catch(error => reject(error));
-        resolve(docRef.id);
-    })
-}
+export default {
+    createPeriodo: (payload, congregacionId) => {
+        return new Promise((resolve, reject) => {
+            const docRef = addDoc(
+                collection(db, `congregaciones/${congregacionId}/${dbPath}`),
+                { ...payload, created: serverTimestamp(), reuniones: [] }
+            ).catch(error => reject(error));
+            resolve(docRef.id);
+        })
+    },
 
-export function updatePeriod(payload, id) {
-    return new Promise((resolve, reject) => {
-        updateDoc(doc(db, dbPath, id), payload)
-            .then(res => resolve(res))
+    updatePeriodo: (payload, congregacionId, id) => {
+        return new Promise((resolve, reject) => {
+            updateDoc(doc(db, `congregaciones/${congregacionId}/${dbPath}`, id),
+                { ...payload, updated: serverTimestamp()}
+            ).then(res => resolve(res))
             .catch(error => reject(error));
-    })
+        })
+    },
+
+    deletePeriodo: (id, congregacionId) => {
+        return deleteDoc(doc(db, `congregaciones/${congregacionId}/${dbPath}`, id))
+    }
+
 }

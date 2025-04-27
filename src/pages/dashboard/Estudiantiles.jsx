@@ -17,7 +17,7 @@ export default function Estudiantiles() {
             <div className="p-16 flex flex-col items-center justify-center gap-5">
               <p>No hay reuniones agregadas a este periodo.</p>
               <Link to="/dashboard/reuniones" >
-                <button className="main-button">Ir a reuniones</button>
+                <button className="btn main">Ir a reuniones</button>
               </Link>
             </div>
           </div>

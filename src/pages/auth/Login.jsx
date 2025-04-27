@@ -73,7 +73,7 @@ export default function Login() {
                     />
                     {onError === "auth/wrong-password" && <small>Contraseña incorrecta</small>}
                 </div>
-                <button type='submit' className="main-button" disabled={loading} >Iniciar sesión</button>
+                <button type='submit' className="btn main" disabled={loading} >Iniciar sesión</button>
             </form>
         </div>
     )

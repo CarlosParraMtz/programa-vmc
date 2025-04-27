@@ -15,8 +15,8 @@ export const matriculados = atom({
     default: null
 })
 
-export const periodos = atom({
-    key:'periodosState',
+export const programas = atom({
+    key:'programasState',
     default: null
 })
 
@@ -25,7 +25,11 @@ export const nombrados = atom({
     default: null
 })
 
+export const periodo = atom({
+    key:'periodoState',
+    default: null
+})
 
 export default {
-    user, congregacion, matriculados, periodos, nombrados
+    user, congregacion, matriculados, programas, nombrados, periodo
 }

@@ -157,7 +157,7 @@ export default function Config() {
                     onChange={e => setFormUser({ ...formUser, nombre: e.target.value })}
                     required
                   />
-                  <button className="main-button mt-5" type="submit" >Guardar</button>
+                  <button className="btn main mt-5" type="submit" >Guardar</button>
                 </form>
                 : <div className="flex flex-col gap-4">
                   <div className="flex gap-2">
@@ -170,7 +170,7 @@ export default function Config() {
                   </div>
                   <div className="flex gap-2">
                     <b>Congregación:</b>
-                    <span> {congregacion ? congregacion.nombre : "No existe todavía"} </span>
+                    <span> {congregacion ? congregacion.nombre : "No se enlazó a ninguna congregación"} </span>
                   </div>
                 </div>
             }
@@ -215,9 +215,9 @@ export default function Config() {
                       onChange={e => setFormCongregacion({ ...formCongregacion, pais: e.target.value })}
                     />
                     <div className="flex gap-2">
-                      <button className="main-button mt-5" type="submit" >Guardar</button>
+                      <button className="btn main mt-5" type="submit" >Guardar</button>
                       <button
-                        className="main-button mt-5"
+                        className="btn error mt-5"
                         type="button"
                         onClick={() => toggleEdicionCongregacion("")}
                       >
@@ -237,13 +237,13 @@ export default function Config() {
 
                       <button
                         type="submit"
-                        className="main-button"
+                        className="btn main"
                       >
                         Enviar
                       </button>
                       <button
                         type="button"
-                        className="main-button"
+                        className="btn error"
                         onClick={cancelarBusqueda}
                       >
                         Cancelar
@@ -268,9 +268,9 @@ export default function Config() {
                           <span> {congregacion?.pais} </span>
                         </div>
                         <div className="flex gap-2 items-center">
-                          <b>Código de congregación:</b>
+                          <b>ID de congregación:</b>
                           <span> {congregacion?.id} </span>
-                          <Tooltip title="Copiar código" >
+                          <Tooltip title="Copiar" >
                             <button className="icon-button" onClick={copiarCodigo}>
                               <i className="fas fa-copy"></i>
                             </button>
@@ -280,14 +280,14 @@ export default function Config() {
                       : <>
                         <h4>No hay una congregación guardada</h4>
                         <div className="flex gap-5 w-full justify-center" >
-                          <button className="main-button" onClick={() => toggleEdicionCongregacion("edicion")}>Crear congregación</button>
-                          <button className="main-button" onClick={() => toggleEdicionCongregacion("busqueda")}>Administrar congregación existente</button>
+                          <button className="btn main" onClick={() => toggleEdicionCongregacion("edicion")}>Crear congregación</button>
+                          <button className="btn main" onClick={() => toggleEdicionCongregacion("busqueda")}>Administrar congregación existente</button>
                         </div>
                       </>
                   }
 
                   {user?.perfil?.congregacion &&
-                    <button className="main-button" onClick={abandonarCongregacion} >Abandonar congregación</button>
+                    <button className="btn error" onClick={abandonarCongregacion} >Abandonar congregación</button>
                   }
                 </div>
             }
