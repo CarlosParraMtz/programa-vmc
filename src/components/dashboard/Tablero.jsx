@@ -1,4 +1,3 @@
-import { meses } from "../../constants/meses";
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal";
 
 export default function Tablero({ programa }) {

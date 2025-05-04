@@ -16,14 +16,14 @@ export default function Programs() {
 	const programas = useRecoilValue(atoms.programas)
 	const setPeriodo = useSetRecoilState(atoms.periodo)
 	const reuniones = useRecoilValue(atoms.reuniones)
-	
+
 	//States
 	const [selected, setSelected] = useState(null)
 	const [dialogAgregar, setDialogAgregar] = useState(false)
 	const [periodoText, setPeriodoText] = useState("")
 	const [sending, setSending] = useState(false)
 	const [modalBorrar, setModalBorrar] = useState(false)
-	
+
 	//Funciones
 	const abrirDialogAgregar = () => setDialogAgregar(true)
 	const cerrarDialogAgregar = () => {
@@ -108,10 +108,11 @@ export default function Programs() {
 															: seleccionar(programa)
 													}
 													className={`
-														bg-gray-100 cursor-pointer hover:bg-gray-200 
-														p-3 rounded flex items-center justify-between
+														px-4 py-2 rounded-lg shadow-md bg-purple-50 
+                        		border hover:border-purple-300 cursor-pointer
+												 		flex items-center justify-between
 														${selected && selected.id === programa.id
-															? "bg-purple-400 hover:bg-purple-300 text-white"
+															? "bg-purple-100 border-purple-500"
 															: ""}
 														`}
 												>
