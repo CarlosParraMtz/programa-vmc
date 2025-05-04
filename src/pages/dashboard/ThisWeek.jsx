@@ -1,29 +1,41 @@
 import Tablero from "../../components/dashboard/Tablero"
-import { useState } from "react"
+import { useRecoilValue } from "recoil"
+import atoms from "../../recoil/atoms"
+import { meses } from "../../constants/meses"
 
-const programa = [
-	{ 
-		nombre: 'Carlos Parra', 
-		titulo: '“Tu amor leal es mejor que la vida”', 
-		seccion: 1,
-		sala: "A", 
-	},
-	{ 
-		nombre: 'Ubaldo Melchor', 
-		titulo: 'Busquemos perlas escondidas', 
-		seccion: 1 
-	},
-	{ nombre: 'Nahúm González', titulo: 'Lectura de la Biblia', seccion: 1 },
-	{ nombre: 'Mish de Parra / Jimena Galván', titulo: 'Empiece conversaciones', seccion: 2 },
-	{ nombre: 'Bety de Galván / Jimena Galván', titulo: 'Empiece conversaciones', seccion: 2 },
-	{ nombre: '', titulo: '🎞️ 📽️🎬🎥Informe 4 del cuerpo gobernante', seccion: 3 },
-	{ nombre: 'Lorenzo Galván', titulo: 'Estudio bíblico de congregación', seccion: 3 },
-
-]
 
 export default function ThisWeek() {
 
-	const [sala, setSala] = useState("A")
+	const hoy = new Date()
+	const reuniones = useRecoilValue(atoms.reuniones)
+
+	function obtenerRangoSemanaActual() {
+		const dia = hoy.getDay(); // 0 (domingo) a 6 (sábado)
+		const diffLunes = dia === 0 ? -6 : 1 - dia;
+
+		const lunes = new Date();
+		lunes.setDate(hoy.getDate() + diffLunes);
+		lunes.setHours(0, 0, 0, 0);
+
+		const domingo = new Date(lunes);
+		domingo.setDate(lunes.getDate() + 6);
+		domingo.setHours(23, 59, 59, 999);
+		console.log(lunes)
+
+		return { inicioSemana: lunes, finSemana: domingo };
+	}
+
+	const { inicioSemana, finSemana } = obtenerRangoSemanaActual();
+	function filtrarProgramasSemanaActual(programas) {
+		if(programas.length == 0) return null;
+
+		return programas.filter(programa => {
+			const fechaPrograma = new Date(programa.fecha);
+			return fechaPrograma >= inicioSemana && fechaPrograma <= finSemana;
+		});
+	}
+
+	const estaSemana = filtrarProgramasSemanaActual(reuniones)
 
 	return (
 		<>
@@ -35,15 +47,18 @@ export default function ThisWeek() {
 					<div className="card">
 						<div className="card_title">
 							<h2>
-								Programa para el 22 de julio de 2023
+								Programa para la semana del {inicioSemana.getDate()} de {meses[inicioSemana.getMonth()]} de {inicioSemana.getFullYear()}
 							</h2>
 						</div>
 						<div className="divider"></div>
 						{/* <div className="w-full flex justify-center">
 							No hay datos todavía
 						</div> */}
-
-						<Tablero programa={programa} sala={sala} />
+						{
+							estaSemana
+							? <Tablero programa={estaSemana} />
+							: <p>No se ha agregado un programa para esta semana</p>
+						}
 					</div>
 				</div>
 				<div className="w-full lg:w-2/5 xl:w-1/4 p-2.5">
@@ -52,7 +67,7 @@ export default function ThisWeek() {
 						<div className="separator"></div>
 						<div className="flex flex-col gap-1" >
 							{
-								programa.map((i, index) =>
+								estaSemana && estaSemana.map((i, index) =>
 									<p key={index} >
 										{i.nombre}
 									</p>
@@ -61,7 +76,7 @@ export default function ThisWeek() {
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 		</>
 	)

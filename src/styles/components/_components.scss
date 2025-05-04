@@ -68,6 +68,20 @@
         color: $color_white;
     }
 
+    &.tab {
+        background: linear-gradient(180deg, white 0%, #c7c9d6 60%);
+        padding: 10px 30px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border: solid 1px $color_dark;
+
+        &.active {
+            transition: all 500ms;
+            background: linear-gradient(0deg, white 0%, $color_bg 100%);
+            border-bottom: 0;
+        }
+    }
+
     &:hover {
         filter: brightness(1.1);
     }
@@ -76,6 +90,8 @@
         filter: brightness(90%);
         box-shadow: inset -1px -1px 2px rgba(255, 255, 255, .7), inset 1px 1px 2px rgba(0, 0, 0, .1), -1px -1px 2px rgba(0, 0, 0, .1);
     }
+
+
 }
 
 
@@ -144,7 +160,7 @@
     &.error-state input {
         border: solid 2px red;
     }
-    
+
     &.error-state small {
         color: red;
     }

@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [user, setUser] = useRecoilState(atoms.user)
   const [congregacion, setCongregacion] = useRecoilState(atoms.congregacion)
   const setProgramas = useSetRecoilState(atoms.programas)
+  const setReuniones = useSetRecoilState(atoms.reuniones)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Dashboard() {
 
 
 
-  useEffect(() => {
+  useEffect(() => { //* Esta función detecta y descarga cambios en los periodos
     if (congregacion) {
       return onSnapshot(
         collection(db, `congregaciones/${congregacion.id}/programas`),
@@ -58,9 +59,21 @@ export default function Dashboard() {
           setProgramas(data.sort((a, b) => a.created - b.created))
         })
     }
-  },
-    [congregacion]
-  )
+  }, [congregacion])
+
+  useEffect(() => { //* Esta función detecta y descarga cambios en las reuniones
+    if (congregacion) {
+      return onSnapshot(
+        collection(db, `congregaciones/${congregacion.id}/reuniones`),
+        (snapshot) => {
+          let data = snapshot.docs.map(doc => {
+            const snap = doc.data()
+            return ({ ...snap, id: doc.id, fecha: new Date(snap.fecha.seconds * 1000) })
+          })
+          setReuniones(data.sort((a, b) => a.fecha - b.fecha))
+        })
+    }
+  }, [congregacion])
 
 
 

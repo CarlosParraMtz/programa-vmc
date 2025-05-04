@@ -9,7 +9,9 @@ export default {
       colors: {
         "program-treasures": "#3c7f8b",
         "program-teachers": "#d68f00",
-        "program-life": "#bf2f13"
+        "program-life": "#bf2f13",
+        "primary": "#965ff1",
+        "secondary": "#ff5a89",
       }
     },
   },

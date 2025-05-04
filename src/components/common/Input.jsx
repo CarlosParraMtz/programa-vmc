@@ -1,13 +1,4 @@
-export default function Input({
-  name,
-  label = null,
-  ...props
-}) {
-
-  const inputProps = { ...props }
-  delete inputProps.name
-  delete inputProps.label
-
+export default function Input({ name, label = null, ...props }) {
   return (
     <div>
       {label && <label htmlFor={name} className="block mb-2 text-sm font-medium text-gray-900">

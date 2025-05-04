@@ -22,7 +22,9 @@ export default function Header({ setOpen }) {
         <div className="w-full p-5 flex flex-col items-center gap-5" >
             <p>No hay periodos agregados.</p>
             <Link to="/dashboard/programas" >
-                <button className="btn main">Administrar programas</button>
+                <button className="btn main" onClick={cerrarModalPeriodo} >
+                    Administrar programas
+                </button>
             </Link>
         </div>
     )
@@ -83,13 +85,16 @@ export default function Header({ setOpen }) {
                         </ul>
             }
 
+            {
+                !(!programas || programas.length === 0) &&
+                <div className="flex justify-end gap-3" >
+                    <button className="btn error" onClick={cerrarModalPeriodo}>Cancelar</button>
+                    <Link to="/dashboard/programas" >
+                        <button onClick={cerrarModalPeriodo} className="btn main">Administrar programas</button>
+                    </Link>
+                </div>
+            }
 
-            <div className="flex justify-end gap-3" >
-                <button className="btn error" onClick={cerrarModalPeriodo}>Cancelar</button>
-                <Link to="/dashboard/programas" >
-                    <button onClick={cerrarModalPeriodo} className="btn main">Administrar programas</button>
-                </Link>
-            </div>
         </Modal>
     </>
     )

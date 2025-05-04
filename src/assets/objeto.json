@@ -1,0 +1,126 @@
+[
+  {
+    "fecha": "09-06-2025",
+    "estudio": "Proverbios 17",
+    "canciones": [
+      157,
+      113,
+      35
+    ],
+    "asignaciones": [
+      {
+        "titulo": "1. Cómo tener paz en su matrimonio",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "2. Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "3. Lectura de la Biblia",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "4. Empiece conversaciones",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "5. Empiece conversaciones",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "6. Discurso",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "7. Cómo promover la buena comunicación",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "8. Estudio bíblico de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
+    ]
+  },
+  {
+    "fecha": "16-06-2025",
+    "estudio": "Proverbios 18",
+    "canciones": [
+      90,
+      144,
+      60
+    ],
+    "asignaciones": [
+      {
+        "titulo": "1. Anime con sus palabras a quienes tienen problemas de salud",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "2. Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "3. Lectura de la Biblia",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "4. Empiece conversaciones",
+        "seccion": 2,
+        "video": false,
+        "duracion": "1"
+      },
+      {
+        "titulo": "5. Haga revisitas",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "6. Haga revisitas",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "7. Explique sus creencias",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "8. Ayudemos “sin una palabra” a nuestros seres queridos a acercarse a Jehová",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "9. Estudio bíblico de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
+    ]
+  }
+]

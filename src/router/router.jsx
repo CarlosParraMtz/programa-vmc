@@ -10,7 +10,7 @@ import Config from '../pages/dashboard/Config'
 import NotFound from '../pages/NotFound'
 import Auth from '../layouts/Auth'
 import Login from '../pages/auth/Login'
-import ConfigureCongregation from '../pages/ConfigureCongregation'
+import CargaReuniones from '../pages/CargaReuniones'
 
 export default function Router() {
     return useRoutes([
@@ -42,7 +42,7 @@ export default function Router() {
                         { path: "signup", element: <></> }
                     ]
                 },
-                { path:"configure-congregation", element: <ConfigureCongregation /> },
+                { path:"cargareuniones", element: <CargaReuniones /> },
                 { path: "*", element: <NotFound /> },
             ]
         }

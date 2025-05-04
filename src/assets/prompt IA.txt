@@ -1,0 +1,132 @@
+Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con este formato:
+
+[
+  {
+    "fecha": "09-06-2025",
+    "estudio": "Proverbios 17",
+    "canciones": [
+      157,
+      113,
+      35
+    ],
+    "asignaciones": [
+      {
+        "titulo": "Cómo tener paz en su matrimonio", 
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas", 
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia", 
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Cómo promover la buena comunicación", 
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación", 
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
+    ]
+  },
+  {
+    "fecha": "16-06-2025",
+    "estudio": "Proverbios 18",
+    "canciones": [
+      90,
+      144,
+      60
+    ],
+    "asignaciones": [
+      {
+        "titulo": "Anime con sus palabras a quienes tienen problemas de salud", 
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas", 
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia", 
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "1"
+      },
+      {
+        "titulo": "Haga revisitas", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Explique sus creencias", 
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Ayudemos “sin una palabra” a nuestros seres queridos a acercarse a Jehová", 
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación", 
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
+    ]
+  }
+]
+
+Basado en la información contenida en el pdf. Quiero todas las reuniones que haya en el documento convertidas a este formato. Fíjate bien que las canciones siempre son 3, invariablemente. Checa qué asignaciones llevan un video para ponerlo en su respectiva clave. Siempre son de 8 a 9 asignaciones en cada reunión. La duración va en forma de un string. La fecha va en formato dd-mm-aaaa. La sección de la asignación es 1 si está dentro de Tesoros de la Biblia, 2 para Seamos mejores maestros y 3 para nuestra vida cristiana. Como puedes ver, la raíz es un array de objetos, donde cada objeto es una reunión diferente.  
+Quiero todas las reuniones en solo un objeto json. Puedes entregarmelo como un archivo, o escribirlo aquí, pero tiene que ser en un solo objeto JSON.
+De antemano te lo agradezco mucho.

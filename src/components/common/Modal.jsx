@@ -1,7 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion"
 import IconButton from "./IconButton"
 
-export default function Modal({ id, onClose, open, children, title }) {
+export default function Modal({ id, onClose, open, children, title, size = "lg", error = false, loading = false }) {
+    const sizes = {
+        md: "max-w-md",
+        lg: "max-w-lg",
+        xl: "max-w-xl",
+        xl2: "max-w-2xl",
+        xl4: "max-w-4xl",
+
+    }
     return (
         <AnimatePresence>
             {open &&
@@ -17,16 +25,24 @@ export default function Modal({ id, onClose, open, children, title }) {
                         initial={{ opacity: 0, y: -25 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -25 }}
-                        className="w-full max-w-lg p-5 rounded-xl bg-white shadow max-h-screen overflow-auto flex flex-col"
+                        className={`
+                            w-full p-5 rounded-xl shadow 
+                            max-h-screen overflow-auto flex flex-col
+                            bg-white 
+                            ${error ? "border-y border-red-500" : ""}
+                            ${sizes[size]}
+                            `}
                     >
-                        <div className={`flex mb-5 items-center ${title ? "justify-between" : "justify-end"}`}>
-                            {title &&
-                                <h3 className="text-xl" >{title}</h3>
-                            }
-                            <IconButton onClick={onClose} >
-                                <i className="fas fa-close"></i>
-                            </IconButton>
-                        </div>
+                        {!loading &&
+                            <div className={`flex mb-5 items-center ${title ? "justify-between" : "justify-end"}`}>
+                                {title &&
+                                    <h3 className="text-xl" >{title}</h3>
+                                }
+                                <IconButton onClick={onClose} >
+                                    <i className="fas fa-close"></i>
+                                </IconButton>
+                            </div>
+                        }
                         {children}
                     </motion.div>
                 </motion.div>

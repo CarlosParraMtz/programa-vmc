@@ -1,4 +1,4 @@
-import Router from './router/router'
+import Router from './router/Router'
 import { Toaster } from 'react-hot-toast';
 import toastOptions from './components/toastOptions'
 

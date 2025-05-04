@@ -30,6 +30,12 @@ export const periodo = atom({
     default: null
 })
 
+export const reuniones = atom({
+    key:'reunionesState',
+    default: []
+})
+
 export default {
-    user, congregacion, matriculados, programas, nombrados, periodo
+    user, congregacion, matriculados,
+    programas, nombrados, periodo, reuniones
 }

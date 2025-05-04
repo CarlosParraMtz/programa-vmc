@@ -11,24 +11,25 @@ import { Link } from 'react-router-dom';
 
 export default function Programs() {
 
+	// Store
 	const congregacion = useRecoilValue(atoms.congregacion)
 	const programas = useRecoilValue(atoms.programas)
 	const setPeriodo = useSetRecoilState(atoms.periodo)
-
+	const reuniones = useRecoilValue(atoms.reuniones)
+	
+	//States
 	const [selected, setSelected] = useState(null)
-
 	const [dialogAgregar, setDialogAgregar] = useState(false)
 	const [periodoText, setPeriodoText] = useState("")
 	const [sending, setSending] = useState(false)
-
 	const [modalBorrar, setModalBorrar] = useState(false)
-
+	
+	//Funciones
 	const abrirDialogAgregar = () => setDialogAgregar(true)
 	const cerrarDialogAgregar = () => {
 		setDialogAgregar(false)
 		setPeriodoText("")
 	}
-
 	const abrirModalBorrar = () => setModalBorrar(true)
 	const cerrarModalBorrar = () => setModalBorrar(false)
 	const confirmaBorrarPeriodo = async () => {
@@ -38,6 +39,7 @@ export default function Programs() {
 		try {
 			await periodosController.deletePeriodo(selected.id, congregacion.id)
 			setSelected(null)
+			setPeriodo(null)
 			cerrarModalBorrar()
 			setSending(false)
 			toast.success("Se ha eliminado este periodo y toda su información")
@@ -47,16 +49,13 @@ export default function Programs() {
 			toast.error(e)
 		}
 	}
-
-	const seleccionar =(data) => {
+	const seleccionar = (data) => {
 		setPeriodo(data)
 		setSelected(data)
 	}
-
 	const onSubmit = async (e) => {
 		e.preventDefault()
 		if (!congregacion) return;
-
 		setSending(true)
 		try {
 			await periodosController.createPeriodo({ periodo: periodoText }, congregacion.id)
@@ -69,6 +68,7 @@ export default function Programs() {
 			toast.error(e)
 		}
 	}
+	//TODO Función para actualizar periodo
 	return (
 		<>
 			<div className="p-2.5">
@@ -173,11 +173,11 @@ export default function Programs() {
 											</div>
 											<div className="divider"></div>
 											{
-												selected.reuniones.length === 0
+												reuniones.filter(reunion => reunion.periodo === selected.id).length === 0
 													? <div className="flex flex-col items-center justify-center gap-3 p-16 text-center">
 														<p>No hay reuniones agregadas en este periodo</p>
 														<Link to="/dashboard/reuniones" >
-														<button className="btn main">Ir a reuniones</button>
+															<button className="btn main">Ir a reuniones</button>
 														</Link>
 													</div>
 													: <div>lista</div>
@@ -203,7 +203,7 @@ export default function Programs() {
 						value={periodoText} onChange={e => setPeriodoText(e.target.value)}
 					/>
 					<div className='w-full items-center flex justify-end gap-2' >
-						<button className='btn cancel' type="button" onClick={cerrarDialogAgregar} >Cancelar</button>
+						<button className='btn error' type="button" onClick={cerrarDialogAgregar} >Cancelar</button>
 						<button className='btn main' type="submit" disabled={sending} >
 							{sending ? <LoaderIcon /> : "Agregar"}
 						</button>
@@ -215,7 +215,7 @@ export default function Programs() {
 				<h3 className='text-xl mb-4'>¿Seguro que desea borrar el periodo seleccionado?</h3>
 				<p>Esta acción no se puede deshacer</p>
 				<div className='w-full items-center flex justify-end gap-2 mt-5' >
-					<button className='btn cancel' type="button" onClick={cerrarModalBorrar} >Cancelar</button>
+					<button className='btn error' type="button" onClick={cerrarModalBorrar} >Cancelar</button>
 					<button className='btn main' type="button" disabled={sending} onClick={confirmaBorrarPeriodo} >
 						{sending ? <LoaderIcon /> : "Borrar"}
 					</button>
