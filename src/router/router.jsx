@@ -1,10 +1,9 @@
 import { useRoutes, Link } from 'react-router-dom'
 import Dashboard from '../layouts/Dashboard'
-import Elders from '../pages/dashboard/Elders'
 import Estudiantiles from '../pages/dashboard/Estudiantiles'
 import Meetings from '../pages/dashboard/Meetings'
 import Programs from '../pages/dashboard/Programs'
-import Students from '../pages/dashboard/Students'
+import Personas from '../pages/dashboard/Personas'
 import ThisWeek from '../pages/dashboard/ThisWeek'
 import Config from '../pages/dashboard/Config'
 import NotFound from '../pages/NotFound'
@@ -27,10 +26,9 @@ export default function Router() {
                     children: [
                         { path: "", element: <ThisWeek /> },
                         { path: "estudiantiles", element: <Estudiantiles /> },
-                        { path: "nombrados", element: <Elders /> },
                         { path: "reuniones", element: <Meetings /> },
                         { path: "programas", element: <Programs /> },
-                        { path: "matriculados", element: <Students /> },
+                        { path: "personas", element: <Personas /> },
                         { path: "config", element: <Config /> },
                     ]
                 },

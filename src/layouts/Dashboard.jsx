@@ -17,7 +17,8 @@ export default function Dashboard() {
   const [open, setOpen] = useState(false)
   const [user, setUser] = useRecoilState(atoms.user)
   const [congregacion, setCongregacion] = useRecoilState(atoms.congregacion)
-  const setProgramas = useSetRecoilState(atoms.programas)
+  const setPeriodo = useSetRecoilState(atoms.periodo)
+  const [programas, setProgramas] = useRecoilState(atoms.programas)
   const setReuniones = useSetRecoilState(atoms.reuniones)
   const navigate = useNavigate()
 
@@ -55,7 +56,15 @@ export default function Dashboard() {
       return onSnapshot(
         collection(db, `congregaciones/${congregacion.id}/programas`),
         (snapshot) => {
-          let data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+          let data = snapshot.docs.map(doc => {
+            const snap = doc.data()
+            return {
+              ...snap,
+              id: doc.id,
+              created: new Date(snap.created.seconds * 1000),
+              updated: snap.updated ? new Date(snap.updated.seconds * 1000) : null
+            }
+          })
           setProgramas(data.sort((a, b) => a.created - b.created))
         })
     }
@@ -68,12 +77,23 @@ export default function Dashboard() {
         (snapshot) => {
           let data = snapshot.docs.map(doc => {
             const snap = doc.data()
-            return ({ ...snap, id: doc.id, fecha: new Date(snap.fecha.seconds * 1000) })
+            return ({
+              ...snap,
+              id: doc.id,
+              fecha: new Date(snap.fecha.seconds * 1000),
+              created: new Date(snap.created?.seconds * 1000 || snap.created),
+            })
           })
           setReuniones(data.sort((a, b) => a.fecha - b.fecha))
         })
     }
   }, [congregacion])
+
+  useEffect(() => {
+    if (programas && programas.length > 0) {
+      setPeriodo({ ...programas[0] })
+    }
+  }, [programas])
 
 
 

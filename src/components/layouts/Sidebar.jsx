@@ -58,28 +58,20 @@ export default function Sidebar({ useOpen }) {
                                     <span>Reuniones</span>
                                 </div>
                             </NavLink>
-                            <NavLink className='sidebar_link' to="/dashboard/estudiantiles" >
+                            {/* <NavLink className='sidebar_link' to="/dashboard/estudiantiles" >
                                 <div className="sidebar_link-icon">
                                     <i className="fas fa-user-graduate"></i>
                                 </div>
                                 <div className="sidebar_link-text">
                                     <span>Estudiantiles</span>
                                 </div>
-                            </NavLink>
-                            <NavLink className='sidebar_link' to="/dashboard/matriculados" >
+                            </NavLink> */}
+                            <NavLink className='sidebar_link' to="/dashboard/personas" >
                                 <div className="sidebar_link-icon">
                                     <i className="fas fa-address-book"></i>
                                 </div>
                                 <div className="sidebar_link-text">
-                                    <span>Matriculados</span>
-                                </div>
-                            </NavLink>
-                            <NavLink className='sidebar_link' to="/dashboard/nombrados" >
-                                <div className="sidebar_link-icon">
-                                    <i className="fas fa-book-reader"></i>
-                                </div>
-                                <div className="sidebar_link-text">
-                                    <span>Nombrados</span>
+                                    <span>Personas</span>
                                 </div>
                             </NavLink>
                         </nav>

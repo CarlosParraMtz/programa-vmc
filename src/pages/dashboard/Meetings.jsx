@@ -11,6 +11,8 @@ import reunionesController from "../../firebase/controllers/reuniones.controller
 import { LoaderIcon } from "react-hot-toast"
 import formatearFecha from "../../functions/formatearFecha"
 import Tablero from '../../components/dashboard/Tablero'
+import Advertencia from "../../components/common/Advertencia"
+import TableroEdicion from "../../components/dashboard/TableroEdicion"
 
 export default function Meetings() {
   const periodo = useRecoilValue(atoms.periodo)
@@ -36,13 +38,26 @@ export default function Meetings() {
   const [agregarReunionesTab, setAgregarReunionesTab] = useState(0)
   const [loading, setLoading] = useState(false)
 
+  const [edicion, setEdicion] = useState(null)
+  const [asignadosVacios, setAsignadosVacios] = useState(false)
+
   const [rangoFechas, setRangoFechas] = useState({
     inicial: getDiaHoy(new Date()),
     final: getDiaHoy(new Date())
   })
 
 
+  //* Funciones para la edición
+  const activarEdicion = () => {
+    setEdicion(JSON.parse(JSON.stringify(seleccion)))
+  }
 
+  const cancelarEdicion = () => setEdicion(null)
+
+
+
+  // * Función para agregar reuniones a la lista, con base en las
+  // * reuniones previamente cargadas en la base de datos.
   const agregarReuniones = async (e) => {
     e.preventDefault()
 
@@ -112,12 +127,22 @@ export default function Meetings() {
 
   }
 
+
+  // * Side effects
+
   useEffect(() => {
     if (periodo) {
       const _reunionesFilter = reuniones.filter(reunion => reunion.periodo == periodo.id)
       setReunionesFilter(_reunionesFilter)
     }
   }, [reuniones, periodo])
+
+  useEffect(() => {
+    if (seleccion) {
+      const asignados = seleccion.asignaciones.map(asignacion => asignacion.asignado)
+      setAsignadosVacios(asignados.includes(""))
+    }
+  }, [seleccion])
 
   return (
     <>
@@ -145,10 +170,15 @@ export default function Meetings() {
 
                 : <ul className="gap-2 flex flex-col max-h-[300px] overflow-auto">
                   {reunionesFilter.map(reunion =>
-                    <li key={reunion.id} onClick={() => setSeleccion({ ...reunion })}
+                    <li key={reunion.id}
+                      onClick={() => {
+                        if (!edicion)
+                          setSeleccion({ ...reunion })
+                      }}
                       className={`
                         px-4 py-2 rounded-lg shadow-md bg-purple-50 
-                        border hover:border-purple-300 cursor-pointer
+                        border hover:border-purple-500 cursor-pointer
+                        ${seleccion && seleccion.id === reunion.id ? "bg-violet-100 border-purple-600" : ""}
                       `}
                     >
                       Semana del {formatearFecha(reunion.fecha)}
@@ -163,21 +193,54 @@ export default function Meetings() {
 
 
         <div className="w-2/3 p-2.5">
-          {/* <div className="flex items-center justify-between bg-red-100 border border-red-500 rounded-xl p-3 mb-3" >
-            <span className="flex-1" >
-              Hay cambios sin guardar
-            </span>
-            <button className="btn main" >Guardar</button>
-          </div> */}
+          {
+            (asignadosVacios && !edicion) &&
+            <Advertencia text="Hay partes en esta reunión sin asignar a nadie. Edita esta reunión para poder asignar a alguien" />
+          }
+
           <div className="card">
             <div className="card_title">
-              <h2><b>Detalles:</b></h2>
+              {seleccion &&
+                <div className="rounded-xl bg-gray-300" >
+                  {
+                    edicion
+                      ? <>
+                        <button onClick={cancelarEdicion}
+                          className="w-10 h-10 hover:text-white hover:bg-violet-400 rounded-l-xl bg-red-300">
+                          <i className="fas fa-cancel" ></i>
+                        </button>
+                        {/*                         <button className="w-10 h-10 hover:text-white  hover:bg-primary">
+                          <i className="fas fa-save" ></i>
+                        </button> */}
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl">
+                          <i className="fas fa-save" ></i>
+                        </button>
+                      </>
+                      : <>
+                        <button onClick={activarEdicion}
+                          className="w-10 h-10 hover:text-white hover:bg-violet-400 rounded-l-xl">
+                          <i className="fas fa-edit" ></i>
+                        </button>
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400">
+                          <i className="fas fa-print" ></i>
+                        </button>
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl">
+                          <i className="fas fa-paper-plane" ></i>
+                        </button>
+                      </>
+                  }
+
+                </div>
+              }
+
             </div>
             <div className="divider"></div>
 
             {
               seleccion
-                ? <Tablero programa={seleccion} />
+                ? edicion
+                  ? <TableroEdicion useReunion={[edicion, setEdicion]} />
+                  : <Tablero programa={seleccion} />
                 : <div className="p-16">
                   <p className="text-center" >
                     Haz click en una reunión para ver y editar los detalles

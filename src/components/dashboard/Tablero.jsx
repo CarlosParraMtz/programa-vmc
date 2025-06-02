@@ -1,19 +1,40 @@
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal";
 
 export default function Tablero({ programa }) {
-    function getItems(section, bg = "", cancion1 = null, cancion2 = null, cancion3 = null) {
-        return <div className={`flex flex-col px-5 py-2 ${bg} divide-y divide-slate-700`} >
-            {(cancion2 || cancion1) &&
-                <p className="font-bold text-md pb-1" > Canción {cancion1} {cancion2} {cancion1 && "y oración"} </p>
-            }
+    function getItems(section, bg = "", cancion1 = null, cancion2 = null, cancion3 = null, presidente = false) {
+        return <div className={`flex flex-col px-5 py-2 ${bg}  divide-slate-700`} >
+            <div className="flex justify-between items-center">
+                {(cancion2 || cancion1) &&
+                    <p className="font-bold text-md pb-1" >
+                        Canción {cancion1} {cancion2} {cancion1 && "y oración"}
+                    </p>
+                }
+                {
+                    presidente && <div className="flex flex-col" >
+                        <p><strong className="mr-5" >Presidente:</strong>
+                            {(!programa.presidente || (programa.presidente && programa.presidente === ""))
+                                ? "No asignado"
+                                : programa.presidente
+                            }
+                        </p>
+                    </div>
+                }
+            </div>
             {
                 programa && programa.asignaciones
                     .map((i, index) => {
                         if (i.seccion != section) return null;
                         return (
-                            <div key={index} className="flex flex-col w-full justify-between py-1" >
-                                <p className="text-xs lg:text-base"><strong> {index + 1}. {i.titulo} </strong></p>
-                                <p className="text-right" > {i.nombre} </p>
+                            <div key={index} className="
+                                flex w-full justify-between py-1 
+                            " >
+                                <p className="text-xs lg:text-base">
+                                    <strong> {index + 1}. {i.titulo} </strong> ({i.duracion} mins.)
+                                    {i.video && <i className="fas fa-video ml-5 text-purple-700" ></i>}
+                                </p>
+                                <p className="text-right" >
+                                    {(i.nombre && i.nombre != "") ? i.nombre : "No asignado"}
+                                </p>
                             </div>
                         )
                     })
@@ -31,7 +52,7 @@ export default function Tablero({ programa }) {
             <span className="bg-program-treasures w-full text-white px-5 py-2 rounded-t-lg font-thin text-md " >
                 Tesoros de la Biblia
             </span>
-            {getItems(1, "bg-[#3c7f8b22]", programa.canciones[0])}
+            {getItems(1, "bg-[#3c7f8b22]", programa.canciones[0], null, null, true)}
             <span className="bg-program-teachers w-full text-white px-5 py-2 font-thin text-md " >
                 Seamos mejores maestros
             </span>
