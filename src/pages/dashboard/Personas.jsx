@@ -1,3 +1,5 @@
+import Matriculados from "../../components/dashboard/personas/Matriculados"
+import Nombrados from "../../components/dashboard/personas/Nombrados"
 
 export default function Personas() {
   return (
@@ -8,14 +10,10 @@ export default function Personas() {
 
       <div className="flex matriculados">
         <div className="w-1/3 p-2.5">
-          <div className="card">
-            <h2 className="text-lg">Nombrados</h2>
-          </div>
+          <Nombrados/>
         </div>
         <div className="w-1/3 p-2.5">
-          <div className="card">
-            <h2 className="text-lg">Matriculados</h2>
-          </div>
+          <Matriculados />
         </div>
       </div>
     </>

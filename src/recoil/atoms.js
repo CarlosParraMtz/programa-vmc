@@ -6,33 +6,46 @@ export const user = atom({
 })
 
 export const congregacion = atom({
-    key:'congregacionState',
+    key: 'congregacionState',
     default: null
 })
 
 export const matriculados = atom({
-    key:'matriculadosState',
+    key: 'matriculadosState',
     default: null
 })
 
 export const programas = atom({
-    key:'programasState',
+    key: 'programasState',
     default: null
 })
 
 export const nombrados = atom({
-    key:'nombradosState',
+    key: 'nombradosState',
     default: null
 })
 
 export const periodo = atom({
-    key:'periodoState',
+    key: 'periodoState',
     default: null
 })
 
 export const reuniones = atom({
-    key:'reunionesState',
+    key: 'reunionesState',
     default: []
+})
+
+export const modal = atom({
+    key: 'modalState',
+    default: {
+        isOpen: false,
+        variant: 'success',
+        title: '',
+        text: '',
+        textButton: 'OK',
+        textButton2: null,
+        onConfirm: () => { }
+    }
 })
 
 export default {

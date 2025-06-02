@@ -1,6 +1,7 @@
 import Router from './router/Router'
 import { Toaster } from 'react-hot-toast';
 import toastOptions from './components/toastOptions'
+import ModalAlert from './components/ModalAlert';
 
 function App() {
   return <>
@@ -9,6 +10,7 @@ function App() {
       position="bottom-right"
       toastOptions={toastOptions}
     />
+    <ModalAlert />
   </>
 
 }
