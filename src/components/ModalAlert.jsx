@@ -6,12 +6,20 @@ import { modal as modalState } from '../recoil/atoms';
 
 const btnVariants = {
   success: "main",
-  error: "error"
+  error: "error",
+  purple: "main"
 }
 
 const variants = {
-  success: "fas fa-check text-green-500",
-  error: "fas fa-xmark text-red-400"
+  success: "text-green-500",
+  error: "text-red-400",
+  purple: "text-purple-400"
+}
+
+const icons = {
+  check: "fas fa-check",
+  error: "fas fa-xmark",
+  info: "far fa-circle-question"
 }
 
 export default function ModalAlert() {
@@ -27,7 +35,6 @@ export default function ModalAlert() {
     }
     closeModal();
   };
-
 
   return (
     <AnimatePresence >
@@ -55,19 +62,32 @@ export default function ModalAlert() {
               closed: { opacity: 0, y: -30 },
             }}
             className='
-          bg-gray-800 text-white px-5 py-5 rounded-2xl mx-auto my-auto fixed 
+          bg-gray-800  px-5 py-5 rounded-2xl mx-auto my-auto fixed 
           w-full max-w-xs flex flex-col items-center gap-4 text-center
           '
           >
-            <i className={` text-4xl ${variants[modal.variant]}`} />
-            <h2 className='text-xl font-bold'>{modal.title}</h2>
-            <p className='text-sm'>{modal.text}</p>
-            <button
-              className={` btn ${btnVariants[modal.variant]} w-full`}
-              onClick={handleConfirm}
-            >
-              {modal.textButton}
-            </button>
+            <i className={` text-4xl ${icons[modal.icon]} ${variants[modal.variant]}`} />
+            <h2 className='text-xl text-white font-bold'>{modal.title}</h2>
+            <p className='text-sm text-white'>{modal.text}</p>
+            <div className={`grid w-full gap-2 ${modal.onConfirm ? "grid-cols-2" : "grid-cols-1"}`}>
+              {
+                (modal.onConfirm) &&
+                <button
+                  className={` btn ${btnVariants[modal.variant]} w-full`}
+                  onClick={handleConfirm}
+                >
+                  {modal.textButton}
+                </button>
+              }
+              <button
+                className={(modal.onConfirm)
+                  ? "btn bg-gray-200 text-gray"
+                  : ` btn ${btnVariants[modal.variant]} w-full`}
+                onClick={closeModal}
+              >
+                {modal.onConfirm ? "Cancelar" : modal.textButton}
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       }

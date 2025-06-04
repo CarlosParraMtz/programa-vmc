@@ -40,6 +40,7 @@ export const modal = atom({
     default: {
         isOpen: false,
         variant: 'success',
+        icon: 'info',
         title: '',
         text: '',
         textButton: 'OK',

@@ -1,8 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
+import useModal from "../../../hooks/useModal"
+import { nombramientos } from "../../../constants/nombramientos"
 
-export default function NombradoCollapse(nombrado) {
+export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdit = () => { } }) {
   const [open, setOpen] = useState(false)
+  const { modalConfirm } = useModal()
 
   return (
     <AnimatePresence>
@@ -23,7 +26,7 @@ export default function NombradoCollapse(nombrado) {
             " >
               <i className="fas fa-user"></i>
             </span>
-            <p>Carlos Parra</p>
+            <p>{nombrado.nombre}</p>
           </div>
           <motion.i
             animate={{ rotateZ: open ? 180 : 0 }}
@@ -34,21 +37,41 @@ export default function NombradoCollapse(nombrado) {
           animate={{ height: open ? "auto" : 0 }}
           className="flex flex-col w-full overflow-hidden">
           <div className="p-5 border-t">
-            <p className="text-purple-500 text-xl mb-2" >
-              <strong>Anciano</strong>
-            </p>
-            <p><strong>Última asignación:</strong></p>
-            <p className="pl-5" >
-              Presidir - 24 de mayo de 2025
-            </p>
-            <p><strong>Observaciones:</strong></p>
-            <p className="pl-5" >
-              Prefiere pasar con menor frecuencia que el resto,
-              ya que le cuesta trabajo pasar a la plataforma.
-            </p>
+            <div className="flex justify-between items-end mb-5 ">
+              <p className="text-purple-500 text-xl" >
+                <strong>{nombramientos[nombrado.nombramiento]}</strong>
+              </p>
+              <div className="flex gap-2" >
+                <button className="btn main w-12" onClick={() => onEdit(nombrado)} >
+                  <i className="fas fa-pencil"></i>
+                </button>
+                <button className="btn error w-12" onClick={() => modalConfirm({
+                  title: "¿Seguro que desea borrar este nombrado?",
+                  icon: 'info',
+                  text: nombrado.nombre,
+                  textButton: "Borrar",
+                  onConfirm: () => onDelete(nombrado.id)
+                })} >
+                  <i className="fas fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+            {nombrado.ultimaAsignacion &&
+              <>
+                <p><strong>Última asignación:</strong></p>
+                <p className="pl-5" >
+                  Presidir - 24 de mayo de 2025
+                </p>
+              </>}
+            {nombrado.detalles != "" && <>
+              <p><strong>Observaciones:</strong></p>
+              <p className="pl-5" >
+                {nombrado.detalles}
+              </p>
+            </>}
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence >
   )
 }

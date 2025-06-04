@@ -5,20 +5,59 @@ import atoms from '../../../recoil/atoms'
 import { useRecoilValue } from 'recoil'
 import Input from '../../common/Input'
 import useModal from '../../../hooks/useModal'
+import Select from '../../common/Select'
+import { LoaderIcon } from 'react-hot-toast'
+import nombradosController from '../../../firebase/controllers/nombrados.controller'
 
 export default function Nombrados() {
+  const nombrados = useRecoilValue(atoms.nombrados)
+  const congregacion = useRecoilValue(atoms.congregacion)
   const [modalAgregar, setModalAgregar] = useState(false)
   const abrirModalAgregar = () => setModalAgregar(true)
   const cerrarModalAgregar = () => setModalAgregar(false)
-  const nombrados = useRecoilValue(atoms.nombrados)
-  const { modalSuccess } = useModal()
+  const [agregarForm, setAgregarForm] = useState({
+    id: null,
+    nombre: "",
+    nombramiento: "",
+    detalles: "",
+  })
+  const [loading, setLoading] = useState(false)
+  const { modalSuccess, modalError } = useModal()
 
   const submit = async (e) => {
     e.preventDefault()
-    modalSuccess({
-      text: 'Se ha agregado un nombrado correctamente',
-    })
+    if (!congregacion) return;
+
+    setLoading(true)
+    try {
+      if (agregarForm.id) {
+        /* Se está actualizando */
+      } else {
+        const payload = {
+          nombre: agregarForm.nombre,
+          nombramiento: agregarForm.nombramiento
+        }
+        await nombradosController.createNombrado(payload, congregacion.id)
+        modalSuccess({
+          text: <>
+            Se ha agregado a <span className='text-purple-400 font-bold' >
+              {payload.nombre}
+            </span> correctamente
+          </>
+        })
+      }
+    } catch (e) {
+      console.error("Error al guardar =>", e)
+      modalError({ text: "Ha habido un error al guardar" })
+    }
+    setLoading(false)
   }
+
+  const onEdit = (nombrado) => { }
+
+  const onDelete = (id) => { }
+
+
 
   return (<>
     <div className="card">
@@ -34,7 +73,13 @@ export default function Nombrados() {
         nombrados && nombrados.length > 0
           ? <ul className='my-2 gap-2 max-h-[400px] overflow-y-auto border-b ' >
             {nombrados.map(nombrado =>
-              <NombradoCollapse key={nombrado.id} nombrado={nombrado} />)}
+              <NombradoCollapse
+                key={nombrado.id}
+                nombrado={nombrado}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              />
+            )}
           </ul>
           : <div className='p-5 border-2 border-dashed rounded-xl mt-5 border-purple-200 flex flex-col items-center gap-5 ' >
             <p className='text-center' >No hay nombrados agregados</p>
@@ -43,12 +88,38 @@ export default function Nombrados() {
       }
     </div>
 
-    <Modal title="Agregar nombrado" open={modalAgregar} onClose={cerrarModalAgregar} >
-      <form onSubmit={submit} >
-        <Input label="Nombre" placeholder="Nombre" />
-        <button type="submit" className='btn main' >Guardar</button>
+    <Modal title="Agregar nombrado" size='md' open={modalAgregar} onClose={cerrarModalAgregar} >
+      <form onSubmit={submit} className='flex flex-col gap-5 my-5' >
+        <Input
+          required
+          value={agregarForm.nombre}
+          onChange={e => setAgregarForm({ ...agregarForm, nombre: e.target.value })}
+          label="Nombre:"
+          placeholder="Nombre"
+        />
+        <Select
+          required
+          label="Nombramiento:"
+          value={agregarForm.nombramiento}
+          onChange={e => setAgregarForm({ ...agregarForm, nombramiento: e.target.value })}
+          name="agregar-nombrado-nombramiento-select"
+        >
+          <option value="" disabled className='text-gray-400 bg-none hover:bg-none italic'>Seleccionar</option>
+          <option value="a">Anciano</option>
+          <option value="sm">Siervo ministerial</option>
+        </Select>
+        <div>
+          <label className='text-sm'>Detalles y observaciones:</label>
+          <textarea className='resize-none w-full rounded-xl p-5 border border-gray-300'
+            value={agregarForm.detalles}
+            onChange={e => setAgregarForm({ ...agregarForm, detalles: e.target.value })}
+            rows={6} placeholder="Escribe algo..." ></textarea>
+        </div>
+        <button type="submit" className='btn main' disabled={loading} >
+          {loading ? <LoaderIcon className='w-5 h-5 border-4 border-r-purple-500' /> : "Guardar"}
+        </button>
       </form>
-    </Modal>
+    </Modal >
   </>
   )
 }

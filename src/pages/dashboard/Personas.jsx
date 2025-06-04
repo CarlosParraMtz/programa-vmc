@@ -8,11 +8,11 @@ export default function Personas() {
         <h1 className="text-2xl" >Personas</h1>
       </div>
 
-      <div className="flex matriculados">
-        <div className="w-1/3 p-2.5">
+      <div className="flex flex-col md:flex-row matriculados">
+        <div className="w-full max-w-md p-2.5">
           <Nombrados/>
         </div>
-        <div className="w-1/3 p-2.5">
+        <div className="w-full max-w-md p-2.5">
           <Matriculados />
         </div>
       </div>

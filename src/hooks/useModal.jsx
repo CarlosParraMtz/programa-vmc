@@ -8,6 +8,7 @@ export default function useModal() {
     setModal({
       isOpen: true,
       variant: 'success',
+      icon: 'check',
       title: options.title || 'Listo',
       text: options.text || 'texto genérico',
       textButton: options.textButton || 'Aceptar',
@@ -20,6 +21,7 @@ export default function useModal() {
     setModal({
       isOpen: true,
       variant: 'error',
+      icon: 'error',
       title: options.title || 'Error',
       text: options.text || 'texto genérico',
       textButton: options.textButton || 'Aceptar',
@@ -28,5 +30,18 @@ export default function useModal() {
     });
   };
 
-  return { modalSuccess, modalError }
+  const modalConfirm = (options) => {
+    setModal({
+      isOpen: true,
+      variant: options.variant || 'purple',
+      icon: options.icon || 'info',
+      title: options.title || 'Título',
+      text: options.text || '',
+      textButton: options.textButton || 'Aceptar',
+      textButton2: options.textButton2 || null,
+      onConfirm: options.onConfirm || null
+    });
+  };
+
+  return { modalSuccess, modalError, modalConfirm }
 }
