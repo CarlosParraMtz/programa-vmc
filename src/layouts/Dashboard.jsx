@@ -103,7 +103,7 @@ export default function Dashboard() {
               id: doc.id,
             }
           })
-          setNombrados(data.sort((a, b) => a.nombre - b.nombre))
+          setNombrados(data.sort((a, b) => a.nombre.localeCompare(b.nombre) ))
         })
     }
   }, [congregacion])

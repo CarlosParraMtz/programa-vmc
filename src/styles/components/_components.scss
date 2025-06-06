@@ -68,6 +68,10 @@
         color: $color_white;
     }
 
+    &.gray {
+        background-color: $color_bg;
+    }
+
     &.tab {
         background: linear-gradient(180deg, white 0%, #c7c9d6 60%);
         padding: 10px 30px;

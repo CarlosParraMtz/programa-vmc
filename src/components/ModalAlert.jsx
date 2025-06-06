@@ -2,6 +2,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRecoilState } from 'recoil';
 import { modal as modalState } from '../recoil/atoms';
+import { LoaderIcon } from 'react-hot-toast';
 
 
 const btnVariants = {
@@ -33,7 +34,6 @@ export default function ModalAlert() {
     if (modal.onConfirm) {
       modal.onConfirm();
     }
-    closeModal();
   };
 
   return (
@@ -66,28 +66,36 @@ export default function ModalAlert() {
           w-full max-w-xs flex flex-col items-center gap-4 text-center
           '
           >
-            <i className={` text-4xl ${icons[modal.icon]} ${variants[modal.variant]}`} />
-            <h2 className='text-xl text-white font-bold'>{modal.title}</h2>
-            <p className='text-sm text-white'>{modal.text}</p>
-            <div className={`grid w-full gap-2 ${modal.onConfirm ? "grid-cols-2" : "grid-cols-1"}`}>
-              {
-                (modal.onConfirm) &&
-                <button
-                  className={` btn ${btnVariants[modal.variant]} w-full`}
-                  onClick={handleConfirm}
-                >
-                  {modal.textButton}
-                </button>
-              }
-              <button
-                className={(modal.onConfirm)
-                  ? "btn bg-gray-200 text-gray"
-                  : ` btn ${btnVariants[modal.variant]} w-full`}
-                onClick={closeModal}
-              >
-                {modal.onConfirm ? "Cancelar" : modal.textButton}
-              </button>
-            </div>
+            {modal.loading
+              ? <div className='h-[200px] flex-centered flex items-center justify-center'>
+                <LoaderIcon className='w-[100px] h-[100px] border-8 border-purple-400 border-l-purple-300 ' />
+              </div>
+              : <>
+                <i className={` text-4xl ${icons[modal.icon]} ${variants[modal.variant]}`} />
+                <h2 className='text-xl text-white font-bold'>{modal.title}</h2>
+                <p className='text-sm text-white'>{modal.text}</p>
+                <div className={`grid w-full gap-2 ${modal.onConfirm ? "grid-cols-2" : "grid-cols-1"}`}>
+                  {
+                    (modal.onConfirm) &&
+                    <button
+                      className={` btn ${btnVariants[modal.variant]} w-full`}
+                      onClick={handleConfirm}
+                    >
+                      {modal.textButton}
+                    </button>
+                  }
+                  <button
+                    className={(modal.onConfirm)
+                      ? "btn bg-gray-200 text-gray"
+                      : ` btn ${btnVariants[modal.variant]} w-full`}
+                    onClick={closeModal}
+                  >
+                    {modal.onConfirm ? "Cancelar" : modal.textButton}
+                  </button>
+                </div>
+              </>
+            }
+
           </motion.div>
         </motion.div>
       }

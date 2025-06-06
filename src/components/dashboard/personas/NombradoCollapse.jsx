@@ -50,7 +50,8 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
                   icon: 'info',
                   text: nombrado.nombre,
                   textButton: "Borrar",
-                  onConfirm: () => onDelete(nombrado.id)
+                  onConfirm: () => onDelete(nombrado.id, nombrado.nombre),
+                  skipClose: true,
                 })} >
                   <i className="fas fa-xmark"></i>
                 </button>

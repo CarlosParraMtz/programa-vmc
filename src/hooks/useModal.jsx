@@ -13,7 +13,9 @@ export default function useModal() {
       text: options.text || 'texto genérico',
       textButton: options.textButton || 'Aceptar',
       textButton2: options.textButton2 || null,
-      onConfirm: options.onConfirm || null
+      onConfirm: options.onConfirm || null,
+      skipClose: options.skipClose || false,
+      modalLoading: false,
     });
   };
 
@@ -26,7 +28,9 @@ export default function useModal() {
       text: options.text || 'texto genérico',
       textButton: options.textButton || 'Aceptar',
       textButton2: options.textButton2 || null,
-      onConfirm: options.onConfirm || null
+      onConfirm: options.onConfirm || null,
+      skipClose: options.skipClose || false,
+      modalLoading: false,
     });
   };
 
@@ -39,9 +43,13 @@ export default function useModal() {
       text: options.text || '',
       textButton: options.textButton || 'Aceptar',
       textButton2: options.textButton2 || null,
-      onConfirm: options.onConfirm || null
+      onConfirm: options.onConfirm || null,
+      skipClose: options.skipClose || false,
+      modalLoading: false,
     });
   };
 
-  return { modalSuccess, modalError, modalConfirm }
+  const modalLoading = () => setModal({ ...modal, loading: true })
+
+  return { modalSuccess, modalError, modalConfirm, modalLoading }
 }

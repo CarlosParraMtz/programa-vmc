@@ -14,7 +14,15 @@ export default function Nombrados() {
   const congregacion = useRecoilValue(atoms.congregacion)
   const [modalAgregar, setModalAgregar] = useState(false)
   const abrirModalAgregar = () => setModalAgregar(true)
-  const cerrarModalAgregar = () => setModalAgregar(false)
+  const cerrarModalAgregar = () => {
+    setModalAgregar(false)
+    setAgregarForm({
+      id: null,
+      nombre: "",
+      nombramiento: "",
+      detalles: "",
+    })
+  }
   const [agregarForm, setAgregarForm] = useState({
     id: null,
     nombre: "",
@@ -22,7 +30,7 @@ export default function Nombrados() {
     detalles: "",
   })
   const [loading, setLoading] = useState(false)
-  const { modalSuccess, modalError } = useModal()
+  const { modalSuccess, modalError, modalLoading } = useModal()
 
   const submit = async (e) => {
     e.preventDefault()
@@ -31,11 +39,21 @@ export default function Nombrados() {
     setLoading(true)
     try {
       if (agregarForm.id) {
-        /* Se está actualizando */
+        const payload = { ...agregarForm }
+        await nombradosController.updateNombrado(payload, congregacion.id, payload.id)
+        modalSuccess({
+          text: <>
+            Se ha editado a <span className='text-purple-400 font-bold' >
+              {payload.nombre}
+            </span> correctamente
+          </>
+        })
+        setModalAgregar(false)
       } else {
         const payload = {
           nombre: agregarForm.nombre,
-          nombramiento: agregarForm.nombramiento
+          nombramiento: agregarForm.nombramiento,
+          detalles: agregarForm.detalles,
         }
         await nombradosController.createNombrado(payload, congregacion.id)
         modalSuccess({
@@ -45,17 +63,48 @@ export default function Nombrados() {
             </span> correctamente
           </>
         })
+        setModalAgregar(false)
       }
     } catch (e) {
       console.error("Error al guardar =>", e)
       modalError({ text: "Ha habido un error al guardar" })
     }
     setLoading(false)
+    setAgregarForm({
+      id: null,
+      nombre: "",
+      nombramiento: "",
+      detalles: "",
+    })
   }
 
-  const onEdit = (nombrado) => { }
+  const onEdit = (nombrado) => {
+    setAgregarForm({
+      id: nombrado.id,
+      nombre: nombrado.nombre,
+      nombramiento: nombrado.nombramiento,
+      detalles: nombrado.detalles || "",
+    })
+    setModalAgregar(true)
+  }
 
-  const onDelete = (id) => { }
+  const onDelete = async (id, nombre) => {
+    setLoading(true)
+    modalLoading()
+
+    try {
+      await nombradosController.deleteNombrado(id, congregacion.id)
+      modalSuccess({
+        text: <>Se ha borrado a <span>{nombre}</span> correctamente.</>,
+      })
+    } catch (error) {
+      console.error("Error al borrar", error)
+      modalError({
+        text: "Ha habido un error al borrar."
+      })
+    }
+    setLoading(false)
+  }
 
 
 

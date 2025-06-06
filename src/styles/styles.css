@@ -21,6 +21,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.flex-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 body {
   margin: 0;
   padding: 0;

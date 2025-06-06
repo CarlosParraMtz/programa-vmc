@@ -134,7 +134,7 @@ export default function Config() {
         <h1 className="text-2xl" >Configuración</h1>
       </div>
       <div className="flex">
-        <div className="w-1/2 p-2.5">
+        <div className="w-full max-w-md p-2.5">
           <div className="card">
             <div className="card_title">
               <h2><b>Perfil:</b></h2>
@@ -176,7 +176,7 @@ export default function Config() {
             }
           </div>
         </div>
-        <div className="w-1/2 p-2.5">
+        <div className="w-full max-w-md p-2.5">
           <div className="card">
             <div className="card_title">
               <h2><b>Congregación:</b></h2>

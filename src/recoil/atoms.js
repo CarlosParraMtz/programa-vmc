@@ -45,7 +45,8 @@ export const modal = atom({
         text: '',
         textButton: 'OK',
         textButton2: null,
-        onConfirm: () => { }
+        onConfirm: () => { },
+        skipClose: false,
     }
 })
 
