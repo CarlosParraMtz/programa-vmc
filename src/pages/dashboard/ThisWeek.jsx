@@ -33,21 +33,23 @@ export default function ThisWeek() {
 						}
 					</div>
 				</div>
-				<div className="w-full lg:w-2/5 xl:w-1/4 p-2.5">
-					<div className="card p-5">
-						<h2>Personas asignadas:</h2>
-						<div className="separator"></div>
-						<div className="flex flex-col gap-1" >
-							{
-								estaSemana && estaSemana.map((i, index) =>
-									<p key={index} >
-										{i.nombre}
-									</p>
-								)
-							}
+				{estaSemana &&
+					<div className="w-full lg:w-2/5 xl:w-1/4 p-2.5">
+						<div className="card p-5">
+							<h2>Personas asignadas:</h2>
+							<div className="separator"></div>
+							<div className="flex flex-col gap-1" >
+								{
+									estaSemana && estaSemana.map((i, index) =>
+										<p key={index} >
+											{i.nombre}
+										</p>
+									)
+								}
+							</div>
 						</div>
 					</div>
-				</div>
+				}
 
 			</div>
 		</>

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Tablero from "../components/dashboard/Tablero";
 import Modal from '../components/common/Modal'
-import { meses } from "../constants/meses";
 import datareunionesController from "../firebase/controllers/datareuniones.controller";
 import { LoaderIcon } from "react-hot-toast";
+import formatearRangoSemanal from "../functions/formatearRangoSemanal";
 
 export default function CargaReuniones() {
   const [jsonInput, setJsonInput] = useState("");
@@ -113,7 +113,9 @@ export default function CargaReuniones() {
               </div>
               {reuniones.length === 0 ? (
                 <p className="text-gray-500">No hay reuniones para mostrar.</p>
-              ) : reuniones.map((reunion, i) => <Tablero key={i} programa={reunion} />)}
+              ) : reuniones.map((reunion, i) => {
+                return <Tablero key={i} programa={reunion} />
+              })}
             </>
           }
 
@@ -138,7 +140,7 @@ export default function CargaReuniones() {
                 {reuniones.map((reunion, i) => {
                   const fecha = new Date(reunion.fecha)
                   return (<li key={i} className="p-2 rounded bg-purple-200" >
-                    <p>Semana del {fecha.getDate()} al {fecha.getDate() + 6} de {meses[fecha.getMonth()]} de {fecha.getFullYear()} </p>
+                    <p>{formatearRangoSemanal(fecha)}</p>
                   </li>)
                 })}
               </ul>

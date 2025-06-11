@@ -11,9 +11,9 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
     <AnimatePresence>
       <motion.div
         key={nombrado.id}
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -30 }}
+        initial={{ opacity: 0, }}
+        animate={{ opacity: 1, }}
+        exit={{ opacity: 0, }}
         className="bg-gray-50 shadow border flex flex-col rounded-lg [&:not(:last-child)]:mb-1"
       >
         <div className="flex justify-between items-center p-2 cursor-pointer hover:bg-purple-100"
@@ -34,7 +34,8 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
           ></motion.i>
         </div>
         <motion.div
-          animate={{ height: open ? "auto" : 0 }}
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: open ? "auto" : 0, opacity: 1 }}
           className="flex flex-col w-full overflow-hidden">
           <div className="p-5 border-t">
             <div className="flex justify-between items-end mb-5 ">

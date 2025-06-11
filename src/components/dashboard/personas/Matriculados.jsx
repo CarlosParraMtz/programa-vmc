@@ -5,43 +5,106 @@ import atoms from '../../../recoil/atoms'
 import MatriculadoCollapse from './MatriculadoCollapse'
 import Input from '../../common/Input'
 import { LoaderIcon } from 'react-hot-toast'
+import useModal from '../../../hooks/useModal'
+import matriculadosController from '../../../firebase/controllers/matriculados.controller'
+
+const formInicial = {
+  nombre: "",
+  genero: 1, //*1 hombre, 2 mujer
+  detalles: "",
+  fechas: [ //Cada objeto es una sala diferente
+    {
+      asignado: [], // Aquí se van apilando las fechas en las que tuvo asignaciones.
+      ayudante: [],
+    },
+  ],
+  ultimaSala: 0, //* Index de salas, 0 es Sala principal, 1 es sala B. Si hubiera sala C, sería 2
+  ultimaAsignacion: null,
+  ayudantes: [], //* Hay que ir agregando el id del ayudante cada que tiene uno
+  ultimoTipo: 1, //* 1 Ayudante; 2 Demostración; 3 Lectura; 4 Discurso
+}
 
 export default function Nombrados() {
 
   const [loading, setLoading] = useState(false)
   const [modalAgregar, setModalAgregar] = useState(false)
+  const [agregarForm, setAgregarForm] = useState(formInicial)
   const matriculados = useRecoilValue(atoms.matriculados)
-  const [agregarForm, setAgregarForm] = useState({
-    nombre: "",
-    genero: 1, //1 hombre, 2 mujer
-    fechas: [ //Cada objeto es una sala diferente
-      {
-        asignado: [],
-        ayudante: [],
-      }
-    ],
-    ultimaSala: 0, //Index de fechas, 0 es Sala principal, 1 es sala B. Si hubiera sala C, sería 2
-    ultimaAsignacion: null,
-    ayudantes: [], //Hay que ir agregando el id del ayudante cada que tiene uno
-    ultimoTipo: 1, // Consultar tipos de asignaciones en md
-  })
+  const congregacion = useRecoilValue(atoms.congregacion)
+  const { modalSuccess, modalError } = useModal()
 
   const abrirModalAgregar = () => setModalAgregar(true)
-  const cerrarModalAgregar = () => setModalAgregar(false)
+  const cerrarModalAgregar = () => {
+    setModalAgregar(false)
+    setAgregarForm(formInicial)
+  }
 
   const submit = async (e) => {
     e.preventDefault()
+    if (!congregacion) {
+      modalError({
+        title: "Error al guardar",
+        text: "Es necesario administrar una congregación primero"
+      })
+      return
+    }
+
     setLoading(true)
     try {
-      throw new Error("No implementado aún!")
+      if (agregarForm.id) {
+        await matriculadosController.updateMatriculado(agregarForm, congregacion.id, agregarForm.id)
+        modalSuccess({
+          title: "Se ha actualizado este matriculado correctamente",
+          text: <span className='text-purple-400' >{agregarForm.nombre}</span>
+        })
+      } else {
+        await matriculadosController.createMatriculado(agregarForm, congregacion.id)
+        modalSuccess({
+          title: "Se ha guardado este matriculado correctamente",
+          text: <span className='text-purple-400' >{agregarForm.nombre}</span>
+        })
+      }
+      cerrarModalAgregar()
     } catch (error) {
       console.error("Error al guardar =>", error)
+      modalError({
+        title: "Error al guardar",
+        text: "No se ha podido guardar este matriculado"
+      })
     }
     setLoading(false)
   }
 
-  const onEdit = () => { }
-  const onDelete = () => { }
+  const onEdit = (matriculado) => {
+    setAgregarForm({
+      id: matriculado.id,
+      nombre: matriculado.nombre,
+      genero: matriculado.genero, 
+      detalles: matriculado.detalles,
+      fechas: matriculado.fechas,
+      ultimaSala: matriculado.ultimaSala, 
+      ultimaAsignacion: matriculado.ultimaAsignacion,
+      ayudantes: matriculado.ayudantes, 
+      ultimoTipo: matriculado.ultimoTipo, 
+    })
+    setModalAgregar(true)
+  }
+
+  const onDelete = async (id, nombre) => {
+    setLoading(true)
+    try {
+      await matriculadosController.deleteMatriculado(id, congregacion.id)
+      modalSuccess({
+        text: <>Se ha borrado a <span>{nombre}</span> correctamente.</>,
+      })
+    } catch (error) {
+      console.error("Error al borrar", error)
+      modalError({
+        text: "Ha habido un error al borrar."
+      })
+    }
+    setLoading(false)
+  }
 
   return (<>
     <div className="card">
@@ -56,10 +119,10 @@ export default function Nombrados() {
       {
         matriculados && matriculados.length > 0
           ? <ul className='my-2 gap-2 max-h-[400px] overflow-y-auto border-b ' >
-            {matriculados.map(nombrado =>
+            {matriculados.map(matriculado =>
               <MatriculadoCollapse
-                key={nombrado.id}
-                nombrado={nombrado}
+                key={matriculado.id}
+                matriculado={matriculado}
                 onDelete={onDelete}
                 onEdit={onEdit}
               />
@@ -85,18 +148,19 @@ export default function Nombrados() {
           <p className='text-sm'>Género:</p>
           <div className="grid grid-cols-2 gap-2">
             <button
+              type="button"
               onClick={() => setAgregarForm({ ...agregarForm, genero: 1 })}
               className={agregarForm.genero === 1 ? "btn main" : "btn gray"}
             >
               Hombre</button>
             <button
+              type="button"
               onClick={() => setAgregarForm({ ...agregarForm, genero: 2 })}
               className={agregarForm.genero === 2 ? "btn main" : "btn gray"}
             >Mujer</button>
           </div>
         </div>
-        {/* //TODO Falta agrear el resto del formulario
-         */}
+
         <div>
           <label className='text-sm'>Detalles y observaciones:</label>
           <textarea className='resize-none w-full rounded-xl p-5 border border-gray-300'

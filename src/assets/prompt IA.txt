@@ -2,7 +2,7 @@ Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con est
 
 [
   {
-    "fecha": "09-06-2025",
+    "fecha": "2025-06-09",
     "estudio": "Proverbios 17",
     "canciones": [
       157,
@@ -61,7 +61,7 @@ Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con est
     ]
   },
   {
-    "fecha": "16-06-2025",
+    "fecha": "2025-06-16",
     "estudio": "Proverbios 18",
     "canciones": [
       90,
@@ -127,6 +127,6 @@ Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con est
   }
 ]
 
-Basado en la información contenida en el pdf. Quiero todas las reuniones que haya en el documento convertidas a este formato. Fíjate bien que las canciones siempre son 3, invariablemente. Checa qué asignaciones llevan un video para ponerlo en su respectiva clave. Siempre son de 8 a 9 asignaciones en cada reunión. La duración va en forma de un string. La fecha va en formato dd-mm-aaaa. La sección de la asignación es 1 si está dentro de Tesoros de la Biblia, 2 para Seamos mejores maestros y 3 para nuestra vida cristiana. Como puedes ver, la raíz es un array de objetos, donde cada objeto es una reunión diferente.  
+Basado en la información contenida en el pdf. Quiero todas las reuniones que haya en el documento convertidas a este formato. Fíjate bien que las canciones siempre son 3, invariablemente. Checa qué asignaciones llevan un video para ponerlo en su respectiva clave. Siempre son de 8 a 9 asignaciones en cada reunión. La duración va en forma de un string. La fecha va en formato yyyy-mm-dd. La sección de la asignación es 1 si está dentro de Tesoros de la Biblia, 2 para Seamos mejores maestros y 3 para nuestra vida cristiana. Como puedes ver, la raíz es un array de objetos, donde cada objeto es una reunión diferente. También es importante respetar el formato de la fecha, que es yyyy-mm-dd.  
 Quiero todas las reuniones en solo un objeto json. Puedes entregarmelo como un archivo, o escribirlo aquí, pero tiene que ser en un solo objeto JSON.
 De antemano te lo agradezco mucho.

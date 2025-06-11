@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [congregacion, setCongregacion] = useRecoilState(atoms.congregacion)
   const setPeriodo = useSetRecoilState(atoms.periodo)
   const setNombrados = useSetRecoilState(atoms.nombrados)
+  const setMatriculados = useSetRecoilState(atoms.matriculados)
   const [programas, setProgramas] = useRecoilState(atoms.programas)
   const setReuniones = useSetRecoilState(atoms.reuniones)
   const navigate = useNavigate()
@@ -91,7 +92,7 @@ export default function Dashboard() {
   }, [congregacion])
 
 
-  useEffect(() => { //* Esta función detecta y descarga cambios en los periodos
+  useEffect(() => { //* Esta función detecta y descarga cambios en los nombrados
     if (congregacion) {
       return onSnapshot(
         collection(db, `congregaciones/${congregacion.id}/nombrados`),
@@ -103,10 +104,28 @@ export default function Dashboard() {
               id: doc.id,
             }
           })
-          setNombrados(data.sort((a, b) => a.nombre.localeCompare(b.nombre) ))
+          setNombrados(data.sort((a, b) => a.nombre.localeCompare(b.nombre)))
         })
     }
   }, [congregacion])
+
+  useEffect(() => { //* Esta función detecta y descarga cambios en los matriculados
+    if (congregacion) {
+      return onSnapshot(
+        collection(db, `congregaciones/${congregacion.id}/matriculados`),
+        (snapshot) => {
+          let data = snapshot.docs.map(doc => {
+            const snap = doc.data()
+            return {
+              ...snap,
+              id: doc.id,
+            }
+          })
+          setMatriculados(data.sort((a, b) => a.nombre.localeCompare(b.nombre)))
+        })
+    }
+  }, [congregacion])
+
 
   useEffect(() => {
     if (programas && programas.length > 0) {

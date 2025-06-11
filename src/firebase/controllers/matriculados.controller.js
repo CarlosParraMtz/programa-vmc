@@ -1,10 +1,10 @@
 import { db } from '../config'
 import { doc, updateDoc, addDoc, collection, serverTimestamp, deleteDoc } from 'firebase/firestore'
 
-const dbPath = "nombrados";
+const dbPath = "matriculados";
 
 export default {
-    createNombrado: (payload, congregacionId) => {
+    createMatriculado: (payload, congregacionId) => {
         return new Promise((resolve, reject) => {
             const docRef = addDoc(
                 collection(db, `congregaciones/${congregacionId}/${dbPath}`),
@@ -14,7 +14,7 @@ export default {
         })
     },
 
-    updateNombrado: (payload, congregacionId, id) => {
+    updateMatriculado: (payload, congregacionId, id) => {
         return new Promise((resolve, reject) => {
             updateDoc(doc(db, `congregaciones/${congregacionId}/${dbPath}`, id),
                 { ...payload, updated: serverTimestamp()}
@@ -23,7 +23,7 @@ export default {
         })
     },
 
-    deleteNombrado: (id, congregacionId) => {
+    deleteMatriculado: (id, congregacionId) => {
         return deleteDoc(doc(db, `congregaciones/${congregacionId}/${dbPath}`, id))
     }
 

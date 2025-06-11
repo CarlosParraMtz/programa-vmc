@@ -1,6 +1,7 @@
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal";
 
 export default function Tablero({ programa }) {
+    const date = new Date(programa.fecha)
     function getItems(section, bg = "", cancion1 = null, cancion2 = null, cancion3 = null, presidente = false) {
         return <div className={`flex flex-col px-5 py-2 ${bg}  divide-slate-700`} >
             <div className="flex justify-between items-center">
@@ -48,7 +49,7 @@ export default function Tablero({ programa }) {
 
     return (
         <div className="w-full flex flex-col" >
-            <h3 className="text-xl" >Semana del {formatearRangoSemanal(programa.fecha)}</h3>
+            <h3 className="text-xl" >Semana del {formatearRangoSemanal(date)}</h3>
             <span className="bg-program-treasures w-full text-white px-5 py-2 rounded-t-lg font-thin text-md " >
                 Tesoros de la Biblia
             </span>
