@@ -1,6 +1,7 @@
 import { db } from '../config'
 import { doc, updateDoc, addDoc, collection, deleteDoc, query, where, getDocs } from 'firebase/firestore'
 import getLunesAnterior from '../../functions/getLunesAnterior';
+import { fromZonedTime } from 'date-fns-tz'
 
 const dbPath = "data-reuniones";
 
@@ -30,13 +31,15 @@ export default {
 
     getDataReunion: async (fecha) => {
         const lunes = getLunesAnterior(fecha)
-        const q = query(collection(db, dbPath), where("fecha", "==", lunes));
+        console.log("Lunes anterior:", fromZonedTime(lunes))
+        const q = query(collection(db, dbPath), where("fecha", "==", fromZonedTime(lunes)));
         let data = null;
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             const snap = doc.data()
             data = { ...snap, fecha: new Date(snap.fecha.seconds * 1000) }
         });
+        console.log(data)
         return data;
     },
 
@@ -44,7 +47,7 @@ export default {
         const { inicial, final } = rangoFechas;
         const lunesInicial = getLunesAnterior(inicial)
         const lunesFinal = getLunesAnterior(final)
-        const q = query(collection(db, dbPath), where("fecha", ">=", lunesInicial), where("fecha", "<=", lunesFinal));
+        const q = query(collection(db, dbPath), where("fecha", ">=", fromZonedTime(lunesInicial)), where("fecha", "<=", fromZonedTime(lunesFinal)));
         let data = [];
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {

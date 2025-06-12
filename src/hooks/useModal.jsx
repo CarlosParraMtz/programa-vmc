@@ -49,7 +49,12 @@ export default function useModal() {
     });
   };
 
-  const modalLoading = () => setModal({ ...modal, loading: true })
+  const modalLoading = () => setModal(prev => ({
+    ...prev,
+    loading: true,
+    onConfirm: null,  // Esto es importante
+    isOpen: true      // Asegurar que se muestre
+  }));
 
   return { modalSuccess, modalError, modalConfirm, modalLoading }
 }

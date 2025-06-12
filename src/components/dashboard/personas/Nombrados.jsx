@@ -8,6 +8,7 @@ import useModal from '../../../hooks/useModal'
 import Select from '../../common/Select'
 import { LoaderIcon } from 'react-hot-toast'
 import nombradosController from '../../../firebase/controllers/nombrados.controller'
+import {nombradoInicial} from '../../../constants/nombradoInicial'
 
 export default function Nombrados() {
   const nombrados = useRecoilValue(atoms.nombrados)
@@ -23,12 +24,7 @@ export default function Nombrados() {
       detalles: "",
     })
   }
-  const [agregarForm, setAgregarForm] = useState({
-    id: null,
-    nombre: "",
-    nombramiento: "",
-    detalles: "",
-  })
+  const [agregarForm, setAgregarForm] = useState(nombradoInicial)
   const [loading, setLoading] = useState(false)
   const { modalSuccess, modalError, modalLoading } = useModal()
 
@@ -70,12 +66,7 @@ export default function Nombrados() {
       modalError({ text: "Ha habido un error al guardar" })
     }
     setLoading(false)
-    setAgregarForm({
-      id: null,
-      nombre: "",
-      nombramiento: "",
-      detalles: "",
-    })
+    setAgregarForm(nombradoInicial)
   }
 
   const onEdit = (nombrado) => {
@@ -84,6 +75,7 @@ export default function Nombrados() {
       nombre: nombrado.nombre,
       nombramiento: nombrado.nombramiento,
       detalles: nombrado.detalles || "",
+      ultimasAsignaciones: nombrado.ultimasAsignaciones,
     })
     setModalAgregar(true)
   }

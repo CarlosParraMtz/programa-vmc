@@ -8,11 +8,12 @@ import { AnimatePresence, motion } from "framer-motion"
 import animations from "../../constants/animations"
 import datareunionesController from "../../firebase/controllers/datareuniones.controller"
 import reunionesController from "../../firebase/controllers/reuniones.controller"
-import { LoaderIcon } from "react-hot-toast"
-import formatearFecha from "../../functions/formatearFecha"
+import toast, { LoaderIcon } from "react-hot-toast"
 import Tablero from '../../components/dashboard/Tablero'
 import Advertencia from "../../components/common/Advertencia"
 import TableroEdicion from "../../components/dashboard/TableroEdicion"
+import useModal from '../../hooks/useModal'
+import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
 
 export default function Meetings() {
   const periodo = useRecoilValue(atoms.periodo)
@@ -21,20 +22,7 @@ export default function Meetings() {
   const [reunionesFilter, setReunionesFilter] = useState([])
   const [seleccion, setSeleccion] = useState(null)
   const [modalAgregarReunion, setModalAgregarReunion] = useState(false)
-  const abrirModalAgregarReunion = () => {
-    if (!periodo) {
-      abrirModalError({
-        text: "Primero seleccione un periodo"
-      })
-      return
-    }
-    setModalAgregarReunion(true)
-  }
-  const cerrarModalAgregarReunion = () => setModalAgregarReunion(false)
-
-  const [modalError, setModalError] = useState(null)
-  const abrirModalError = (obj) => setModalError(obj)
-  const cerrarModalError = () => setModalError(null)
+  const { modalConfirm, modalError } = useModal()
   const [agregarReunionesTab, setAgregarReunionesTab] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -46,6 +34,18 @@ export default function Meetings() {
     final: getDiaHoy(new Date())
   })
 
+
+  const abrirModalAgregarReunion = () => {
+    if (!periodo) {
+      modalError({
+        title: "Error al agregar reunión",
+        text: "Primero seleccione un periodo"
+      })
+      return
+    }
+    setModalAgregarReunion(true)
+  }
+  const cerrarModalAgregarReunion = () => setModalAgregarReunion(false)
 
   //* Funciones para la edición
   const activarEdicion = () => {
@@ -61,24 +61,24 @@ export default function Meetings() {
   const agregarReuniones = async (e) => {
     e.preventDefault()
 
-    const hoy = getDiaHoy(new Date())
-    if (rangoFechas.inicial < hoy || rangoFechas.final < hoy) {
-      abrirModalError({
-        text: "La fecha o rango de fechas introducidas ya pasaron.",
-        p: "Es necesario poner una fecha futura."
+    /*const hoy = getDiaHoy(new Date())
+     if (rangoFechas.inicial < hoy || rangoFechas.final < hoy) {
+      modalError({
+        title: "La fecha o rango de fechas introducidas ya pasaron.",
+        text: "Es necesario poner una fecha futura."
       })
       return
-    }
+    } */
     if (agregarReunionesTab === 0 && rangoFechas.inicial > rangoFechas.final) {
-      abrirModalError({
-        text: "No se pueden seleccionar estas fechas",
-        p: "La fecha inicial debe ser una fecha anterior a la final"
+      modalError({
+        title: "No se pueden seleccionar estas fechas",
+        text: "La fecha inicial debe ser una fecha anterior a la final"
       })
       return
     }
     if (!periodo) {
-      abrirModalError({
-        text: "Es necesario seleccionar un periodo"
+      modalError({
+        title: "Es necesario seleccionar un periodo"
       })
       return
     }
@@ -98,14 +98,15 @@ export default function Meetings() {
     if (agregarReunionesTab === 0) {
       try {
         const reuniones = await datareunionesController.getDataReuniones(rangoFechas)
+        console.log(reuniones)
         reuniones.forEach(async (reunion) => {
           await guardarReunion(reunion)
         })
         cerrarModalAgregarReunion()
       } catch (e) {
-        setModalError({
-          text: "Ha habido un error al guardar la reunión",
-          p: e
+        modalError({
+          title: "Ha habido un error al guardar la reunión",
+          text: e
         })
         console.log(e)
       }
@@ -113,19 +114,43 @@ export default function Meetings() {
     } else if (agregarReunionesTab === 1) {
       try {
         const reunion = await datareunionesController.getDataReunion(rangoFechas.inicial)
-        await guardarReunion(reunion)
-        cerrarModalAgregarReunion()
+        if (reunion) {
+          await guardarReunion(reunion)
+          cerrarModalAgregarReunion()
+        } else {
+          modalError({ title: "Error", text: "No hay información guardada para esta reunión" })
+        }
       } catch (e) {
-        setModalError({
-          text: "Ha habido un error al guardar la reunión",
-          p: e
+        modalError({
+          title: "Ha habido un error al guardar la reunión",
+          text: e
         })
         console.log(e)
       }
-      setLoading(false)
     }
+    setLoading(false)
 
   }
+
+
+  const borrarReunion = async () => {
+    if (!congregacion) {
+      modalError({ text: "Es necesario ser parte de una congregación para borrar sus reuniones" });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await reunionesController.deleteReunion(seleccion.id, congregacion.id);
+      toast.success("Se ha borrado esta reunión correctamente")
+      setSeleccion(null);
+    } catch (error) {
+      modalError({ title: "Ha habido un error al borrar" });
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   // * Side effects
@@ -141,16 +166,18 @@ export default function Meetings() {
     if (seleccion) {
       const asignados = seleccion.asignaciones.map(asignacion => asignacion.asignado)
       setAsignadosVacios(asignados.includes(""))
+    } else {
+      setAsignadosVacios(false)
     }
   }, [seleccion])
 
   return (
     <>
-      <div className="p-2.5">
+      <div className="p-2.5 pl-5">
         <h1 className="text-2xl" >Reuniones</h1>
       </div>
       <div className="flex meetings">
-        <div className="w-1/3 p-2.5">
+        <div className="w-full max-w-md p-2.5 pl-5">
           <div className="card">
             <div className="card_title">
               <h2><b>Reuniones en este periodo:</b></h2>
@@ -181,7 +208,7 @@ export default function Meetings() {
                         ${seleccion && seleccion.id === reunion.id ? "bg-violet-100 border-purple-600" : ""}
                       `}
                     >
-                      Semana del {formatearFecha(reunion.fecha)}
+                      Semana {formatearRangoSemanal(reunion.fecha)}
                     </li>
                   )}
                 </ul>
@@ -192,7 +219,7 @@ export default function Meetings() {
 
 
 
-        <div className="w-2/3 p-2.5">
+        <div className="w-full max-w-4xl p-2.5">
           {
             (asignadosVacios && !edicion) &&
             <Advertencia text="Hay partes en esta reunión sin asignar a nadie. Edita esta reunión para poder asignar a alguien" />
@@ -223,6 +250,16 @@ export default function Meetings() {
                         </button>
                         <button className="w-10 h-10 hover:text-white  hover:bg-violet-400">
                           <i className="fas fa-print" ></i>
+                        </button>
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400"
+                          onClick={() => modalConfirm({
+                            title: "¿Seguro que desea borrar esta reunión y sus datos?",
+                            text: "Esta acción es imposible deshacerla",
+                            onConfirm: borrarReunion,
+                            textButton: "Borrar",
+                          })}
+                        >
+                          <i className="fas fa-trash" ></i>
                         </button>
                         <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl">
                           <i className="fas fa-paper-plane" ></i>
@@ -308,24 +345,7 @@ export default function Meetings() {
         </AnimatePresence>
       </Modal>
 
-      <Modal id="modal-fecha-pasada"
-        title="Error"
-        open={modalError}
-        onClose={cerrarModalError}
-        size="md"
-        error
-      >
-        {
-          modalError && <>
-            <h3 className="text-xl" >{modalError.text}</h3>
-            {(modalError.p && modalError.p != "") && <p>{modalError.p}</p>}
-          </>
-        }
-        <div className="flex justify-end mt-3 gap-3" >
-          <button className="btn main" onClick={cerrarModalError} >Entendido</button>
-        </div>
 
-      </Modal>
 
     </>
   )

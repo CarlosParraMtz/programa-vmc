@@ -75,7 +75,7 @@ export default function Programs() {
 				<h1 className="text-2xl" >Programas</h1>
 			</div>
 			<div className='flex periodos'>
-				<div className="w-1/2 p-2.5">
+				<div className="w-full max-w-sm p-2.5">
 					<div className="card w-full">
 						<div className="card_title">
 							<h2><strong>Periodos</strong></h2>
@@ -126,7 +126,7 @@ export default function Programs() {
 					</div>
 				</div>
 
-				<div className="w-1/2">
+				<div className="w-full max-w-xl ">
 					{selected &&
 						<div className="w-full p-2.5">
 							<div className="card">

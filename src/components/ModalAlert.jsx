@@ -30,9 +30,27 @@ export default function ModalAlert() {
     setModal({ ...modal, isOpen: false });
   };
 
-  const handleConfirm = () => {
-    if (modal.onConfirm) {
-      modal.onConfirm();
+  const handleConfirm = async () => {
+    // Guardamos la función onConfirm antes de limpiar el estado
+    const confirmFn = modal.onConfirm;
+
+    // Cerramos el modal inmediatamente
+    setModal({
+      isOpen: false,
+      variant: 'success',
+      icon: 'info',
+      title: '',
+      text: '',
+      textButton: 'OK',
+      textButton2: null,
+      onConfirm: null,
+      skipClose: false,
+      loading: false
+    });
+
+    // Ejecutamos la función de confirmación si existe
+    if (confirmFn) {
+      await confirmFn(); // Añadimos await por si es una función async
     }
   };
 

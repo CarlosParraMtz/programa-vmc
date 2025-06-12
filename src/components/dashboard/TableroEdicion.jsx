@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import atoms from "../../recoil/atoms";
 import { useRecoilValue } from "recoil";
+import CrudNombrados from "./CrudNombrados";
+import CrudMatriculados from "./CrudMatriculados";
 
 export default function TableroEdicion({ useReunion }) {
   const [reunion, setReunion] = useReunion;
@@ -119,7 +121,7 @@ export default function TableroEdicion({ useReunion }) {
                     >
                       <motion.div
                         layout="position"
-                        layoutId={`asdasd-${index}`}
+                        layoutId={`checkbox-video-${index}`}
                         transition={{ type: "spring" }}
                         className={`
                           h-8 w-8 rounded-full transition-colors 
@@ -319,7 +321,7 @@ export default function TableroEdicion({ useReunion }) {
         title="Selecciona una persona de la lista"
         open={modalPersonas != null}
         onClose={cerrarModalPersonas}
-        size="md"
+        size="xl4"
       >
         <div className="flex justify-start" >
           <button
@@ -345,6 +347,7 @@ export default function TableroEdicion({ useReunion }) {
                 </p>
               </div>
             }
+            {(nombrados && nombrados.length > 0) && <CrudNombrados />}
 
           </div>
         }
@@ -358,6 +361,8 @@ export default function TableroEdicion({ useReunion }) {
                 </p>
               </div>
             }
+            {(matriculados && matriculados.length > 0) && <CrudMatriculados />}
+
           </div>
         }
 

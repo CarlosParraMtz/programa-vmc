@@ -1,126 +1,406 @@
 [
   {
-    "fecha": "09-06-2025",
-    "estudio": "Proverbios 17",
-    "canciones": [
-      157,
-      113,
-      35
-    ],
+    "fecha": "2025-05-05",
+    "estudio": "Proverbios 12",
+    "canciones": [101, 57, 0],
     "asignaciones": [
-      {
-        "titulo": "1. Cómo tener paz en su matrimonio",
-        "seccion": 1,
-        "video": false,
-        "duracion": "10"
-      },
-      {
-        "titulo": "2. Busquemos perlas escondidas",
-        "seccion": 1,
-        "video": false,
-        "duracion": "10"
-      },
-      {
-        "titulo": "3. Lectura de la Biblia",
-        "seccion": 1,
-        "video": false,
-        "duracion": "4"
-      },
-      {
-        "titulo": "4. Empiece conversaciones",
-        "seccion": 2,
-        "video": false,
-        "duracion": "3"
-      },
-      {
-        "titulo": "5. Empiece conversaciones",
-        "seccion": 2,
-        "video": false,
-        "duracion": "4"
-      },
-      {
-        "titulo": "6. Discurso",
-        "seccion": 2,
-        "video": false,
-        "duracion": "5"
-      },
-      {
-        "titulo": "7. Cómo promover la buena comunicación",
-        "seccion": 3,
-        "video": true,
-        "duracion": "15"
-      },
-      {
-        "titulo": "8. Estudio bíblico de la congregación",
-        "seccion": 3,
-        "video": false,
-        "duracion": "30"
-      }
+      {"titulo": "El trabajo duro tiene su recompensa", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Afronte los problemas económicos con la ayuda de Jehová", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
     ]
   },
   {
-    "fecha": "16-06-2025",
-    "estudio": "Proverbios 18",
-    "canciones": [
-      90,
-      144,
-      60
-    ],
+    "fecha": "2025-05-12",
+    "estudio": "Proverbios 13",
+    "canciones": [34, 43, 0],
     "asignaciones": [
-      {
-        "titulo": "1. Anime con sus palabras a quienes tienen problemas de salud",
-        "seccion": 1,
-        "video": false,
-        "duracion": "10"
-      },
-      {
-        "titulo": "2. Busquemos perlas escondidas",
-        "seccion": 1,
-        "video": false,
-        "duracion": "10"
-      },
-      {
-        "titulo": "3. Lectura de la Biblia",
-        "seccion": 1,
-        "video": false,
-        "duracion": "4"
-      },
-      {
-        "titulo": "4. Empiece conversaciones",
-        "seccion": 2,
-        "video": false,
-        "duracion": "1"
-      },
-      {
-        "titulo": "5. Haga revisitas",
-        "seccion": 2,
-        "video": false,
-        "duracion": "3"
-      },
-      {
-        "titulo": "6. Haga revisitas",
-        "seccion": 2,
-        "video": false,
-        "duracion": "3"
-      },
-      {
-        "titulo": "7. Explique sus creencias",
-        "seccion": 2,
-        "video": false,
-        "duracion": "4"
-      },
-      {
-        "titulo": "8. Ayudemos “sin una palabra” a nuestros seres queridos a acercarse a Jehová",
-        "seccion": 3,
-        "video": true,
-        "duracion": "15"
-      },
-      {
-        "titulo": "9. Estudio bíblico de la congregación",
-        "seccion": 3,
-        "video": false,
-        "duracion": "30"
-      }
+      {"titulo": "Que 'la lámpara de los malvados' no lo deslumbre", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "'La luz de los justos brilla intensamente'", "seccion": 3, "video": true, "duracion": "8"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "7"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-05-19",
+    "estudio": "Proverbios 14",
+    "canciones": [89, 116, 0],
+    "asignaciones": [
+      {"titulo": "Ante una situación de emergencia, mida bien sus pasos", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Este preparado para una situación de emergencia", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-05-26",
+    "estudio": "Proverbios 15",
+    "canciones": [102, 100, 0],
+    "asignaciones": [
+      {"titulo": "Ayude a los demás a tener un corazón alegre", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Podemos tener un corazón alegre a pesar de las pruebas", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-06-02",
+    "estudio": "Proverbios 16",
+    "canciones": [36, 68, 0],
+    "asignaciones": [
+      {"titulo": "Tres preguntas que lo ayudarán a tomar buenas decisiones", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-06-09",
+    "estudio": "Proverbios 17",
+    "canciones": [157, 113, 0],
+    "asignaciones": [
+      {"titulo": "Cómo tener paz en su matrimonio", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Cómo promover la buena comunicación", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-06-16",
+    "estudio": "Proverbios 18",
+    "canciones": [90, 144, 0],
+    "asignaciones": [
+      {"titulo": "Anime con sus palabras a quienes tienen problemas de salud", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "1"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Ayudemos 'sin una palabra' a nuestros seres queridos a acercarse a Jehová", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-06-23",
+    "estudio": "Proverbios 19",
+    "canciones": [154, 61, 0],
+    "asignaciones": [
+      {"titulo": "Sea un auténtico amigo para los hermanos", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-06-30",
+    "estudio": "Proverbios 20",
+    "canciones": [131, 150, 0],
+    "asignaciones": [
+      {"titulo": "Claves para que el noviazgo cumpla su objetivo", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Anime a la gente a probar nuestro curso de la Biblia", "seccion": 3, "video": false, "duracion": "5"},
+      {"titulo": "Logros de la organización para el mes de junio", "seccion": 3, "video": true, "duracion": "10"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-07-07",
+    "estudio": "Proverbios 21",
+    "canciones": [98, 72, 0],
+    "asignaciones": [
+      {"titulo": "Sabios consejos para un matrimonio feliz", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Que haya respeto en su matrimonio", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-07-14",
+    "estudio": "Proverbios 22",
+    "canciones": [79, 6, 0],
+    "asignaciones": [
+      {"titulo": "Sabios consejos para criar a los hijos", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Sean pacientes, pero no permisivos", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-07-21",
+    "estudio": "Proverbios 23",
+    "canciones": [97, 40, 0],
+    "asignaciones": [
+      {"titulo": "Sabios consejos sobre las bebidas alcohólicas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "¿Estará bien que sirva alcohol?", "seccion": 3, "video": true, "duracion": "8"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "7"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-07-28",
+    "estudio": "Proverbios 24",
+    "canciones": [38, 112, 0],
+    "asignaciones": [
+      {"titulo": "Fortalézcase ahora para las situaciones difíciles", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Ayudémonos unos a otros en los momentos difíciles", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-08-04",
+    "estudio": "Proverbios 25",
+    "canciones": [154, 150, 0],
+    "asignaciones": [
+      {"titulo": "Sabios consejos para mejorar nuestra forma de hablar", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-08-11",
+    "estudio": "Proverbios 26",
+    "canciones": [88, 89, 0],
+    "asignaciones": [
+      {"titulo": "Apartémonos de los insensatos", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "El estudio personal puede darle 'la sabiduría necesaria para la salvación'", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-08-18",
+    "estudio": "Proverbios 27",
+    "canciones": [102, 118, 0],
+    "asignaciones": [
+      {"titulo": "Cómo nos beneficia tener amigos verdaderos", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "'Un hermano en tiempos de angustia'", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-08-25",
+    "estudio": "Proverbios 28",
+    "canciones": [150, 113, 0],
+    "asignaciones": [
+      {"titulo": "Diferencias entre el justo y el malvado", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "¿Odia usted la violencia?", "seccion": 3, "video": false, "duracion": "6"},
+      {"titulo": "Campaña especial en septiembre", "seccion": 3, "video": true, "duracion": "9"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-09-01",
+    "estudio": "Proverbios 29",
+    "canciones": [28, 31, 0],
+    "asignaciones": [
+      {"titulo": "Rechace las costumbres y tradiciones antibíblicas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-09-08",
+    "estudio": "Proverbios 30",
+    "canciones": [136, 128, 0],
+    "asignaciones": [
+      {"titulo": "'No me des ni pobreza ni riqueza'", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "No se deje engañar por la paz de imitación: Chibisa Selemani", "seccion": 3, "video": true, "duracion": "5"},
+      {"titulo": "Logros de la organización para el mes de septiembre", "seccion": 3, "video": true, "duracion": "10"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-09-15",
+    "estudio": "Proverbios 31",
+    "canciones": [135, 2, 0],
+    "asignaciones": [
+      {"titulo": "Lo que aprendemos de los consejos de una madre", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Ayude a sus hijos a usar bien los dispositivos electrónicos", "seccion": 3, "video": true, "duracion": "8"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "7"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-09-22",
+    "estudio": "Eclesiastés 1, 2",
+    "canciones": [103, 148, 0],
+    "asignaciones": [
+      {"titulo": "Sigamos entrenando a las siguientes generaciones", "seccion": 1, "video": true, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Tres lecciones importantes sobre la capacitación", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-09-29",
+    "estudio": "Eclesiastés 3, 4",
+    "canciones": [93, 51, 0],
+    "asignaciones": [
+      {"titulo": "Fortalezcan su cuerda triple", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Cuando tengan problemas en su matrimonio, no aparten a Jehová de su vida", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-10-06",
+    "estudio": "Eclesiastés 5, 6",
+    "canciones": [42, 34, 0],
+    "asignaciones": [
+      {"titulo": "Adoramos a nuestro gran Dios con profunda reverencia", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "1"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "¿Está usando el apéndice A, 'Verdades bíblicas que nos encanta enseñar'?", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-10-13",
+    "estudio": "Eclesiastés 7, 8",
+    "canciones": [39, 124, 0],
+    "asignaciones": [
+      {"titulo": "Vayamos 'a la casa donde hay duelo'", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "2"},
+      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Fortalezca su fe en la resurrección", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-10-20",
+    "estudio": "Eclesiastés 9, 10",
+    "canciones": [30, 28, 0],
+    "asignaciones": [
+      {"titulo": "Tengamos un punto de vista equilibrado de nuestros problemas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Jehová nos da estabilidad en los momentos difíciles", "seccion": 3, "video": true, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+    ]
+  },
+  {
+    "fecha": "2025-10-27",
+    "estudio": "Eclesiastés 11, 12",
+    "canciones": [155, 8, 0],
+    "asignaciones": [
+      {"titulo": "Disfrute de una vida feliz y saludable", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
+      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
+      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
+      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
+      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
+      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
     ]
   }
+
 ]
