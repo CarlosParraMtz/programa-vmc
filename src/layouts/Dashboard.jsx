@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/layouts/Sidebar'
 import Header from '../components/layouts/Header'
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import atoms from '../recoil/atoms';
+import { useAtom, useSetAtom } from 'jotai';
+import atoms from '../jotai/atoms';
 import toast from '../functions/toast';
 import auth from '../firebase/controllers/authController';
 import { getCongregacion } from '../firebase/controllers/congregation.controller';
@@ -15,13 +15,13 @@ import { db } from '../firebase/config';
 export default function Dashboard() {
 
   const [open, setOpen] = useState(false)
-  const [user, setUser] = useRecoilState(atoms.user)
-  const [congregacion, setCongregacion] = useRecoilState(atoms.congregacion)
-  const setPeriodo = useSetRecoilState(atoms.periodo)
-  const setNombrados = useSetRecoilState(atoms.nombrados)
-  const setMatriculados = useSetRecoilState(atoms.matriculados)
-  const [programas, setProgramas] = useRecoilState(atoms.programas)
-  const setReuniones = useSetRecoilState(atoms.reuniones)
+  const [user, setUser] = useAtom(atoms.user)
+  const [congregacion, setCongregacion] = useAtom(atoms.congregacion)
+  const setPeriodo = useSetAtom(atoms.periodo)
+  const setNombrados = useSetAtom(atoms.nombrados)
+  const setMatriculados = useSetAtom(atoms.matriculados)
+  const [programas, setProgramas] = useAtom(atoms.programas)
+  const setReuniones = useSetAtom(atoms.reuniones)
   const navigate = useNavigate()
 
   useEffect(() => {

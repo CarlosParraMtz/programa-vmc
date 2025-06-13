@@ -2,8 +2,8 @@ import Input from "../common/Input";
 import Modal from '../common/Modal';
 import { useState } from "react";
 import { motion } from "framer-motion";
-import atoms from "../../recoil/atoms";
-import { useRecoilValue } from "recoil";
+import atoms from "../../jotai/atoms";
+import { useAtomValue } from "jotai";
 import CrudNombrados from "./CrudNombrados";
 import CrudMatriculados from "./CrudMatriculados";
 
@@ -12,8 +12,8 @@ export default function TableroEdicion({ useReunion }) {
   const [modalSelectCancion, setModalSelectCancion] = useState(null)
   const [modalPersonas, setModalPersonas] = useState(null)
   const [personasPage, setPersonasPage] = useState('NOMBRADOS')
-  const nombrados = useRecoilValue(atoms.nombrados)
-  const matriculados = useRecoilValue(atoms.matriculados)
+  const nombrados = useAtomValue(atoms.nombrados)
+  const matriculados = useAtomValue(atoms.matriculados)
 
   const abrirModalPersonas = (asignacion) => setModalPersonas(asignacion)
   const cerrarModalPersonas = () => setModalPersonas(null)

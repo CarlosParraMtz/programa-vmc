@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Modal from '../../common/Modal'
-import { useRecoilValue } from 'recoil'
-import atoms from '../../../recoil/atoms'
+import { useAtomValue } from 'jotai'
+import atoms from '../../../jotai/atoms'
 import MatriculadoCollapse from './MatriculadoCollapse'
 import Input from '../../common/Input'
 import { LoaderIcon } from 'react-hot-toast'
@@ -29,8 +29,8 @@ export default function Nombrados() {
   const [loading, setLoading] = useState(false)
   const [modalAgregar, setModalAgregar] = useState(false)
   const [agregarForm, setAgregarForm] = useState(formInicial)
-  const matriculados = useRecoilValue(atoms.matriculados)
-  const congregacion = useRecoilValue(atoms.congregacion)
+  const matriculados = useAtomValue(atoms.matriculados)
+  const congregacion = useAtomValue(atoms.congregacion)
   const { modalSuccess, modalError } = useModal()
 
   const abrirModalAgregar = () => setModalAgregar(true)

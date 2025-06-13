@@ -1,9 +1,9 @@
-import { useRecoilValue } from "recoil"
-import atoms from "../../recoil/atoms"
+import { useAtomValue } from "jotai"
+import atoms from "../../jotai/atoms"
 
 
 export default function CrudNombrados() {
-  const nombrados = useRecoilValue(atoms.nombrados)
+  const nombrados = useAtomValue(atoms.nombrados)
 
   return (
     <div className="max-w-4xl overflow-auto">

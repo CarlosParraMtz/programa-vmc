@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import auth from '../../firebase/controllers/authController';
-import { useSetRecoilState } from 'recoil';
-import atoms from '../../recoil/atoms';
+import { useSetAtom } from 'jotai';
+import atoms from '../../jotai/atoms';
 import { useNavigate } from 'react-router-dom';
 import toast from '../../functions/toast';
 
 export default function Login() {
 
-    const setUser = useSetRecoilState(atoms.user) // User's global state
+    const setUser = useSetAtom(atoms.user) // User's global state
     const [form, setForm] = useState({ email: "", pwd: "" });
     const [loading, setLoading] = useState(false)
     const [onError, setOnError] = useState(null)

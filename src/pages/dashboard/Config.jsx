@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { useRecoilState } from "recoil"
-import atoms from '../../recoil/atoms'
+import { useAtom } from "jotai"
+import atoms from '../../jotai/atoms'
 import Input from "../../components/common/Input"
 import Tooltip from "../../components/common/Tooltip"
 import toast from '../../functions/toast'
@@ -13,8 +13,8 @@ import congregationController, { getCongregacion } from "../../firebase/controll
 
 export default function Config() {
 
-  const [user, setUser] = useRecoilState(atoms.user)
-  const [congregacion, setCongregacion] = useRecoilState(atoms.congregacion)
+  const [user, setUser] = useAtom(atoms.user)
+  const [congregacion, setCongregacion] = useAtom(atoms.congregacion)
   const [edicion, setEdicion] = useState({
     user: false,
     congregacion: ""

@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import atoms from '../../recoil/atoms';
+import { useAtomValue } from 'jotai';
+import atoms from '../../jotai/atoms';
 import { AnimatePresence, motion } from 'framer-motion'
 
 export default function Sidebar({ useOpen }) {
 
     const [open, setOpen] = useOpen;
-    const user = useRecoilValue(atoms.user)
+    const user = useAtomValue(atoms.user)
 
     return (
         <div className={`sidebar ${open ? "open" : ""} z-40`}>

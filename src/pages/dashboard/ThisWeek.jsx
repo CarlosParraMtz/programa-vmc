@@ -1,12 +1,12 @@
 import Tablero from "../../components/dashboard/Tablero"
-import { useRecoilValue } from "recoil"
-import atoms from "../../recoil/atoms"
+import { useAtomValue } from "jotai"
+import atoms from "../../jotai/atoms"
 import getLunesAnterior from '../../functions/getLunesAnterior'
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
 
 export default function ThisWeek() {
 
-	const reuniones = useRecoilValue(atoms.reuniones)
+	const reuniones = useAtomValue(atoms.reuniones)
 	const lunes = getLunesAnterior(new Date())
 	const estaSemana = reuniones.find(reunion => reunion.fecha == lunes)
 	return (

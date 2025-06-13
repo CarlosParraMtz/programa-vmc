@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Modal from "../../components/common/Modal"
-import atoms from "../../recoil/atoms"
-import { useRecoilValue } from "recoil"
+import atoms from "../../jotai/atoms"
+import { useAtomValue } from "jotai"
 import Input from "../../components/common/Input"
 import getDiaHoy from '../../functions/getDiaHoy'
 import { AnimatePresence, motion } from "framer-motion"
@@ -16,9 +16,9 @@ import useModal from '../../hooks/useModal'
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
 
 export default function Meetings() {
-  const periodo = useRecoilValue(atoms.periodo)
-  const congregacion = useRecoilValue(atoms.congregacion)
-  const reuniones = useRecoilValue(atoms.reuniones)
+  const periodo = useAtomValue(atoms.periodo)
+  const congregacion = useAtomValue(atoms.congregacion)
+  const reuniones = useAtomValue(atoms.reuniones)
   const [reunionesFilter, setReunionesFilter] = useState([])
   const [seleccion, setSeleccion] = useState(null)
   const [modalAgregarReunion, setModalAgregarReunion] = useState(false)

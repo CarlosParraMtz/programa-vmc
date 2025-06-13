@@ -3,8 +3,8 @@ import Tooltip from '../../components/common/Tooltip';
 import { useState } from 'react';
 import Input from '../../components/common/Input'
 import periodosController from '../../firebase/controllers/periodos.controller';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import atoms from '../../recoil/atoms';
+import { useAtomValue, useSetAtom } from 'jotai';
+import atoms from '../../jotai/atoms';
 import toast from '../../functions/toast';
 import { LoaderIcon } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -12,10 +12,10 @@ import { Link } from 'react-router-dom';
 export default function Programs() {
 
 	// Store
-	const congregacion = useRecoilValue(atoms.congregacion)
-	const programas = useRecoilValue(atoms.programas)
-	const setPeriodo = useSetRecoilState(atoms.periodo)
-	const reuniones = useRecoilValue(atoms.reuniones)
+	const congregacion = useAtomValue(atoms.congregacion)
+	const programas = useAtomValue(atoms.programas)
+	const setPeriodo = useSetAtom(atoms.periodo)
+	const reuniones = useAtomValue(atoms.reuniones)
 
 	//States
 	const [selected, setSelected] = useState(null)

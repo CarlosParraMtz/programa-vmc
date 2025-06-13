@@ -1,8 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;0,800;1,500&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --program-treasures: #3c7f8b;
+  --program-teachers: #d68f00;
+  --program-life: #bf2f13;
+  --primary: #965ff1;
+  --secondary: #ff5a89;
+}
+*::selection {
+  background-color: var(--primary);
+}
 /* //* sombra 3d: inset 1px 1px 2px rgba(255,255,255,.7), inset -1px -1px 2px rgba(0,0,0,.1), 1px 1px 3px rgba(0,0,0,.1) */
 :root {
   font-family: Montserrat, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -19,6 +28,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --color_main: #965ff1;
+  --color_sec: #ff5a89;
+  --color_dark: #535459;
+  --color_gray: #f3f2f7;
+  --color_white: #f6faff;
+  --color_bg: #e7e9f6;
+
+  --sidebar-width-closed: 80px;
+  --sidebar-width-open: 300px;
+
+  --shadow-card: 1px 1px 5px #00000020;
+
+  --header-height: 80px;
+
 }
 
 .flex-centered {
@@ -40,18 +64,21 @@ body {
   max-width: 100vw;
   margin: 0;
 }
+
 .dashboard_content {
   width: calc(100vw - 80px);
   margin-left: auto;
   transition: 500ms all;
   position: relative;
 }
+
 @media (max-width: 767px) {
   .dashboard_content {
     width: 100vw;
     margin-left: 0;
   }
 }
+
 .dashboard_content .header {
   position: sticky;
   background-color: #e7e9f6;
@@ -60,23 +87,28 @@ body {
   width: calc(100vw - 80px);
   transition: all 500ms ease;
 }
+
 @media (max-width: 767px) {
   .dashboard_content .header {
     width: 100vw;
   }
 }
+
 .dashboard_content.open {
   width: calc(100vw - 300px);
   transition: 500ms all;
 }
+
 @media (max-width: 767px) {
   .dashboard_content.open {
     width: 100vw;
   }
 }
+
 .dashboard_content.open .header {
   width: calc(100vw - 300px);
 }
+
 @media (max-width: 767px) {
   .dashboard_content.open .header {
     width: 100vw;
@@ -90,6 +122,7 @@ body {
   width: 100%;
   padding: 20px;
 }
+
 .card_title {
   display: flex;
   justify-content: space-between;
@@ -109,15 +142,18 @@ body {
   justify-content: center;
   transition: all 200ms;
 }
+
 .icon-button.xl {
   width: 64px;
   height: 64px;
   font-size: 2rem;
 }
+
 .icon-button:hover {
   background-color: #965ff1;
   color: #f6faff;
 }
+
 .icon-button:active {
   filter: brightness(90%);
   box-shadow: inset -1px -1px 2px rgba(255, 255, 255, 0.7), inset 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
@@ -134,17 +170,21 @@ body {
   justify-content: center;
   transition: all 200ms;
 }
+
 .btn.main {
   background-color: #965ff1;
   color: #f6faff;
 }
+
 .btn.error {
   background-color: #ff5a89;
   color: #f6faff;
 }
+
 .btn:hover {
   filter: brightness(1.1);
 }
+
 .btn:active {
   filter: brightness(90%);
   box-shadow: inset -1px -1px 2px rgba(255, 255, 255, 0.7), inset 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
@@ -161,6 +201,7 @@ body {
 .tooltip {
   position: relative;
 }
+
 .tooltip .tooltip-text {
   visibility: hidden;
   width: -moz-fit-content;
@@ -180,6 +221,7 @@ body {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
@@ -189,10 +231,12 @@ body {
   width: 100%;
   position: relative;
 }
+
 .input-component:focus {
   outline: #965ff1;
   border: solid 2px #965ff1;
 }
+
 .input-component input {
   padding: 10px;
   width: 100%;
@@ -200,14 +244,17 @@ body {
   border-radius: 5px;
   background-color: white;
 }
+
 .input-component input:focus {
   border: none;
   outline: none;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2666666667);
 }
+
 .input-component.error-state input {
   border: solid 2px red;
 }
+
 .input-component.error-state small {
   color: red;
 }
@@ -224,11 +271,13 @@ body {
   left: 0;
   transition: all 500ms ease;
 }
+
 @media (max-width: 767px) {
   .sidebar {
     left: -100%;
   }
 }
+
 .sidebar .card {
   display: flex;
   flex-direction: column;
@@ -236,6 +285,7 @@ body {
   overflow: hidden;
   justify-content: space-between;
 }
+
 .sidebar button {
   margin: 10px auto;
   color: #535459;
@@ -244,10 +294,12 @@ body {
   border-radius: 5px;
   transition: all 250ms ease;
 }
+
 .sidebar button:hover {
   background-color: #965ff1;
   color: #f6faff;
 }
+
 .sidebar_nav {
   display: flex;
   flex-direction: column;
@@ -255,6 +307,7 @@ body {
   align-items: center;
   transition: all 250ms ease;
 }
+
 .sidebar_link {
   display: flex;
   align-items: center;
@@ -267,6 +320,7 @@ body {
   transition: all 250ms ease;
   overflow: hidden;
 }
+
 .sidebar_link-icon {
   display: flex;
   align-items: center;
@@ -274,6 +328,7 @@ body {
   width: 50px;
   height: 50px;
 }
+
 .sidebar_link-text {
   width: 0;
   overflow: hidden;
@@ -282,24 +337,30 @@ body {
   justify-content: center;
   transition: all 250ms ease;
 }
+
 .sidebar_link:hover {
   color: #965ff1;
 }
+
 .sidebar_link.active {
   background-color: #965ff1;
   color: #f6faff;
 }
+
 .sidebar_link i {
   font-size: 1.2rem;
 }
+
 .sidebar.open {
   max-width: 300px;
 }
+
 @media (max-width: 767px) {
   .sidebar.open {
     left: 0;
   }
 }
+
 .sidebar.open .sidebar_link-text {
   width: -moz-fit-content;
   width: fit-content;
@@ -314,6 +375,7 @@ body {
   align-items: center;
   box-shadow: 4px 4px 10px #eaeaea;
 }
+
 .header .card {
   display: flex;
   align-items: center;
@@ -322,11 +384,13 @@ body {
   padding: 5px 20px;
   justify-content: space-between;
 }
+
 .header_periodo {
   display: flex;
   gap: 10px;
   align-items: center;
 }
+
 .header_periodo select {
   text-align: center;
   width: 250px;
@@ -337,17 +401,22 @@ body {
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1254901961);
   cursor: pointer;
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
+
 .header_periodo select:hover {
   background-color: #965ff1;
   color: #f6faff;
 }
+
 .header_periodo select:focus {
   background-color: #f3f2f7;
   color: #535459;
 }
+
 .header_periodo select option {
   height: 100px;
-}/*# sourceMappingURL=styles.css.map */
+}
+
+/*# sourceMappingURL=styles.css.map */

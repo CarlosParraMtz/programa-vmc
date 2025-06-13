@@ -1,8 +1,8 @@
-import { useSetRecoilState } from "recoil";
-import { modal } from '../recoil/atoms';
+import { useSetAtom } from "jotai";
+import { modal } from '../jotai/atoms';
 
 export default function useModal() {
-  const setModal = useSetRecoilState(modal);
+  const setModal = useSetAtom(modal);
 
   const modalSuccess = (options) => {
     setModal({

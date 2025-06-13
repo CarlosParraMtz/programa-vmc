@@ -1,7 +1,7 @@
 // components/ModalAlert.jsx
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRecoilState } from 'recoil';
-import { modal as modalState } from '../recoil/atoms';
+import { useAtom } from 'jotai';
+import { modal as modalState } from '../jotai/atoms';
 import { LoaderIcon } from 'react-hot-toast';
 
 
@@ -24,7 +24,7 @@ const icons = {
 }
 
 export default function ModalAlert() {
-  const [modal, setModal] = useRecoilState(modalState);
+  const [modal, setModal] = useAtom(modalState);
 
   const closeModal = () => {
     setModal({ ...modal, isOpen: false });

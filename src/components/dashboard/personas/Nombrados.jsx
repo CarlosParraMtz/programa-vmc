@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Modal from '../../common/Modal'
 import NombradoCollapse from './NombradoCollapse'
-import atoms from '../../../recoil/atoms'
-import { useRecoilValue } from 'recoil'
+import atoms from '../../../jotai/atoms'
+import { useAtomValue } from 'jotai'
 import Input from '../../common/Input'
 import useModal from '../../../hooks/useModal'
 import Select from '../../common/Select'
@@ -11,8 +11,8 @@ import nombradosController from '../../../firebase/controllers/nombrados.control
 import {nombradoInicial} from '../../../constants/nombradoInicial'
 
 export default function Nombrados() {
-  const nombrados = useRecoilValue(atoms.nombrados)
-  const congregacion = useRecoilValue(atoms.congregacion)
+  const nombrados = useAtomValue(atoms.nombrados)
+  const congregacion = useAtomValue(atoms.congregacion)
   const [modalAgregar, setModalAgregar] = useState(false)
   const abrirModalAgregar = () => setModalAgregar(true)
   const cerrarModalAgregar = () => {

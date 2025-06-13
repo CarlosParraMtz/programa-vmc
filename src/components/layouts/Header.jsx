@@ -1,14 +1,14 @@
 import { useState } from "react"
-import { useRecoilState, useRecoilValue } from "recoil"
-import atoms from "../../recoil/atoms"
+import { useAtom, useAtomValue } from "jotai"
+import atoms from "../../jotai/atoms"
 import Modal from "../common/Modal"
 import IconButton from "../common/IconButton"
 import { Link } from "react-router-dom"
 export default function Header({ setOpen }) {
-    const congregacion = useRecoilValue(atoms.congregacion)
-    const user = useRecoilValue(atoms.user)
-    const programas = useRecoilValue(atoms.programas)
-    const [periodo, setPeriodo] = useRecoilState(atoms.periodo)
+    const congregacion = useAtomValue(atoms.congregacion)
+    const user = useAtomValue(atoms.user)
+    const programas = useAtomValue(atoms.programas)
+    const [periodo, setPeriodo] = useAtom(atoms.periodo)
 
     const [modalSetPeriodo, setModalSetPeriodo] = useState(false)
     const abrirModalPeriodo = () => setModalSetPeriodo(true)

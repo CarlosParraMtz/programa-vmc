@@ -14,7 +14,7 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
         initial={{ opacity: 0, }}
         animate={{ opacity: 1, }}
         exit={{ opacity: 0, }}
-        className="bg-gray-50 shadow border flex flex-col rounded-lg [&:not(:last-child)]:mb-1"
+        className="bg-gray-50 shadow border border-gray-50 flex flex-col rounded-lg [&:not(:last-child)]:mb-1"
       >
         <div className="flex justify-between items-center p-2 cursor-pointer hover:bg-purple-100"
           onClick={() => setOpen(!open)}
@@ -37,7 +37,7 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: open ? "auto" : 0, opacity: 1 }}
           className="flex flex-col w-full overflow-hidden">
-          <div className="p-5 border-t">
+          <div className="p-5 border-t border-gray-50">
             <div className="flex justify-between items-end mb-5 ">
               <p className="text-purple-500 text-xl" >
                 <strong>{nombramientos[nombrado.nombramiento]}</strong>
