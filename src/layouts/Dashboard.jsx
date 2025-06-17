@@ -82,11 +82,10 @@ export default function Dashboard() {
             return ({
               ...snap,
               id: doc.id,
-              fecha: new Date(snap.fecha.seconds * 1000),
               created: new Date(snap.created?.seconds * 1000 || snap.created),
             })
           })
-          setReuniones(data.sort((a, b) => a.fecha - b.fecha))
+          setReuniones(data.sort((a, b) => a.fecha.localeCompare(b.fecha)))
         })
     }
   }, [congregacion])

@@ -23,37 +23,43 @@ Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con est
         "duracion": "10"
       },
       {
-        "titulo": "Lectura de la Biblia", 
+        "titulo": "Lectura de la Biblia",
+        "descripcion" "Pr 17:1-17 (th lección 10)",
         "seccion": 1,
         "video": false,
         "duracion": "4"
       },
       {
-        "titulo": "Empiece conversaciones", 
+        "titulo": "Empiece conversaciones",
+        "descripcion":  "PREDICACIÓN INFORMAL. (lmd lección 3 punto 5)",
         "seccion": 2,
         "video": false,
         "duracion": "3"
       },
       {
         "titulo": "Empiece conversaciones", 
+        "descripcion": "PREDICACIÓN PÚBLICA. Ofrezca un curso de la Biblia (lmd lección 6 punto 4)",
         "seccion": 2,
         "video": false,
         "duracion": "4"
       },
       {
         "titulo": "Discurso", 
+        "descripcion": "ijwbv artículo 60. Título: ¿Qué significa Proverbios 17:17? (th lección 13)",
         "seccion": 2,
         "video": false,
         "duracion": "5"
       },
       {
         "titulo": "Cómo promover la buena comunicación", 
+        "descripcion": "Análisis con el auditorio",
         "seccion": 3,
         "video": true,
         "duracion": "15"
       },
       {
         "titulo": "Estudio bíblico de la congregación", 
+        "descripcion": "bt cap. 27 párrs. 19-22 y recuadro de la pág. 212",
         "seccion": 3,
         "video": false,
         "duracion": "30"
@@ -83,42 +89,49 @@ Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con est
       },
       {
         "titulo": "Lectura de la Biblia", 
+        "descripcion": "Pr 18:1-17 (th lección 11)",
         "seccion": 1,
         "video": false,
         "duracion": "4"
       },
       {
         "titulo": "Empiece conversaciones", 
+        "descripcion": "DE CASA EN CASA. La persona habla otro idioma (lmd lección 2 punto 5)",
         "seccion": 2,
         "video": false,
         "duracion": "1"
       },
       {
         "titulo": "Haga revisitas", 
+        "descripcion": "PREDICACIÓN PÚBLICA. La persona le pide que sea breve (lmd lección 7 punto 4)",
         "seccion": 2,
         "video": false,
         "duracion": "3"
       },
       {
         "titulo": "Haga revisitas", 
+        "descripcion": "PREDICACIÓN INFORMAL. Enséñele a la persona algo sobre el Reino de Dios (lmd lección 9 punto 5)",
         "seccion": 2,
         "video": false,
         "duracion": "3"
       },
       {
         "titulo": "Explique sus creencias", 
+        "descripcion": "Escenificación. ijwfq artículo 29. Tema: ¿Son creacionistas los testigos de Jehová? (lmd lección 5 punto 5)",
         "seccion": 2,
         "video": false,
         "duracion": "4"
       },
       {
         "titulo": "Ayudemos “sin una palabra” a nuestros seres queridos a acercarse a Jehová", 
+        "descripcion": "Análisis con el auditorio",
         "seccion": 3,
         "video": true,
         "duracion": "15"
       },
       {
         "titulo": "Estudio bíblico de la congregación", 
+        "descripcion": "bt cap. 27 párrs. 23-26 y recuadros de las págs. 214, 217",
         "seccion": 3,
         "video": false,
         "duracion": "30"
@@ -127,6 +140,6 @@ Tengo el pdf que te estoy adjuntando, y necesito un objeto json grandote con est
   }
 ]
 
-Basado en la información contenida en el pdf. Quiero todas las reuniones que haya en el documento convertidas a este formato. Fíjate bien que las canciones siempre son 3, invariablemente. Checa qué asignaciones llevan un video para ponerlo en su respectiva clave. Siempre son de 8 a 9 asignaciones en cada reunión. La duración va en forma de un string. La fecha va en formato yyyy-mm-dd. La sección de la asignación es 1 si está dentro de Tesoros de la Biblia, 2 para Seamos mejores maestros y 3 para nuestra vida cristiana. Como puedes ver, la raíz es un array de objetos, donde cada objeto es una reunión diferente. También es importante respetar el formato de la fecha, que es yyyy-mm-dd.  
+Basado en la información contenida en el pdf. Quiero todas las reuniones que haya en el documento convertidas a este formato. Fíjate bien que las canciones siempre son 3, invariablemente. Checa qué asignaciones llevan un video para ponerlo en su respectiva clave. Siempre son de 8 a 9 asignaciones en cada reunión. La duración va en forma de un string. La fecha va en formato yyyy-mm-dd. La sección de la asignación es 1 si está dentro de Tesoros de la Biblia, 2 para Seamos mejores maestros y 3 para nuestra vida cristiana. Como puedes ver, la raíz es un array de objetos, donde cada objeto es una reunión diferente. También es importante respetar el formato de la fecha, que es yyyy-mm-dd. No todas las asignaciones llevan descripción, por ejemplo las primeras 2 solo llevan el título y la duración.
 Quiero todas las reuniones en solo un objeto json. Puedes entregarmelo como un archivo, o escribirlo aquí, pero tiene que ser en un solo objeto JSON.
 De antemano te lo agradezco mucho.

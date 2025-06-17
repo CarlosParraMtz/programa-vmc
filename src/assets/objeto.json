@@ -2,232 +2,952 @@
   {
     "fecha": "2025-05-05",
     "estudio": "Proverbios 12",
-    "canciones": [101, 57, 0],
+    "canciones": [101, 21, 57],
     "asignaciones": [
-      {"titulo": "El trabajo duro tiene su recompensa", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Afronte los problemas económicos con la ayuda de Jehová", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "El trabajo duro tiene su recompensa",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 12:1-20 (th lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. (lmd lección 1 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Ofrezca un curso de la Biblia (lmd lección 5 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. Muéstrele a alguien que tiene hijos nuestro sitio web (lmd lección 9 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Explique sus creencias",
+        "descripcion": "Especificación. jiwfa artículo 3. Tema: ¿Creen ustedes que su religión es la única verdadera? (lmd lección 4 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Afronte los problemas económicos con la ayuda de Jehová",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bí cap. 26 párs. 1-8 y recuadros de las págs. 204, 208",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-05-12",
     "estudio": "Proverbios 13",
-    "canciones": [34, 43, 0],
+    "canciones": [34, 77, 43],
     "asignaciones": [
-      {"titulo": "Que 'la lámpara de los malvados' no lo deslumbre", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "'La luz de los justos brilla intensamente'", "seccion": 3, "video": true, "duracion": "8"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "7"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Que 'la lámpara de los malvados' no lo deslumbre",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 13:1-17 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Empiece hablando de un tema de actualidad, pero luego muéstrele a la persona lo que dice la Biblia sobre un tema que a ella le interese más (lmd lección 2 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Invite a la persona a una reunión (lmd lección 2 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "lmd apéndice A punto 9. Título: A los hijos que respetan y obedecen a sus padres les irá bien (th lección 16)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "'La luz de los justos brilla intensamente'",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "8"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "7"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 26 párs. 9-17",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-05-19",
     "estudio": "Proverbios 14",
-    "canciones": [89, 116, 0],
+    "canciones": [89, 126, 116],
     "asignaciones": [
-      {"titulo": "Ante una situación de emergencia, mida bien sus pasos", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Este preparado para una situación de emergencia", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Ante una situación de emergencia, mida bien sus pasos",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 14:1-21 (th lección 11)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Muéstrele lo que dice la Biblia a una persona que está preocupada por la situación económica (lmd lección 3 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. En una visita anterior, la persona mostró interés sobre un tema. Ofrézcale una revista que hable de ese tema (lmd lección 9 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "Anime a su estudiante a leer la Biblia todos los días y muéstrele cómo conseguirlo (th lección 19)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Este preparado para una situación de emergencia",
+        "descripcion": "Análisis con el auditorio a cargo de un anciano. Si hay alguna sugerencia de la sucursal o del cuerpo de ancianos, menciónela.",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 26 párs. 18-22 y recuadro de la pág. 209",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-05-26",
     "estudio": "Proverbios 15",
-    "canciones": [102, 100, 0],
+    "canciones": [102, 155, 100],
     "asignaciones": [
-      {"titulo": "Ayude a los demás a tener un corazón alegre", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Podemos tener un corazón alegre a pesar de las pruebas", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Ayude a los demás a tener un corazón alegre",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 15:1-21 (th lección 2)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. (lmd lección 1 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Ofrezca un curso bíblico (lmd lección 2 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "Anime a un estudiante de la Biblia que está afrontando oposición de la familia (th lección 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Podemos tener un corazón alegre a pesar de las pruebas",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 27 párrs. 1-9",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-06-02",
     "estudio": "Proverbios 16",
-    "canciones": [36, 68, 0],
+    "canciones": [36, 32, 68],
     "asignaciones": [
-      {"titulo": "Tres preguntas que lo ayudarán a tomar buenas decisiones", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Tres preguntas que lo ayudarán a tomar buenas decisiones",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 16:1-20 (th lección 12)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Muéstrele a una persona cómo puede ayudarla jw.org (lmd lección 2 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. Ofrézcale un curso de la Biblia a una persona que no quiso estudiar con los Testigos en el pasado (lmd lección 9 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "jjwbv artículo 40. Título: ¿Qué significa Proverbios 16:3? (th lección 8)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 27 párrs. 10-18",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-06-09",
     "estudio": "Proverbios 17",
-    "canciones": [157, 113, 0],
+    "canciones": [157, 113, 35],
     "asignaciones": [
-      {"titulo": "Cómo tener paz en su matrimonio", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Cómo promover la buena comunicación", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Cómo tener paz en su matrimonio",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 17:1-17 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. (lmd lección 3 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Ofrezca un curso de la Biblia (lmd lección 6 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "jjwbv artículo 60. Título: ¿Qué significa Proverbios 17:17? (th lección 13)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Cómo promover la buena comunicación",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 27 párrs. 19-22 y recuadro de la pág. 212",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-06-16",
     "estudio": "Proverbios 18",
-    "canciones": [90, 144, 0],
+    "canciones": [90, 144, 60],
     "asignaciones": [
-      {"titulo": "Anime con sus palabras a quienes tienen problemas de salud", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "1"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Ayudemos 'sin una palabra' a nuestros seres queridos a acercarse a Jehová", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Anime con sus palabras a quienes tienen problemas de salud",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 18:1-17 (th lección 11)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. La persona habla otro idioma (lmd lección 2 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "1"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN PÚBLICA. La persona le pide que sea breve (lmd lección 7 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. Enséñele a la persona algo sobre el Reino de Dios (lmd lección 9 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Explique sus creencias",
+        "descripcion": "Escenificación. jiwfq artículo 29. Tema: ¿Son creacionistas los testigos de Jehová? (lmd lección 5 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Ayudemos 'sin una palabra' a nuestros seres queridos a acercarse a Jehová",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 27 párrs. 23-26 y recuadros de las págs. 214, 217",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-06-23",
     "estudio": "Proverbios 19",
-    "canciones": [154, 61, 0],
+    "canciones": [154, 40, 61],
     "asignaciones": [
-      {"titulo": "Sea un auténtico amigo para los hermanos", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Sea un auténtico amigo para los hermanos",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 19:1-20 (th lección 2)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Sin ponerse a hablar de la Biblia, busque una manera natural de hacerle saber a la persona que usted es testigo de Jehová (lmd lección 2 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. En una conversación anterior la persona le dijo que le gusta la naturaleza (lmd lección 9 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "lmd apéndice A punto 10. Título: Dios tiene un nombre (th lección 20)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 28 párrs. 1-7",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-06-30",
     "estudio": "Proverbios 20",
-    "canciones": [131, 150, 0],
+    "canciones": [131, 78, 150],
     "asignaciones": [
-      {"titulo": "Claves para que el noviazgo cumpla su objetivo", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Anime a la gente a probar nuestro curso de la Biblia", "seccion": 3, "video": false, "duracion": "5"},
-      {"titulo": "Logros de la organización para el mes de junio", "seccion": 3, "video": true, "duracion": "10"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Claves para que el noviazgo cumpla su objetivo",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 20:1-15 (fr h lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. La persona le dice que acaba de mudarse al país (lmd lección 3 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN PÚBLICA. Háblele a la persona de la aplicación JW Library® y muéstrele cómo instalarla en un dispositivo electrónico (lmd lección 9 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Explique sus creencias",
+        "descripcion": "Escenificación. jjwbg artículo 159. Tema: ¿Van al cielo los animales? (lmd lección 3 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Anime a la gente a probar nuestro curso de la Biblia",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Logros de la organización para el mes de junio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 28 párrs. 8-15",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-07-07",
     "estudio": "Proverbios 21",
-    "canciones": [98, 72, 0],
+    "canciones": [98, 35, 72],
     "asignaciones": [
-      {"titulo": "Sabios consejos para un matrimonio feliz", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Que haya respeto en su matrimonio", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Sabios consejos para un matrimonio feliz",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 21:1-18 (th lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. (lmd lección 3 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. (lmd lección 7 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Explique sus creencias",
+        "descripcion": "Escenificación. jiwfq artículo 54. Tema: ¿Qué piensan los testigos de Jehová del divorcio? (lmd lección 4 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Que haya respeto en su matrimonio",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "bt cap. 28 párs. 16-22",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-07-14",
     "estudio": "Proverbios 22",
-    "canciones": [79, 6, 0],
+    "canciones": [79, 123, 6],
     "asignaciones": [
-      {"titulo": "Sabios consejos para criar a los hijos", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Sean pacientes, pero no permisivos", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Sabios consejos para criar a los hijos",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 22:1-19 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. (lmd lección 5 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Muéstrele a la persona cómo buscar en jw.org información útil para los padres (lmd lección 1 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "jjwyp artículo 100. Título: Me salté las reglas... ¿Y ahora qué? (th lección 20)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Sean pacientes, pero no permisivos",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb 'Carta del Cuerpo Gobernante', introducción a la sección 1 y lección 1",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-07-21",
     "estudio": "Proverbios 23",
-    "canciones": [97, 40, 0],
+    "canciones": [97, 40, 112],
     "asignaciones": [
-      {"titulo": "Sabios consejos sobre las bebidas alcohólicas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "¿Estará bien que sirva alcohol?", "seccion": 3, "video": true, "duracion": "8"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "7"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Sabios consejos sobre las bebidas alcohólicas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 23:1-24 (th lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. (lmd lección 3 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. Muestre cómo son nuestras clases de la Biblia (lmd lección 9 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "Anime a un estudiante que está luchando para vencer un hábito que Jehová odia (lmd lección 12 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "¿Estará bien que sirva alcohol?",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "8"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "7"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lección 2, introducción a la sección 2 y lección 3",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-07-28",
     "estudio": "Proverbios 24",
-    "canciones": [38, 112, 0],
+    "canciones": [38, 150, 89],
     "asignaciones": [
-      {"titulo": "Fortalézcase ahora para las situaciones difíciles", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Ayudémonos unos a otros en los momentos difíciles", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Fortalézcase ahora para las situaciones difíciles",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 24:1-20 (th lección 11)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. La conversación termina antes de que usted pueda hablar de la Biblia (lmd lección 2 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. (lmd lección 3 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Háblele a la persona sobre nuestros cursos bíblicos y entréguele una tarjeta de contacto de nuestras clases de la Biblia (lmd lección 4 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "lmd apéndice A punto 11. Título: Dios tiene un mensaje importante para nosotros (th lección 6)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Ayudémonos unos a otros en los momentos difíciles",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 4, 5",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-08-04",
     "estudio": "Proverbios 25",
-    "canciones": [154, 150, 0],
+    "canciones": [154, 123, 150],
     "asignaciones": [
-      {"titulo": "Sabios consejos para mejorar nuestra forma de hablar", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Sabios consejos para mejorar nuestra forma de hablar",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 25:1-17 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Empiece una conversación con alguien que parece estar triste (lmd lección 3 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. La persona le dice que está muy contenta con su religión y que no piensa cambiar (lmd lección 8 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "jjwyp artículo 23. Título: ¿Por qué tienen que andar hablando de mí? (th lección 13)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lección 6, introducción a la sección 3 y lección 7",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-08-11",
     "estudio": "Proverbios 26",
-    "canciones": [88, 89, 0],
+    "canciones": [88, 94, 89],
     "asignaciones": [
-      {"titulo": "Apartémonos de los insensatos", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "El estudio personal puede darle 'la sabiduría necesaria para la salvación'", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Apartémonos de los insensatos",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 26:1-20 (th lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Use un tratado para empezar una conversación (lmd lección 1 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. En una visita anterior, la persona aceptó un tratado. Continúe la conversación (lmd lección 7 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "Ayude a su estudiante a prepararse para predicarle a un familiar (lmd lección 11 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "El estudio personal puede darle 'la sabiduría necesaria para la salvación'",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 8, 9",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
@@ -235,14 +955,60 @@
     "estudio": "Proverbios 27",
     "canciones": [102, 118, 0],
     "asignaciones": [
-      {"titulo": "Cómo nos beneficia tener amigos verdaderos", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "'Un hermano en tiempos de angustia'", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Cómo nos beneficia tener amigos verdaderos",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 27:1-17 (th lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. La persona pertenece a una religión que no es cristiana (lmd lección 6 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. Presente y analice un video del kit de enseñanza, pero no lo ponga (lmd lección 8 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "jiwyp artículo 75. Título: ¿Qué hago si un amigo me ofende? (th lección 14)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "'Un hermano en tiempos de angustia'",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 10, 11",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
@@ -250,47 +1016,201 @@
     "estudio": "Proverbios 28",
     "canciones": [150, 113, 0],
     "asignaciones": [
-      {"titulo": "Diferencias entre el justo y el malvado", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "¿Odia usted la violencia?", "seccion": 3, "video": false, "duracion": "6"},
-      {"titulo": "Campaña especial en septiembre", "seccion": 3, "video": true, "duracion": "9"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Diferencias entre el justo y el malvado",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 28:1-17 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Hable del fin de la guerra y la violencia (lmd lección 5 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Hable del fin de la guerra y la violencia (lmd lección 5 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Hable del fin de la guerra y la violencia (lmd lección 1 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Hable del fin de la guerra y la violencia (lmd lección 2 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "¿Odia usted la violencia?",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": false,
+        "duracion": "6"
+      },
+      {
+        "titulo": "Campaña especial en septiembre",
+        "descripcion": "Discurso a cargo del superintendente de servicio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "9"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 12, 13",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-09-01",
     "estudio": "Proverbios 29",
-    "canciones": [28, 31, 0],
+    "canciones": [28, 159, 31],
     "asignaciones": [
-      {"titulo": "Rechace las costumbres y tradiciones antibíblicas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Rechace las costumbres y tradiciones antibíblicas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 29:1-18 (th lección 5)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Invite a la persona al próximo discurso especial (lmd lección 2 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Empiece una conversación con La Atalaya número 1 del 2025. Luego, cuando la persona le expresa su interés en otro tema, háblele de lo que le interesa a ella (lmd lección 3 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Ofrézcale La Atalaya número 1 del 2025 a una persona que está preocupada por las guerras (lmd lección 3 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb introducción a la sección 4 y lecciones 14, 15",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-09-08",
     "estudio": "Proverbios 30",
-    "canciones": [136, 128, 0],
+    "canciones": [136, 80, 128],
     "asignaciones": [
-      {"titulo": "'No me des ni pobreza ni riqueza'", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "No se deje engañar por la paz de imitación: Chibisa Selemani", "seccion": 3, "video": true, "duracion": "5"},
-      {"titulo": "Logros de la organización para el mes de septiembre", "seccion": 3, "video": true, "duracion": "10"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "'No me des ni pobreza ni riqueza'",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 30:1-14 (th lección 2)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Empiece una conversación con La Atalaya número 1 del 2025 (lmd lección 1 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN PÚBLICA. (lmd lección 9 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Explique sus creencias",
+        "descripcion": "Discurso. jiwbq artículo 102. Título: ¿Son pecado los juegos de azar? (th lección 7)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "No se deje engañar por la paz de imitación: Chibisa Selemani",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Logros de la organización para el mes de septiembre",
+        "seccion": 3,
+        "video": true,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 16, 17",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
@@ -298,31 +1218,134 @@
     "estudio": "Proverbios 31",
     "canciones": [135, 2, 0],
     "asignaciones": [
-      {"titulo": "Lo que aprendemos de los consejos de una madre", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Ayude a sus hijos a usar bien los dispositivos electrónicos", "seccion": 3, "video": true, "duracion": "8"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "7"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Lo que aprendemos de los consejos de una madre",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Pr 31:10-31 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Empiece una conversación después de que alguien haga o diga algo amable (lmd lección 5 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Use una de las 'Verdades bíblicas que nos encanta enseñar', del apéndice A del folleto Una obra de amor (lmd lección 1 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. Invite al próximo discurso especial a una persona que aceptó un ejemplar de La Atalaya número 1 del 2025 (lmd lección 7 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Ayude a sus hijos a usar bien los dispositivos electrónicos",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "8"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "7"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 18, 19",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-09-22",
     "estudio": "Eclesiastés 1, 2",
-    "canciones": [103, 148, 0],
+    "canciones": [103, 84, 148],
     "asignaciones": [
-      {"titulo": "Sigamos entrenando a las siguientes generaciones", "seccion": 1, "video": true, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Tres lecciones importantes sobre la capacitación", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Sigamos entrenando a las siguientes generaciones",
+        "seccion": 1,
+        "video": true,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Ec 1:1-18 (th lección 11)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Averigüe qué temas le interesan a la persona y póngase de acuerdo con ella para volver a hablar en otra ocasión (lmd lección 3 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Use una de las 'Verdades bíblicas que nos encanta enseñar' siguiendo el método que se describe en el apéndice A del folleto Una obra de amor (lmd lección 2 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. Responda a una pregunta que la persona le hizo en la conversación anterior (lmd lección 9 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "PREDICACIÓN PÚBLICA. Muéstrele a la persona cómo son nuestras clases bíblicas y hagan planes para seguir estudiando (lmd lección 10 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Tres lecciones importantes sobre la capacitación",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 20, 21",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
@@ -330,14 +1353,60 @@
     "estudio": "Eclesiastés 3, 4",
     "canciones": [93, 51, 0],
     "asignaciones": [
-      {"titulo": "Fortalezcan su cuerda triple", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Cuando tengan problemas en su matrimonio, no aparten a Jehová de su vida", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Fortalezcan su cuerda triple",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Ec 4:1-16 (th lección 2)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. Empiece una conversación con La Atalaya número 1 del 2025. Luego, cuando la persona le expresa su interés en otro tema, háblele de lo que le interesa a ella (lmd lección 2 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. Ofrézcale un curso de la Biblia a una persona que aceptó un ejemplar de La Atalaya número 1 del 2025 (lmd lección 9 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "lmd apéndice A punto 12. Título: Dios es justo y no tiene prejuicios (th lección 19)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Cuando tengan problemas en su matrimonio, no aparten a Jehová de su vida",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lección 22, introducción a la sección 5 y lección 23",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
@@ -345,31 +1414,135 @@
     "estudio": "Eclesiastés 5, 6",
     "canciones": [42, 34, 0],
     "asignaciones": [
-      {"titulo": "Adoramos a nuestro gran Dios con profunda reverencia", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "1"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "¿Está usando el apéndice A, 'Verdades bíblicas que nos encanta enseñar'?", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Adoramos a nuestro gran Dios con profunda reverencia",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Ec 5:1-17 (th lección 12)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "DE CASA EN CASA. La persona quiere discutir (lmd lección 4 punto 5)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "1"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Use una de las 'Verdades bíblicas que nos encanta enseñar', del apéndice A del folleto Una obra de amor (lmd lección 1 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. Presente y analice un vídeo del kit de enseñanza, pero no lo ponga (lmd lección 7 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "Iff lección 17 introducción y puntos 1-3 (lmd lección 11 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "¿Está usando el apéndice A, 'Verdades bíblicas que nos encanta enseñar'?",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 24, 25",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-10-13",
     "estudio": "Eclesiastés 7, 8",
-    "canciones": [39, 124, 0],
+    "canciones": [39, 151, 124],
     "asignaciones": [
-      {"titulo": "Vayamos 'a la casa donde hay duelo'", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "2"},
-      {"titulo": "Explique sus creencias", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Fortalezca su fe en la resurrección", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Vayamos 'a la casa donde hay duelo'",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Ec 8:1-13 (th lección 10)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Averigüe qué temas le interesan a la persona y póngase de acuerdo con ella para volver a hablar en otra ocasión (lmd lección 2 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. (lmd lección 2 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. Muéstrele a la persona nuestro sitio de internet, jw.org (lmd lección 9 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "2"
+      },
+      {
+        "titulo": "Explique sus creencias",
+        "descripcion": "Especificación. jjwfg artículo 50. Tema: ¿Cómo son los funerales de los testigos de Jehová? (th lección 17)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Fortalezca su fe en la resurrección",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 26, 27",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
@@ -377,30 +1550,120 @@
     "estudio": "Eclesiastés 9, 10",
     "canciones": [30, 28, 0],
     "asignaciones": [
-      {"titulo": "Tengamos un punto de vista equilibrado de nuestros problemas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Empiece conversaciones", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Haga discípulos", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Jehová nos da estabilidad en los momentos difíciles", "seccion": 3, "video": true, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Tengamos un punto de vista equilibrado de nuestros problemas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Ec 10:1-20 (th lección 11)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN PÚBLICA. Empiece una conversación con alguien que parece estar triste (lmd lección 3 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Empiece conversaciones",
+        "descripcion": "PREDICACIÓN INFORMAL. Use una de las 'Verdades bíblicas que nos encanta enseñar', del apéndice A del folleto Una obra de amor, para hablar con una persona que está preocupada por la situación económica (lmd lección 4 punto 4)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga discípulos",
+        "descripcion": "Iff lección 17 resumen, repaso y 'Propóngase esto' (lmd lección 12 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Jehová nos da estabilidad en los momentos difíciles",
+        "descripcion": "Análisis con el auditorio",
+        "seccion": 3,
+        "video": true,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lección 28, introducción a la sección 6 y lección 29",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   },
   {
     "fecha": "2025-10-27",
     "estudio": "Eclesiastés 11, 12",
-    "canciones": [155, 8, 0],
+    "canciones": [155, 111, 8],
     "asignaciones": [
-      {"titulo": "Disfrute de una vida feliz y saludable", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Busquemos perlas escondidas", "seccion": 1, "video": false, "duracion": "10"},
-      {"titulo": "Lectura de la Biblia", "seccion": 1, "video": false, "duracion": "4"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "3"},
-      {"titulo": "Haga revisitas", "seccion": 2, "video": false, "duracion": "4"},
-      {"titulo": "Discurso", "seccion": 2, "video": false, "duracion": "5"},
-      {"titulo": "Necesidades de la congregación", "seccion": 3, "video": false, "duracion": "15"},
-      {"titulo": "Estudio bíblico de la congregación", "seccion": 3, "video": false, "duracion": "30"}
+      {
+        "titulo": "Disfrute de una vida feliz y saludable",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Busquemos perlas escondidas",
+        "seccion": 1,
+        "video": false,
+        "duracion": "10"
+      },
+      {
+        "titulo": "Lectura de la Biblia",
+        "descripcion": "Ec 12:1-14 (th lección 12)",
+        "seccion": 1,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "DE CASA EN CASA. (lmd lección 8 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "3"
+      },
+      {
+        "titulo": "Haga revisitas",
+        "descripcion": "PREDICACIÓN INFORMAL. La vez pasada la persona le contó que hacía poco se le había muerto un ser querido (lmd lección 9 punto 3)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "4"
+      },
+      {
+        "titulo": "Discurso",
+        "descripcion": "lmd apéndice A punto 13. Título: Dios quiere ayudarnos. (th lección 20)",
+        "seccion": 2,
+        "video": false,
+        "duracion": "5"
+      },
+      {
+        "titulo": "Necesidades de la congregación",
+        "seccion": 3,
+        "video": false,
+        "duracion": "15"
+      },
+      {
+        "titulo": "Estudio bíblico de la congregación",
+        "descripcion": "Ifb lecciones 30, 31",
+        "seccion": 3,
+        "video": false,
+        "duracion": "30"
+      }
     ]
   }
-
 ]

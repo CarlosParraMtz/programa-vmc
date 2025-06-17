@@ -1,5 +1,4 @@
-export default function obtenerDiaDeHoy() {
-  var fecha = new Date();
+export default function obtenerDiaDeHoy(fecha) {
   const dia = fecha.getDate();
   const mes = fecha.getMonth();
   const ano = fecha.getFullYear();

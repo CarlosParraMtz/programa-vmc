@@ -25,6 +25,7 @@ export default function CargaReuniones() {
       const parsed = JSON.parse(jsonInput);
       setReuniones(parsed);
     } catch (error) {
+      console.error("Error al parsear el JSON:", error);
       alert("El JSON no es válido");
     }
   };
@@ -44,7 +45,7 @@ export default function CargaReuniones() {
     setLoading(true)
     try {
       await reuniones.forEach(async reunion => {
-        await datareunionesController.createDataReunion({ ...reunion, fecha: new Date(reunion.fecha) })
+        await datareunionesController.createDataReunion({ ...reunion })
       })
       handleClear()
       setModalGuardar(false)

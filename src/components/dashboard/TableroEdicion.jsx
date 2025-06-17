@@ -8,6 +8,7 @@ import CrudNombrados from "./CrudNombrados";
 import CrudMatriculados from "./CrudMatriculados";
 
 export default function TableroEdicion({ useReunion }) {
+  if (import.meta.env.NODE_ENV !== 'uip') console.log(motion);
   const [reunion, setReunion] = useReunion;
   const [modalSelectCancion, setModalSelectCancion] = useState(null)
   const [modalPersonas, setModalPersonas] = useState(null)
@@ -89,6 +90,20 @@ export default function TableroEdicion({ useReunion }) {
             value={reunion.asignaciones[index].titulo}
             onChange={e => handleChange(index, "titulo", e.target.value)}
           />
+          <label htmlFor={`descripcion-input-${index}`} className="mb-0 text-sm font-medium text-gray-900">
+            Fuente de información / Tipo
+          </label>
+          <textarea
+            id={`descripcion-input-${index}`}
+            value={reunion.asignaciones[index].descripcion || ""}
+            onChange={e => handleChange(index, "descripcion", e.target.value)}
+            placeholder="Descripción de la asignación"
+            className={`
+              resize-none rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 
+              text-sm focus:ring-purple-500 focus:outline-purple-500 caret-purple-300 
+              w-full p-2.5 -mt-2
+            `}
+          ></textarea>
           <div className="flex gap-2" >
             <div className="flex w-1/4 items-center" >
               <div className="w-1/3">

@@ -3,11 +3,11 @@
 @import "tailwindcss";
 
 @theme {
-  --program-treasures: #3c7f8b;
-  --program-teachers: #d68f00;
-  --program-life: #bf2f13;
-  --primary: #965ff1;
-  --secondary: #ff5a89;
+  --color-program-treasures: #3c7f8b;
+  --color-program-teachers: #d68f00;
+  --color-program-life: #bf2f13;
+  --color-primary: #965ff1;
+  --color-secondary: #ff5a89;
 }
 *::selection {
   background-color: var(--primary);

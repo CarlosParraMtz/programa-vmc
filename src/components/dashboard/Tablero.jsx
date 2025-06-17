@@ -6,13 +6,13 @@ export default function Tablero({ programa }) {
         return <div className={`flex flex-col px-5 py-2 ${bg}  divide-slate-700`} >
             <div className="flex justify-between items-center">
                 {(cancion2 || cancion1) &&
-                    <p className="font-bold text-md pb-1" >
+                    <p className="font-bold text-xs pb-1" >
                         Canción {cancion1} {cancion2} {cancion1 && "y oración"}
                     </p>
                 }
                 {
                     presidente && <div className="flex flex-col" >
-                        <p><strong className="mr-5" >Presidente:</strong>
+                        <p className="text-xs"><strong className="mr-5" >Presidente:</strong>
                             {(!programa.presidente || (programa.presidente && programa.presidente === ""))
                                 ? "No asignado"
                                 : programa.presidente
@@ -29,11 +29,17 @@ export default function Tablero({ programa }) {
                             <div key={index} className="
                                 flex w-full justify-between py-1 
                             " >
-                                <p className="text-xs lg:text-base">
-                                    <strong> {index + 1}. {i.titulo} </strong> ({i.duracion} mins.)
-                                    {i.video && <i className="fas fa-video ml-5 text-purple-700" ></i>}
-                                </p>
-                                <p className="text-right" >
+                                <div className="flex-1 mr-5">
+
+                                    <p className="text-sm ">
+                                        <strong> {index + 1}. {i.titulo} </strong> ({i.duracion} mins.)
+                                        {i.video && <i className="fas fa-video ml-5 text-purple-700" ></i>}
+                                    </p>
+                                    {
+                                        i.descripcion && <p className="text-xs">{i.descripcion} </p>
+                                    }
+                                </div>
+                                <p className="text-right text-xs" >
                                     {(i.nombre && i.nombre != "") ? i.nombre : "No asignado"}
                                 </p>
                             </div>

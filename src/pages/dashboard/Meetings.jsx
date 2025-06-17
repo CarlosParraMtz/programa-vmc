@@ -3,7 +3,7 @@ import Modal from "../../components/common/Modal"
 import atoms from "../../jotai/atoms"
 import { useAtomValue } from "jotai"
 import Input from "../../components/common/Input"
-import getDiaHoy from '../../functions/getDiaHoy'
+import getDia from '../../functions/getDia'
 import { AnimatePresence, motion } from "framer-motion"
 import animations from "../../constants/animations"
 import datareunionesController from "../../firebase/controllers/datareuniones.controller"
@@ -14,6 +14,7 @@ import Advertencia from "../../components/common/Advertencia"
 import TableroEdicion from "../../components/dashboard/TableroEdicion"
 import useModal from '../../hooks/useModal'
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
+console.log(motion)
 
 export default function Meetings() {
   const periodo = useAtomValue(atoms.periodo)
@@ -30,8 +31,8 @@ export default function Meetings() {
   const [asignadosVacios, setAsignadosVacios] = useState(false)
 
   const [rangoFechas, setRangoFechas] = useState({
-    inicial: getDiaHoy(new Date()),
-    final: getDiaHoy(new Date())
+    inicial: getDia(new Date()),
+    final: getDia(new Date())
   })
 
 
@@ -61,7 +62,7 @@ export default function Meetings() {
   const agregarReuniones = async (e) => {
     e.preventDefault()
 
-    /*const hoy = getDiaHoy(new Date())
+    /*const hoy = getDia(new Date())
      if (rangoFechas.inicial < hoy || rangoFechas.final < hoy) {
       modalError({
         title: "La fecha o rango de fechas introducidas ya pasaron.",
@@ -196,8 +197,8 @@ export default function Meetings() {
                 </div>
 
                 : <ul className="gap-2 flex flex-col max-h-[300px] overflow-auto">
-                  {reunionesFilter.map(reunion =>
-                    <li key={reunion.id}
+                  {reunionesFilter.map(reunion =>{
+                    return (<li key={reunion.id}
                       onClick={() => {
                         if (!edicion)
                           setSeleccion({ ...reunion })
@@ -209,7 +210,8 @@ export default function Meetings() {
                       `}
                     >
                       Semana {formatearRangoSemanal(reunion.fecha)}
-                    </li>
+                    </li>)
+                    }
                   )}
                 </ul>
             }
