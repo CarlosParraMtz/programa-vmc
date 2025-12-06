@@ -8,7 +8,7 @@ import CrudNombrados from "./CrudNombrados";
 import CrudMatriculados from "./CrudMatriculados";
 
 export default function TableroEdicion({ useReunion }) {
-  if (import.meta.env.NODE_ENV !== 'uip') console.log(motion);
+  if (import.meta.env.NODE_ENV == 'uip') console.log(motion);
   const [reunion, setReunion] = useReunion;
   const [modalSelectCancion, setModalSelectCancion] = useState(null)
   const [modalPersonas, setModalPersonas] = useState(null)
@@ -76,13 +76,22 @@ export default function TableroEdicion({ useReunion }) {
       if (asignacion.seccion != seccion) return null;
       return (<div key={index}
         className={`
-                flex items-center gap-0 w-full p-2 
+                flex flex-col items-center gap-0 w-full p-2 
               `}
       >
-        <div className=" border-r border-gray-500 w-12 self-stretch flex items-center justify-center" >
-          <h3 className="text-xl font-bold">{index + 1}</h3>
-        </div>
         <div className="flex flex-col w-full p-5 gap-2 bg-[#ffffff77] rounded-r-xl " >
+          <div className="flex justify-between items-center" >
+            <h3 className="text-xl font-bold">{index + 1}</h3>
+            {asignacion.seccion === 3 &&
+              <div className="" >
+                <button onClick={() => eliminarAsignacion(index)}
+                  className="w-8 h-8 bg-white text-gray-600 hover:text-purple-600 rounded-full"
+                >
+                  <i className="fas fa-trash" ></i>
+                </button>
+              </div>
+            }
+          </div>
           <Input
             label="Título"
             fullwidth
@@ -98,149 +107,143 @@ export default function TableroEdicion({ useReunion }) {
             value={reunion.asignaciones[index].descripcion || ""}
             onChange={e => handleChange(index, "descripcion", e.target.value)}
             placeholder="Descripción de la asignación"
+            rows={5}
             className={`
               resize-none rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 
               text-sm focus:ring-purple-500 focus:outline-purple-500 caret-purple-300 
               w-full p-2.5 -mt-2
             `}
           ></textarea>
-          <div className="flex gap-2" >
-            <div className="flex w-1/4 items-center" >
-              <div className="w-1/3">
-                <Input
-                  label="Duración"
-                  fullwidth
-                  name={`duracion-input-${index}`}
-                  value={reunion.asignaciones[index].duracion}
-                  onChange={e => handleChange(index, "duracion", e.target.value)}
-                />
-              </div>
-              <span className="mt-5 ml-2">mins.</span>
+          <div className="flex items-center" >
+            <div className="flex-1">
+              <Input
+                label="Duración"
+                fullwidth
+                name={`duracion-input-${index}`}
+                value={reunion.asignaciones[index].duracion}
+                onChange={e => handleChange(index, "duracion", e.target.value)}
+              />
             </div>
-            <div className="flex items-end w-3/4 gap-5" >
-              {
-                asignacion.seccion === 3 &&
-                <div>
-                  <p>Video:</p>
-                  <div className="h-10 flex flex-col gap-5">
+            <span className="mt-5 ml-2">mins.</span>
+          </div>
+          <div className="flex flex-col gap-5" >
+            {
+              asignacion.seccion === 3 &&
+              <div className="flex items-center justify-between lg:justify-start gap-5">
+                <p>Video:</p>
+                <div className="h-10 flex flex-col gap-5">
 
-                    <label
-                      htmlFor={`video-input-${index}`}
-                      className={
-                        `h-10 w-16 mb-2 rounded-full 
+                  <label
+                    htmlFor={`video-input-${index}`}
+                    className={
+                      `h-10 w-16 mb-2 rounded-full 
                       flex items-center p-1 cursor-pointer transition-colors 
                       ${reunion.asignaciones[index].video
-                          ? "justify-end bg-gray-100 hover:bg-white"
-                          : "justify-start bg-gray-400 hover:bg-gray-300"
-                        }`}
-                    >
-                      <motion.div
-                        layout="position"
-                        layoutId={`checkbox-video-${index}`}
-                        transition={{ type: "spring" }}
-                        className={`
+                        ? "justify-end bg-gray-100 hover:bg-white"
+                        : "justify-start bg-gray-400 hover:bg-gray-300"
+                      }`}
+                  >
+                    <motion.div
+                      layout="position"
+                      layoutId={`checkbox-video-${index}`}
+                      transition={{ type: "spring" }}
+                      className={`
                           h-8 w-8 rounded-full transition-colors 
                           flex items-center justify-center overflow-hidden
                           ${reunion.asignaciones[index].video
-                            ? "bg-purple-400 text-white"
-                            : "bg-white text-gray-400 "
-                          }
+                          ? "bg-purple-400 text-white"
+                          : "bg-white text-gray-400 "
+                        }
                           `}
-                      >
-                        <motion.i
-                          animate={{
-                            opacity: reunion.asignaciones[index].video ? 1 : 0.1,
-                            x: reunion.asignaciones[index].video ? 1 : -30
-                          }}
-                          transition={{ type: "spring" }}
-                          className="fas fa-play  " ></motion.i>
-                      </motion.div>
-                    </label>
-                    <input
-                      checked={reunion.asignaciones[index]}
-                      onChange={() => checkVideo(index)}
-                      type="checkbox"
-                      className="hidden"
-                      id={`video-input-${index}`}
-                    />
-                  </div>
+                    >
+                      <motion.i
+                        animate={{
+                          opacity: reunion.asignaciones[index].video ? 1 : 0.1,
+                          x: reunion.asignaciones[index].video ? 1 : -30
+                        }}
+                        transition={{ type: "spring" }}
+                        className="fas fa-play  " ></motion.i>
+                    </motion.div>
+                  </label>
+                  <input
+                    checked={reunion.asignaciones[index]}
+                    onChange={() => checkVideo(index)}
+                    type="checkbox"
+                    className="hidden"
+                    id={`video-input-${index}`}
+                  />
                 </div>
-              }
+              </div>
+            }
 
+            <div className="w-full">
+              <p>Asignado</p>
+              <button onClick={() => abrirModalPersonas(index)}
+                className="px-5 bg-gray-100 hover:bg-white py-2 rounded-full w-full"
+              >
+                No se ha seleccionado
+              </button>
+            </div>
+            {asignacion.seccion === 2 &&
               <div>
-                <p>Asignado</p>
+                <p>Ayudante</p>
                 <button onClick={() => abrirModalPersonas(index)}
-                  className="px-5 bg-gray-100 hover:bg-white w-fit py-2 rounded-full"
-                >
+                  className="px-5 bg-gray-100 hover:bg-white w-full py-2 rounded-full">
                   No se ha seleccionado
                 </button>
               </div>
-              {asignacion.seccion === 2 &&
-                <div>
-                  <p>Ayudante</p>
-                  <button onClick={() => abrirModalPersonas(index)}
-                    className="px-5 bg-gray-100 hover:bg-white w-fit py-2 rounded-full">
-                    No se ha seleccionado
-                  </button>
-                </div>
-              }
-            </div>
+            }
           </div>
         </div>
-        {asignacion.seccion === 3 &&
-          <div className="h-full self-stretch " >
-            <button onClick={() => eliminarAsignacion(index)}
-              className="w-8 h-8 bg-white text-gray-600 hover:text-purple-600 rounded-full"
-            >
-              <i className="fas fa-trash" ></i>
-            </button>
-          </div>
-        }
+
       </div>)
     })
   }
 
-
+  const agregarNombrado = (nombrado) => {
+    console.log(nombrado)
+  }
 
   return (
-    <div className="w-full px-2 rounded-xl py-5">
+    <div className="w-full rounded-xl py-5">
 
 
       <div className="bg-program-treasures w-full text-white px-5 py-2 rounded-t-lg font-thin text-md " >
         Tesoros de la Biblia
       </div>
       <div className={`${bgs[1]}`}>
-        <div className={`flex justify-between`}>
+        <div className={`flex flex-col justify-between`}>
+
+          <div className="flex flex-col gap-2 items-start px-5 my-2">
+            <strong>Presidente:</strong>
+            <button onClick={() => abrirModalPersonas('presidente')}
+              className="px-5 py-2 bg-gray-100 hover:bg-white rounded-md w-full text-gray-500" >
+              No se ha seleccionado
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-2 px-5">
+            <strong>Presidente de la sala B:</strong>
+            <button onClick={() => abrirModalPersonas('presidenteB')}
+              className="px-5 py-2 bg-gray-100 w-full hover:bg-white rounded-md text-gray-500" >
+              No se ha seleccionado
+            </button>
+          </div>
+
           <div className="block">
-            <span className="flex gap-5 items-center p-5" >
+            <span className="flex gap-5 items-center justify-between p-5" >
               <strong>Canción</strong>
               <button
-                className="px-5 py-2 bg-gray-50 border border-purple-400 rounded-md text-gray-500"
+                className="px-10 py-2 bg-gray-50 border border-purple-400 rounded-md text-gray-500"
                 onClick={() => setModalSelectCancion(0)}
               >
                 {reunion.canciones[0]}
               </button>
-              <strong>y oración</strong>
             </span>
           </div>
 
-          <div className="flex gap-2 items-center p-5">
-            <strong>Presidente:</strong>
-            <button onClick={() => abrirModalPersonas('presidente')}
-              className="px-5 py-2 bg-gray-100 hover:bg-white rounded-md text-gray-500" >
-              No se ha seleccionado
-            </button>
-          </div>
         </div>
-        <div className="flex justify-end pb-4 px-5" >
-          <div className="flex gap-2 items-center">
-            <strong>Presidente de la sala B:</strong>
-            <button onClick={() => abrirModalPersonas('presidenteB')}
-              className="px-5 py-2 bg-gray-100 hover:bg-white rounded-md text-gray-500" >
-              No se ha seleccionado
-            </button>
-          </div>
-        </div>
+
         {getItems(1)}
       </div>
 
@@ -260,7 +263,7 @@ export default function TableroEdicion({ useReunion }) {
       </div>
       <div className={bgs[3]} >
         <div className="block">
-          <span className="flex gap-5 items-center p-5" >
+          <span className="flex justify-between gap-5 items-center p-5" >
             <strong>Canción</strong>
             <button
               className="px-5 py-2 bg-gray-50 border border-purple-400 rounded-md text-gray-500"
@@ -275,10 +278,10 @@ export default function TableroEdicion({ useReunion }) {
           className="btn error mx-auto mt-5"
           onClick={agregarAsignacion}
         >
-          Agregar una asignación aquí
+          Agregar una asignación
         </button>
         <div className="block">
-          <span className="flex gap-5 items-center p-5" >
+          <span className="flex justify-between gap-5 items-center px-5 mt-5" >
             <strong>Canción</strong>
             <button
               className="px-5 py-2 bg-gray-50 border border-purple-400 rounded-md text-gray-500"
@@ -286,8 +289,14 @@ export default function TableroEdicion({ useReunion }) {
             >
               {reunion.canciones[2]}
             </button>
-            <strong>y oración</strong>
           </span>
+        </div>
+        <div className="flex flex-col gap-2 items-start px-5 pb-6">
+          <strong>Oración final:</strong>
+          <button onClick={() => abrirModalPersonas('presidente')}
+            className="px-5 py-2 bg-gray-100 hover:bg-white rounded-md w-full text-gray-500" >
+            No se ha seleccionado
+          </button>
         </div>
       </div>
 
@@ -307,7 +316,7 @@ export default function TableroEdicion({ useReunion }) {
         onClose={() => setModalSelectCancion(null)}
       >
         <div className="grid grid-cols-6 bg-gray-200 gap-2 max-h-[300px] overflow-auto p-3">
-          {modalSelectCancion &&
+          {modalSelectCancion != null &&
             Array.from({ length: 161 }, (_, i) => i + 1)
               .map(cancion =>
                 <button key={cancion}
@@ -362,7 +371,7 @@ export default function TableroEdicion({ useReunion }) {
                 </p>
               </div>
             }
-            {(nombrados && nombrados.length > 0) && <CrudNombrados />}
+            {(nombrados && nombrados.length > 0) && <CrudNombrados agregarNombrado={agregarNombrado} />}
 
           </div>
         }

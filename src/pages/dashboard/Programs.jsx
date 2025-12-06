@@ -74,7 +74,7 @@ export default function Programs() {
 			<div className="p-2.5">
 				<h1 className="text-2xl" >Programas</h1>
 			</div>
-			<div className='flex periodos'>
+			<div className='flex flex-col lg:flex-row periodos'>
 				<div className="w-full max-w-sm p-2.5">
 					<div className="card w-full">
 						<div className="card_title">

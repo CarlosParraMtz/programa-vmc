@@ -177,7 +177,7 @@ export default function Meetings() {
       <div className="p-2.5 pl-5">
         <h1 className="text-2xl" >Reuniones</h1>
       </div>
-      <div className="flex meetings">
+      <div className="flex flex-col lg:flex-row meetings">
         <div className="w-full max-w-md p-2.5 pl-5">
           <div className="card">
             <div className="card_title">

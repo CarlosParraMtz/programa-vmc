@@ -8,6 +8,7 @@ export default function Sidebar({ useOpen }) {
     const [open, setOpen] = useOpen;
     const user = useAtomValue(atoms.user)
 
+    const cerrarMenu = () => setOpen(false)
     return (
         <div className={`sidebar ${open ? "open" : ""} z-40`}>
             <AnimatePresence>
@@ -33,7 +34,7 @@ export default function Sidebar({ useOpen }) {
 
                     {user.perfil != null &&
                         <nav className='sidebar_nav' >
-                            <NavLink className='sidebar_link' to="/dashboard" end >
+                            <NavLink className='sidebar_link' to="/dashboard" end onClick={cerrarMenu} >
                                 <div className="sidebar_link-icon">
                                     <i className="fas fa-users"></i>
                                 </div>
@@ -42,7 +43,7 @@ export default function Sidebar({ useOpen }) {
                                     <span>Próxima reunión</span>
                                 </div>
                             </NavLink>
-                            <NavLink className='sidebar_link' to="/dashboard/programas" >
+                            <NavLink className='sidebar_link' to="/dashboard/programas" onClick={cerrarMenu} >
                                 <div className="sidebar_link-icon">
                                     <i className="far fa-calendar-alt"></i>
                                 </div>
@@ -50,7 +51,7 @@ export default function Sidebar({ useOpen }) {
                                     <span>Programas</span>
                                 </div>
                             </NavLink>
-                            <NavLink className='sidebar_link' to="/dashboard/reuniones" >
+                            <NavLink className='sidebar_link' to="/dashboard/reuniones" onClick={cerrarMenu} >
                                 <div className="sidebar_link-icon">
                                     <i className="fas fa-chalkboard-teacher"></i>
                                 </div>
@@ -66,7 +67,7 @@ export default function Sidebar({ useOpen }) {
                                     <span>Estudiantiles</span>
                                 </div>
                             </NavLink> */}
-                            <NavLink className='sidebar_link' to="/dashboard/personas" >
+                            <NavLink className='sidebar_link' to="/dashboard/personas" onClick={cerrarMenu} >
                                 <div className="sidebar_link-icon">
                                     <i className="fas fa-address-book"></i>
                                 </div>
@@ -80,7 +81,7 @@ export default function Sidebar({ useOpen }) {
 
                 <div>
                     <div className="separator"></div>
-                    <NavLink className='sidebar_link' to="/dashboard/config" >
+                    <NavLink className='sidebar_link' to="/dashboard/config" onClick={cerrarMenu} >
                         <div className="sidebar_link-icon">
                             <i className="fas fa-cog"></i>
                         </div>

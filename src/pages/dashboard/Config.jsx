@@ -133,7 +133,7 @@ export default function Config() {
       <div className="p-2.5 flex gap-3">
         <h1 className="text-2xl" >Configuración</h1>
       </div>
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row">
         <div className="w-full max-w-md p-2.5">
           <div className="card">
             <div className="card_title">
@@ -267,14 +267,16 @@ export default function Config() {
                           <b>País:</b>
                           <span> {congregacion?.pais} </span>
                         </div>
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                           <b>ID de congregación:</b>
-                          <span> {congregacion?.id} </span>
-                          <Tooltip title="Copiar" >
-                            <button className="icon-button" onClick={copiarCodigo}>
-                              <i className="fas fa-copy"></i>
-                            </button>
-                          </Tooltip>
+                          <span className="flex gap-3 items-center">
+                            {congregacion?.id}
+                            <Tooltip title="Copiar" >
+                              <button className="icon-button" onClick={copiarCodigo}>
+                                <i className="fas fa-copy"></i>
+                              </button>
+                            </Tooltip>
+                          </span>
                         </div>
                       </>
                       : <>

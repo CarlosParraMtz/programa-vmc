@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai"
 import atoms from "../../jotai/atoms"
 
 
-export default function CrudNombrados() {
+export default function CrudNombrados({ agregarNombrado }) {
   const nombrados = useAtomValue(atoms.nombrados)
 
   return (
@@ -33,7 +33,7 @@ export default function CrudNombrados() {
           ">
           {
             nombrados.map(nombrado => <tr key={nombrado.id}
-              onClick={()=>alert("se ha clickado", nombrado.nombre)}
+              onClick={() => agregarNombrado(nombrado)}
               className="
                 [&>*]:py-2
                 [&>*:not(:last-child)]:px-2

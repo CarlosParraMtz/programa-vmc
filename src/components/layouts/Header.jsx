@@ -38,7 +38,7 @@ export default function Header({ setOpen }) {
                 >
                     <i className="fas fa-bars"></i>
                 </button>
-                <div className="flex gap-10">
+                <div className="md:flex gap-10 hidden">
                     {
                         congregacion &&
                         <h3><b>Cong. {congregacion.nombre}</b></h3>
