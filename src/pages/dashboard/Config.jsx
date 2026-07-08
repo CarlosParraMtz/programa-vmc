@@ -1,10 +1,12 @@
 import { useState } from "react"
-import { useAtom } from "jotai"
+import { useAtom, useSetAtom } from "jotai"
+import { useNavigate } from "react-router-dom"
 import atoms from '../../jotai/atoms'
 import Input from "../../components/common/Input"
 import Select from "../../components/common/Select"
 import Tooltip from "../../components/common/Tooltip"
 import toast from '../../functions/toast'
+import auth from "../../firebase/controllers/authController"
 import { setProfile } from '../../firebase/controllers/profile.controller'
 import congregationController, { getCongregacion } from "../../firebase/controllers/congregation.controller.js"
 import { diasSemana, getDiaSemanaLabel } from "../../constants/diasSemana"
@@ -17,6 +19,12 @@ export default function Config() {
 
   const [user, setUser] = useAtom(atoms.user)
   const [congregacion, setCongregacion] = useAtom(atoms.congregacion)
+  const setMatriculados = useSetAtom(atoms.matriculados)
+  const setProgramas = useSetAtom(atoms.programas)
+  const setNombrados = useSetAtom(atoms.nombrados)
+  const setPeriodo = useSetAtom(atoms.periodo)
+  const setReuniones = useSetAtom(atoms.reuniones)
+  const navigate = useNavigate()
   const [edicion, setEdicion] = useState({
     user: !user?.perfil,
     congregacion: ""
@@ -32,7 +40,7 @@ export default function Config() {
   })
   const [busqueda, setBusqueda] = useState("")
 
-  const [loading, setLoading] = useState({ user: false, congregacion: false })
+  const [loading, setLoading] = useState({ user: false, congregacion: false, logout: false })
 
   const toggleEdicionUser = () => { setEdicion({ ...edicion, user: !edicion.user }) }
   const toggleEdicionCongregacion = (tipo) => {
@@ -136,6 +144,27 @@ export default function Config() {
     }
   }
 
+  const cerrarSesion = async () => {
+    setLoading({ ...loading, logout: true })
+
+    try {
+      await auth.logout()
+      setUser(null)
+      setCongregacion(null)
+      setMatriculados(null)
+      setProgramas(null)
+      setNombrados(null)
+      setPeriodo(null)
+      setReuniones([])
+      navigate("/login", { replace: true })
+      toast.success("Sesion cerrada")
+    } catch (err) {
+      toast.error("No se pudo cerrar sesion")
+      console.error(err)
+      setLoading({ ...loading, logout: false })
+    }
+  }
+
   return (
     <>
       <div className="p-3 sm:p-4 flex gap-3">
@@ -182,6 +211,14 @@ export default function Config() {
                   </div>
                 </div>
             }
+            <button
+              type="button"
+              className="btn error mt-5"
+              onClick={cerrarSesion}
+              disabled={loading.logout}
+            >
+              {loading.logout ? "Cerrando sesion..." : "Cerrar sesion"}
+            </button>
           </div>
         </div>
         <div className="w-full lg:max-w-md">

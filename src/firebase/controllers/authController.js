@@ -4,6 +4,7 @@ import {
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     signInWithPopup,
+    signOut,
     onAuthStateChanged,
 } from "firebase/auth";
 import profile from "./profile.controller";
@@ -63,6 +64,10 @@ function loginWithGoogle() {
     })
 }
 
+function logout() {
+    return signOut(auth)
+}
+
 function checkLoginStatus() {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (u) => {
@@ -79,5 +84,6 @@ export default {
     login,
     signup,
     loginWithGoogle,
+    logout,
     checkLoginStatus
 }

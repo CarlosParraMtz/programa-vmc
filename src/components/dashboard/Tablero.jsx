@@ -85,7 +85,7 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
         {cancion3 && (
           <p className="program-song program-final-song font-bold text-md pb-1">
             <span>Canción {cancion3} y oración</span>
-            {oracionFinal && <span className="program-final-prayer">: {oracionFinal}</span>}
+            {oracionFinal && <span className="program-final-prayer">{oracionFinal}</span>}
           </p>
         )}
       </div>
