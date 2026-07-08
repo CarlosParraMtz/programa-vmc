@@ -1,11 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import useModal from "../../../hooks/useModal"
+import { getTiposAsignacionLabels } from "../../../constants/tiposAsignacionMatriculado"
 //import formatearFecha from "../../../functions/formatearFecha"
 
 export default function MatriculadoCollapse({ matriculado, onDelete = () => { }, onEdit = () => { }, onAdd = null, onAddAyudante = null }) {
   const [open, setOpen] = useState(false)
   const { modalConfirm } = useModal()
+  const tiposAsignacion = getTiposAsignacionLabels(matriculado.tiposAsignacion || [])
 
   if(open) {
     console.log(matriculado)
@@ -64,7 +66,7 @@ export default function MatriculadoCollapse({ matriculado, onDelete = () => { },
                       <i className="fas fa-pencil"></i>
                     </button>
                     <button className="btn error w-12" onClick={() => modalConfirm({
-                      title: "¿Seguro que desea borrar este nombrado?",
+                      title: "¿Seguro que desea borrar a " + matriculado.nombre + "?",
                       icon: 'info',
                       text: matriculado.nombre,
                       textButton: "Borrar",
@@ -82,6 +84,10 @@ export default function MatriculadoCollapse({ matriculado, onDelete = () => { },
                 <p className="pl-5" >
                 </p>
               </>}
+            <p><strong>Puede pasar:</strong></p>
+            <p className="pl-5">
+              {tiposAsignacion.length > 0 ? tiposAsignacion.join(", ") : "Sin definir"}
+            </p>
             {matriculado.detalles != "" && <>
               <p><strong>Observaciones:</strong></p>
               <p className="pl-5" >

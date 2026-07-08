@@ -2,10 +2,12 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import useModal from "../../../hooks/useModal"
 import { nombramientos } from "../../../constants/nombramientos"
+import { getTiposAsignacionNombradoLabels } from "../../../constants/tiposAsignacionNombrado"
 
 export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdit = () => { }, onAdd = null }) {
   const [open, setOpen] = useState(false)
   const { modalConfirm } = useModal()
+  const tiposAsignacion = getTiposAsignacionNombradoLabels(nombrado.tiposAsignacion || [])
 
   return (
     <AnimatePresence>
@@ -74,6 +76,10 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
                   Presidir - 24 de mayo de 2025
                 </p>
               </>}
+            <p><strong>Puede pasar:</strong></p>
+            <p className="pl-5">
+              {tiposAsignacion.length > 0 ? tiposAsignacion.join(", ") : "Sin definir"}
+            </p>
             {nombrado.detalles != "" && <>
               <p><strong>Observaciones:</strong></p>
               <p className="pl-5" >

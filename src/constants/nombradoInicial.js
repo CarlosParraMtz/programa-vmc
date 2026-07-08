@@ -3,6 +3,7 @@ export const nombradoInicial = {
   nombre: "",
   nombramiento: "",
   detalles: "",
+  tiposAsignacion: [],
   ultimasAsignaciones: {
     presidir: [],
     salaAux: [],

@@ -1,5 +1,8 @@
 export default function getLunesAnterior(fecha) {
-  const fechaInput = new Date(fecha);
+  const dateOnly = String(fecha).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const fechaInput = dateOnly
+    ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+    : new Date(fecha);
   const diaSemana = fechaInput.getDay(); // 0 (Domingo) a 6 (Sábado)
   
   // Calculamos la diferencia de días para retroceder al lunes

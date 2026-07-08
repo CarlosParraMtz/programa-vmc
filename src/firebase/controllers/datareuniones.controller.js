@@ -5,12 +5,62 @@ import getDia from '../../functions/getDia';
 
 const dbPath = "data-reuniones";
 
+function getFechaSemana(fecha) {
+    const lunes = getLunesAnterior(fecha);
+    return getDia(lunes);
+}
+
+function getFechaFinSemana(fecha) {
+    const lunes = getLunesAnterior(fecha);
+    const domingo = new Date(lunes);
+    domingo.setDate(lunes.getDate() + 6);
+    return getDia(domingo);
+}
+
+function normalizeDataReunion(payload) {
+    if (!payload?.fecha) return { ...payload };
+    return {
+        ...payload,
+        fecha: getFechaSemana(payload.fecha),
+    };
+}
+
+async function getDataReunionPorFecha(fecha) {
+    const q = query(collection(db, dbPath), where("fecha", "==", fecha));
+    let data = null;
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        const snap = doc.data()
+        data = { ...snap, id: doc.id }
+    });
+    return data;
+}
+
+async function getDataReunionEnSemana(fecha) {
+    const fechaInicial = getFechaSemana(fecha);
+    const fechaFinal = getFechaFinSemana(fecha);
+    const q = query(
+        collection(db, dbPath),
+        where("fecha", ">=", fechaInicial),
+        where("fecha", "<=", fechaFinal),
+        orderBy("fecha", "asc")
+    );
+    let data = null;
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        if (data) return;
+        const snap = doc.data()
+        data = { ...snap, id: doc.id }
+    });
+    return data;
+}
+
 export default {
     createDataReunion: (payload) => {
         return new Promise((resolve, reject) => {
             addDoc(
                 collection(db, `/${dbPath}`),
-                { ...payload }
+                normalizeDataReunion(payload)
             ).then(docRef => resolve(docRef.id))
             .catch(error => reject(error));
         })
@@ -19,7 +69,7 @@ export default {
     updateDataReunion: (payload, id) => {
         return new Promise((resolve, reject) => {
             updateDoc(doc(db, dbPath, id),
-                { ...payload }
+                normalizeDataReunion(payload)
             ).then(res => resolve(res))
                 .catch(error => reject(error));
         })
@@ -40,26 +90,21 @@ export default {
     },
 
     getDataReunion: async (fecha) => {
-        const lunes = getLunesAnterior(fecha)
-        console.log("Lunes anterior:", getDia(lunes))
-        const q = query(collection(db, dbPath), where("fecha", "==", getDia(lunes)));
-        let data = null;
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            const snap = doc.data()
-            data = { ...snap, id: doc.id }
-        });
-        return data;
+        const fechaSemana = getFechaSemana(fecha);
+        const data = await getDataReunionPorFecha(fechaSemana);
+        if (data) return data;
+
+        return getDataReunionEnSemana(fecha);
     },
 
     getDataReuniones: async (rangoFechas) => {
         const { inicial, final } = rangoFechas;
-        const lunesInicial = getLunesAnterior(inicial)
-        const lunesFinal = getLunesAnterior(final)
+        const fechaInicial = getFechaSemana(inicial)
+        const fechaFinal = getFechaFinSemana(final)
         const q = query(
             collection(db, dbPath),
-            where("fecha", ">=", getDia(lunesInicial)),
-            where("fecha", "<=", getDia(lunesFinal))
+            where("fecha", ">=", fechaInicial),
+            where("fecha", "<=", fechaFinal)
         );
         let data = [];
         const querySnapshot = await getDocs(q);

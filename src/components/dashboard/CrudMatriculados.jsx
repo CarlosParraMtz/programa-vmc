@@ -2,8 +2,9 @@ import { useAtomValue } from "jotai"
 import atoms from "../../jotai/atoms"
 import { useState, useMemo } from "react"
 import MatriculadoCollapse from "./personas/MatriculadoCollapse"
+import { puedePasarTipoAsignacion } from "../../constants/tiposAsignacionMatriculado"
 
-export default function CrudMatriculados({ agregarMatriculado, agregarAyudante }) {
+export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, tipoAsignacionPermitida = null }) {
   const matriculados = useAtomValue(atoms.matriculados)
   const [filters, setFilters] = useState({
     genero: 'todos',
@@ -58,6 +59,10 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante }
       filteredData = filteredData.filter(m => m.ultimoTipo === parseInt(filters.tipoAsignacion))
     }
 
+    if (tipoAsignacionPermitida) {
+      filteredData = filteredData.filter(m => puedePasarTipoAsignacion(m, tipoAsignacionPermitida))
+    }
+
     // Aplicar ordenación
     if (sortConfig.key) {
       filteredData.sort((a, b) => {
@@ -85,7 +90,7 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante }
     }
 
     return filteredData
-  }, [matriculados, filters, sortConfig])
+  }, [matriculados, filters, sortConfig, tipoAsignacionPermitida])
 
   // Función para limpiar filtros
   const clearFilters = () => {

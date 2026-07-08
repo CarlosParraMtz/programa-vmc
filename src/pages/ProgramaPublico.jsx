@@ -1,10 +1,32 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import Tablero from "../components/dashboard/Tablero";
 import formatearRangoSemanal from "../functions/formatearRangoSemanal";
 import { getPersonName } from "../functions/programHelpers";
+import getDia from "../functions/getDia";
+import getLunesAnterior from "../functions/getLunesAnterior";
+
+function parseLocalDate(value) {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  if (value.seconds) return new Date(value.seconds * 1000);
+
+  const dateOnly = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (dateOnly) {
+    const [, year, month, day] = dateOnly;
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getWeekKey(value) {
+  const date = parseLocalDate(value);
+  return date ? getDia(getLunesAnterior(date)) : null;
+}
 
 export default function ProgramaPublico() {
   const { congregacionId, reunionId } = useParams();
@@ -18,17 +40,31 @@ export default function ProgramaPublico() {
       setLoading(true);
       setError("");
       try {
-        const [reunionSnap, congregacionSnap] = await Promise.all([
-          getDoc(doc(db, `congregaciones/${congregacionId}/reuniones`, reunionId)),
+        const [programaResultado, congregacionSnap] = await Promise.all([
+          reunionId
+            ? getDoc(doc(db, `congregaciones/${congregacionId}/reuniones`, reunionId))
+            : getDocs(collection(db, `congregaciones/${congregacionId}/reuniones`)),
           getDoc(doc(db, "congregaciones", congregacionId)),
         ]);
 
-        if (!reunionSnap.exists()) {
+        let reunion = null;
+        if (reunionId) {
+          if (programaResultado.exists()) {
+            reunion = { ...programaResultado.data(), id: programaResultado.id };
+          }
+        } else {
+          const semanaActual = getWeekKey(new Date());
+          reunion = programaResultado.docs
+            .map((documento) => ({ ...documento.data(), id: documento.id }))
+            .find((item) => getWeekKey(item.fecha) === semanaActual);
+        }
+
+        if (!reunion) {
           setError("No se encontro este programa.");
           return;
         }
 
-        setPrograma({ ...reunionSnap.data(), id: reunionSnap.id });
+        setPrograma(reunion);
         setCongregacion(congregacionSnap.exists() ? congregacionSnap.data() : null);
       } catch (e) {
         console.error(e);

@@ -7,6 +7,7 @@ import Tooltip from "../../components/common/Tooltip"
 import toast from '../../functions/toast'
 import { setProfile } from '../../firebase/controllers/profile.controller'
 import congregationController, { getCongregacion } from "../../firebase/controllers/congregation.controller.js"
+import { diasSemana, getDiaSemanaLabel } from "../../constants/diasSemana"
 
 
 //TODO: Pedir confirmación para abandonar congregación, y borrar del store todo lo relacionado con esta al terminar de abandonar
@@ -23,8 +24,10 @@ export default function Config() {
   const [formUser, setFormUser] = useState({ nombre: "" })
   const [formCongregacion, setFormCongregacion] = useState({
     nombre: "",
+    superintendenteCircuito: "",
     ubicacion: "",
     pais: "",
+    diaReunion: 1,
     salas: 1
   })
   const [busqueda, setBusqueda] = useState("")
@@ -52,7 +55,11 @@ export default function Config() {
 
 
   const editarCongregacion = () => {
-    setFormCongregacion({ ...congregacion, salas: Number(congregacion?.salas || 1) })
+    setFormCongregacion({
+      ...congregacion,
+      diaReunion: Number(congregacion?.diaReunion ?? 1),
+      salas: Number(congregacion?.salas || 1)
+    })
     toggleEdicionCongregacion("edicion")
   }
 
@@ -60,7 +67,11 @@ export default function Config() {
     e.preventDefault()
     setLoading({ ...loading, congregacion: true })
 
-    const payload = { ...formCongregacion, salas: Number(formCongregacion.salas || 1) }
+    const payload = {
+      ...formCongregacion,
+      diaReunion: Number(formCongregacion.diaReunion ?? 1),
+      salas: Number(formCongregacion.salas || 1)
+    }
     delete payload.id
 
     try {
@@ -205,12 +216,29 @@ export default function Config() {
                       onChange={e => setFormCongregacion({ ...formCongregacion, ubicacion: e.target.value })}
                     />
                     <Input
+                      name="config-cong-superintendente"
+                      label="Superintendente de circuito"
+                      placeholder="Nombre del superintendente"
+                      value={formCongregacion.superintendenteCircuito || ""}
+                      onChange={e => setFormCongregacion({ ...formCongregacion, superintendenteCircuito: e.target.value })}
+                    />
+                    <Input
                       name="config-cong-pais"
                       label="País"
                       placeholder="Ej: México"
                       value={formCongregacion.pais}
                       onChange={e => setFormCongregacion({ ...formCongregacion, pais: e.target.value })}
                     />
+                    <Select
+                      name="config-cong-dia-reunion"
+                      label="Dia de la reunion"
+                      value={formCongregacion.diaReunion ?? 1}
+                      onChange={e => setFormCongregacion({ ...formCongregacion, diaReunion: Number(e.target.value) })}
+                    >
+                      {diasSemana.map((dia) => (
+                        <option key={dia.value} value={dia.value}>{dia.label}</option>
+                      ))}
+                    </Select>
                     <Select
                       name="config-cong-salas"
                       label="Numero de salas"
@@ -270,12 +298,20 @@ export default function Config() {
                           <span> {congregacion?.ubicacion} </span>
                         </div>
                         <div className="flex gap-2">
+                          <b>Superintendente de circuito:</b>
+                          <span> {congregacion?.superintendenteCircuito || "No se ha registrado"} </span>
+                        </div>
+                        <div className="flex gap-2">
                           <b>País:</b>
                           <span> {congregacion?.pais} </span>
                         </div>
                         <div className="flex gap-2">
                           <b>Salas:</b>
                           <span> {Number(congregacion?.salas || 1) === 2 ? "A y B" : "A"} </span>
+                        </div>
+                        <div className="flex gap-2">
+                          <b>Dia de reunion:</b>
+                          <span> {getDiaSemanaLabel(congregacion?.diaReunion)} </span>
                         </div>
                         <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                           <b>ID de congregación:</b>

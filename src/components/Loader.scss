@@ -1,0 +1,195 @@
+.app-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 90, 137, .22), transparent 22rem),
+    radial-gradient(circle at 72% 76%, rgba(150, 95, 241, .26), transparent 24rem),
+    rgba(30, 30, 38, .48);
+  backdrop-filter: blur(13px);
+}
+
+.app-loader__panel {
+  width: min(250px, calc(100vw - 48px));
+  min-height: 250px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background:
+    linear-gradient(145deg, rgba(246, 250, 255, .96), rgba(242, 236, 255, .9)),
+    #f6faff;
+  border: 1px solid rgba(255, 255, 255, .84);
+  box-shadow:
+    0 28px 80px rgba(36, 26, 58, .28),
+    inset 0 1px 0 rgba(255, 255, 255, .85);
+}
+
+.app-loader__panel p {
+  margin: 0;
+  color: #303039;
+  font-size: .82rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.app-loader__mark {
+  position: relative;
+  width: 122px;
+  height: 122px;
+  display: grid;
+  place-items: center;
+}
+
+.app-loader__ring,
+.app-loader__spark {
+  position: absolute;
+  display: block;
+}
+
+.app-loader__ring {
+  border-radius: 50%;
+}
+
+.app-loader__ring--outer {
+  width: 118px;
+  height: 118px;
+  border: 8px solid rgba(150, 95, 241, .16);
+  border-top-color: #965ff1;
+  border-right-color: rgba(255, 90, 137, .8);
+  animation: appLoaderSpin 1.05s linear infinite;
+}
+
+.app-loader__ring--middle {
+  width: 82px;
+  height: 82px;
+  border: 7px solid rgba(255, 90, 137, .14);
+  border-bottom-color: #ff5a89;
+  border-left-color: rgba(150, 95, 241, .72);
+  animation: appLoaderSpinReverse 1.35s linear infinite;
+}
+
+.app-loader__ring--inner {
+  width: 42px;
+  height: 42px;
+  background:
+    radial-gradient(circle at 35% 30%, white 0 18%, transparent 19%),
+    linear-gradient(135deg, #965ff1, #ff5a89);
+  border-radius: 50%;
+  box-shadow:
+    0 12px 24px rgba(150, 95, 241, .3),
+    inset 0 2px 5px rgba(255, 255, 255, .38);
+  animation: appLoaderPulse 1.25s ease-in-out infinite;
+}
+
+.app-loader__spark {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #ff5a89;
+  box-shadow: 0 0 18px rgba(255, 90, 137, .6);
+  animation: appLoaderSpark 1.45s ease-in-out infinite;
+}
+
+.app-loader__spark--one {
+  top: 7px;
+  right: 25px;
+}
+
+.app-loader__spark--two {
+  right: 3px;
+  bottom: 34px;
+  width: 7px;
+  height: 7px;
+  background: #965ff1;
+  animation-delay: .18s;
+}
+
+.app-loader__spark--three {
+  left: 10px;
+  bottom: 26px;
+  width: 8px;
+  height: 8px;
+  background: #38b46c;
+  animation-delay: .34s;
+}
+
+.app-loader__dots {
+  height: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.app-loader__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #965ff1;
+  animation: appLoaderDot 900ms ease-in-out infinite;
+}
+
+.app-loader__dots span:nth-child(2) {
+  background: #ff5a89;
+  animation-delay: 120ms;
+}
+
+.app-loader__dots span:nth-child(3) {
+  background: #38b46c;
+  animation-delay: 240ms;
+}
+
+@keyframes appLoaderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes appLoaderSpinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes appLoaderPulse {
+  0%,
+  100% {
+    transform: scale(.92);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes appLoaderSpark {
+  0%,
+  100% {
+    opacity: .45;
+    transform: scale(.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes appLoaderDot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: .55;
+  }
+
+  50% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}

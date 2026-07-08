@@ -13,6 +13,7 @@ import Tablero from '../../components/dashboard/Tablero'
 import Advertencia from "../../components/common/Advertencia"
 import TableroEdicion from "../../components/dashboard/TableroEdicion"
 import useModal from '../../hooks/useModal'
+import useLoader from "../../hooks/useLoader"
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
 import matriculadosController from "../../firebase/controllers/matriculados.controller"
 import nombradosController from "../../firebase/controllers/nombrados.controller"
@@ -24,6 +25,7 @@ import {
   stripUndefined,
   validateProgram,
 } from "../../functions/programHelpers"
+import { getFechaReunionDesdeSemana } from "../../functions/meetingDates"
 
 export default function Meetings() {
   const periodo = useAtomValue(atoms.periodo)
@@ -35,6 +37,7 @@ export default function Meetings() {
   const [seleccion, setSeleccion] = useState(null)
   const [modalAgregarReunion, setModalAgregarReunion] = useState(false)
   const { modalConfirm, modalError } = useModal()
+  const { setLoader } = useLoader()
   const [agregarReunionesTab, setAgregarReunionesTab] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -85,6 +88,7 @@ export default function Meetings() {
 
   const guardarEdicionConfirmada = async () => {
     setLoading(true)
+    setLoader(true)
     try {
       const payload = {
         ...edicion,
@@ -111,6 +115,7 @@ export default function Meetings() {
       modalError({ title: "No se pudo guardar el programa", text: String(error?.message || error) })
     } finally {
       setLoading(false)
+      setLoader(false)
     }
   }
 
@@ -167,6 +172,7 @@ export default function Meetings() {
     const guardarReunion = async (reunion) => {
       const nuevaReunion = {
         ...reunion,
+        fecha: getFechaReunionDesdeSemana(reunion.fecha, congregacion, reunion),
         periodo: periodo.id,
         asignaciones: reunion.asignaciones.map(
           asignacion => ({ ...asignacion, asignado: "" })
@@ -180,9 +186,7 @@ export default function Meetings() {
       try {
         const reuniones = await datareunionesController.getDataReuniones(rangoFechas)
         console.log(reuniones)
-        reuniones.forEach(async (reunion) => {
-          await guardarReunion(reunion)
-        })
+        await Promise.all(reuniones.map((reunion) => guardarReunion(reunion)))
         cerrarModalAgregarReunion()
       } catch (e) {
         modalError({
@@ -289,7 +293,12 @@ export default function Meetings() {
                         ${seleccion && seleccion.id === reunion.id ? "bg-violet-100 border-purple-600" : ""}
                       `}
                     >
-                      Semana {formatearRangoSemanal(reunion.fecha)}
+                      <span>Semana {formatearRangoSemanal(reunion.fecha)}</span>
+                      {reunion.semanaVisita && (
+                        <span className="ml-2 rounded-full bg-purple-200 px-2 py-0.5 text-xs font-semibold text-purple-800">
+                          Visita
+                        </span>
+                      )}
                     </li>)
                     }
                   )}

@@ -16,6 +16,8 @@ import {
   isStudentAssignment,
   sortByOldestAssignment,
 } from "../../functions/programHelpers";
+import { puedePasarTipoAsignacion } from "../../constants/tiposAsignacionMatriculado";
+import { TIPOS_ASIGNACION_NOMBRADO, puedePasarTipoNombrado } from "../../constants/tiposAsignacionNombrado";
 
 export default function TableroEdicion({ useReunion }) {
   const [reunion, setReunion] = useReunion;
@@ -25,7 +27,24 @@ export default function TableroEdicion({ useReunion }) {
   const nombrados = useAtomValue(atoms.nombrados) || [];
   const matriculados = useAtomValue(atoms.matriculados) || [];
   const congregacion = useAtomValue(atoms.congregacion);
-  const usaSalaB = hasAuxRoom(congregacion);
+  const usaSalaB = hasAuxRoom(congregacion, reunion);
+  const superintendenteCircuito = congregacion?.superintendenteCircuito?.trim();
+  const mostrarSuperintendenteComoNombrado = !!(
+    reunion?.semanaVisita &&
+    superintendenteCircuito &&
+    modalPersonas?.tipo === "asignacion"
+  );
+  const superintendenteOpcion = mostrarSuperintendenteComoNombrado
+    ? {
+      id: "superintendente-circuito",
+      nombre: superintendenteCircuito,
+      nombramiento: "a",
+      tiposAsignacion: TIPOS_ASIGNACION_NOMBRADO.map((tipo) => tipo.id),
+      detalles: "Superintendente de circuito",
+    }
+    : null;
+  const opcionesNombrados = superintendenteOpcion ? [superintendenteOpcion] : [];
+  const nombradosSeleccionables = [...opcionesNombrados, ...nombrados];
 
   const abrirModalPersonas = (target, sala = "A") => {
     if (typeof target === "number") {
@@ -44,6 +63,27 @@ export default function TableroEdicion({ useReunion }) {
   };
 
   const cerrarModalPersonas = () => setModalPersonas(null);
+
+  const getTipoAsignacionMatriculado = (target) => {
+    if (!target || target.tipo !== "asignacion") return null;
+    if (target.field.includes("ayudante")) return "ayudante";
+
+    const assignmentType = getAssignmentType(reunion.asignaciones[target.index]);
+    if (assignmentType === "lectura") return "lectura";
+    if (assignmentType === "discurso") return "discurso";
+    return "demostracion";
+  };
+
+  const getTipoAsignacionNombrado = (target) => {
+    if (!target) return null;
+    if (target.tipo === "campo") {
+      if (target.field === "presidente" || target.field === "presidenteB") return "presidente";
+      return null;
+    }
+
+    const role = getNombradoRole(reunion.asignaciones[target.index]);
+    return ["tesoros", "perlas", "analisis", "necesidades", "estudio"].includes(role) ? role : null;
+  };
 
   const handleChange = (index, key, newValue) => {
     const asignaciones = [...reunion.asignaciones];
@@ -109,16 +149,23 @@ export default function TableroEdicion({ useReunion }) {
 
     if (target.tipo === "campo") {
       const role = target.field === "presidente" ? "presidir" : target.field === "presidenteB" ? "salaAux" : "oracion";
-      return sortByOldestAssignment(nombrados, role);
+      const tipoAsignacion = getTipoAsignacionNombrado(target);
+      return sortByOldestAssignment(nombradosSeleccionables, role)
+        .filter((persona) => puedePasarTipoNombrado(persona, tipoAsignacion));
     }
 
     const asignacion = reunion.asignaciones[target.index];
     if (personasPage === "MATRICULADOS") {
       const asignadoId = asignacion[target.sala === "B" ? "asignadoB" : "asignado"]?.id;
-      return sortByOldestAssignment(matriculados).filter((persona) => !target.field.includes("ayudante") || persona.id !== asignadoId);
+      const tipoAsignacion = getTipoAsignacionMatriculado(target);
+      return sortByOldestAssignment(matriculados)
+        .filter((persona) => puedePasarTipoAsignacion(persona, tipoAsignacion))
+        .filter((persona) => !target.field.includes("ayudante") || persona.id !== asignadoId);
     }
 
-    return sortByOldestAssignment(nombrados, getNombradoRole(asignacion));
+    const tipoAsignacion = getTipoAsignacionNombrado(target);
+    return sortByOldestAssignment(nombradosSeleccionables, getNombradoRole(asignacion))
+      .filter((persona) => puedePasarTipoNombrado(persona, tipoAsignacion));
   };
 
   const sugerencias = sugerirPersonas(modalPersonas).slice(0, 3);
@@ -241,6 +288,19 @@ export default function TableroEdicion({ useReunion }) {
 
   return (
     <div className="meeting-editor w-full rounded-xl py-3 sm:py-5">
+      <div className="mb-4 rounded-lg border border-purple-200 bg-purple-50 px-3 sm:px-5 py-3">
+        <label htmlFor="semana-visita-input" className="flex items-center gap-3 cursor-pointer">
+          <input
+            id="semana-visita-input"
+            type="checkbox"
+            checked={!!reunion.semanaVisita}
+            onChange={(e) => setReunion({ ...reunion, semanaVisita: e.target.checked })}
+            className="h-5 w-5 accent-purple-600"
+          />
+          <span className="font-semibold text-gray-800">Semana de la visita</span>
+        </label>
+      </div>
+
       <div className="bg-program-treasures w-full text-white px-4 sm:px-5 py-2 rounded-t-lg font-thin text-md">Tesoros de la Biblia</div>
       <div className={bgs[1]}>
         <div className="flex flex-col justify-between">
@@ -348,12 +408,18 @@ export default function TableroEdicion({ useReunion }) {
 
         {personasPage === "NOMBRADOS" &&
           <div className="p-2 sm:p-5">
-            {nombrados.length === 0 &&
+            {nombradosSeleccionables.length === 0 &&
               <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
                 <p className="text-center text-gray-700">No hay nombrados agregados. Ve a la seccion de nombrados para administrar la lista.</p>
               </div>
             }
-            {nombrados.length > 0 && <CrudNombrados agregarNombrado={setPersona} />}
+            {nombradosSeleccionables.length > 0 && (
+              <CrudNombrados
+                agregarNombrado={setPersona}
+                tipoAsignacionPermitida={getTipoAsignacionNombrado(modalPersonas)}
+                opcionesExtra={opcionesNombrados}
+              />
+            )}
           </div>
         }
 
@@ -364,7 +430,12 @@ export default function TableroEdicion({ useReunion }) {
                 <p className="text-center text-gray-700">No hay matriculados agregados. Ve a la seccion de matriculados para administrar la lista.</p>
               </div>
             }
-            {matriculados.length > 0 && <CrudMatriculados agregarMatriculado={setPersona} />}
+            {matriculados.length > 0 && (
+              <CrudMatriculados
+                agregarMatriculado={setPersona}
+                tipoAsignacionPermitida={getTipoAsignacionMatriculado(modalPersonas)}
+              />
+            )}
           </div>
         }
       </Modal>

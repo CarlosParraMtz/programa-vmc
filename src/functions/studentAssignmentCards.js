@@ -1,4 +1,5 @@
 import { meses } from "../constants/meses";
+import { getFechaReunionDesdeSemana } from "./meetingDates";
 import { getPersonName, hasAuxRoom, isAuxRoomAssignment } from "./programHelpers";
 
 const CARD_WIDTH = 536;
@@ -223,7 +224,8 @@ function createZip(files) {
 }
 
 export function getStudentAssignmentCards(reunion, congregacion = {}) {
-  const usaSalaB = hasAuxRoom(congregacion);
+  const usaSalaB = hasAuxRoom(congregacion, reunion);
+  const fechaReunion = getFechaReunionDesdeSemana(reunion?.fecha, congregacion, reunion);
 
   return (reunion?.asignaciones || [])
     .map((asignacion, index) => ({ asignacion, index }))
@@ -233,7 +235,7 @@ export function getStudentAssignmentCards(reunion, congregacion = {}) {
         sala: "A",
         nombre: getPersonName(asignacion.asignado) || asignacion.nombre || "",
         ayudante: getPersonName(asignacion.ayudante) || "",
-        fecha: formatDate(reunion.fecha),
+        fecha: formatDate(fechaReunion),
         numero: String(index + 1),
         filename: `${String(index + 1).padStart(2, "0")}-sala-a-${sanitizeFileName(getPersonName(asignacion.asignado) || asignacion.nombre || "asignacion")}.png`,
       }];
@@ -243,7 +245,7 @@ export function getStudentAssignmentCards(reunion, congregacion = {}) {
           sala: "B",
           nombre: getPersonName(asignacion.asignadoB),
           ayudante: getPersonName(asignacion.ayudanteB) || "",
-          fecha: formatDate(reunion.fecha),
+          fecha: formatDate(fechaReunion),
           numero: String(index + 1),
           filename: `${String(index + 1).padStart(2, "0")}-sala-b-${sanitizeFileName(getPersonName(asignacion.asignadoB) || "asignacion")}.png`,
         });

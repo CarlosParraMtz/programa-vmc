@@ -14,6 +14,8 @@ export const periodo = atom(null)
 
 export const reuniones = atom([])
 
+export const loader = atom(false)
+
 export const modal = atom({
         isOpen: false,
         variant: 'success',
@@ -28,5 +30,5 @@ export const modal = atom({
 
 export default {
     user, congregacion, matriculados,
-    programas, nombrados, periodo, reuniones
+    programas, nombrados, periodo, reuniones, loader
 }

@@ -6,6 +6,20 @@ import datareunionesController from "../firebase/controllers/datareuniones.contr
 import { LoaderIcon } from "react-hot-toast";
 import formatearRangoSemanal from "../functions/formatearRangoSemanal";
 import { parseMwbPdf } from "../functions/mwbPdfParser";
+import getDia from "../functions/getDia";
+import getLunesAnterior from "../functions/getLunesAnterior";
+
+function normalizarFechaReunion(reunion) {
+  if (!reunion?.fecha) return { ...reunion };
+  return {
+    ...reunion,
+    fecha: getDia(getLunesAnterior(reunion.fecha)),
+  };
+}
+
+function normalizarFechasReuniones(reuniones) {
+  return reuniones.map((reunion) => normalizarFechaReunion(reunion));
+}
 
 export default function CargaReuniones() {
   const [jsonInput, setJsonInput] = useState("");
@@ -54,7 +68,9 @@ export default function CargaReuniones() {
   const handleParseJson = () => {
     try {
       const parsed = JSON.parse(jsonInput);
-      setReuniones(parsed);
+      const reunionesNormalizadas = normalizarFechasReuniones(parsed);
+      setReuniones(reunionesNormalizadas);
+      setJsonInput(JSON.stringify(reunionesNormalizadas, null, 2));
     } catch (error) {
       console.error("Error al parsear el JSON:", error);
       alert("El JSON no es válido");
@@ -73,7 +89,7 @@ export default function CargaReuniones() {
 
     setLoading(true);
     try {
-      const parsed = await parseMwbPdf(pdfFile);
+      const parsed = normalizarFechasReuniones(await parseMwbPdf(pdfFile));
       if (parsed.length === 0) {
         setModalAdvertencia("No pude encontrar reuniones en este PDF.");
         return;
@@ -104,7 +120,8 @@ export default function CargaReuniones() {
 
     setLoading(true)
     try {
-      await Promise.all(reuniones.map(reunion => datareunionesController.createDataReunion({ ...reunion })))
+      const reunionesNormalizadas = normalizarFechasReuniones(reuniones);
+      await Promise.all(reunionesNormalizadas.map(reunion => datareunionesController.createDataReunion({ ...reunion })))
       handleClear()
       await cargarReunionesGuardadas()
       setModalGuardar(false)
@@ -137,9 +154,10 @@ export default function CargaReuniones() {
     setLoading(true);
     try {
       const { id, ...payload } = edicion;
-      await datareunionesController.updateDataReunion(JSON.parse(JSON.stringify(payload)), id);
+      const reunionNormalizada = normalizarFechaReunion(payload);
+      await datareunionesController.updateDataReunion(JSON.parse(JSON.stringify(reunionNormalizada)), id);
       await cargarReunionesGuardadas();
-      setSeleccion({ ...edicion });
+      setSeleccion({ id, ...reunionNormalizada });
       setEdicion(null);
       setModalAdvertencia("Se actualizó la reunión correctamente.");
     } catch (error) {

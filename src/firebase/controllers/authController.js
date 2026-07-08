@@ -1,30 +1,61 @@
 import { auth } from "../config";
 import {
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
     signInWithEmailAndPassword,
+    signInWithPopup,
     onAuthStateChanged,
 } from "firebase/auth";
 import profile from "./profile.controller";
+
+async function buildUserPayload(user) {
+    const payload = {
+        id: user.uid,
+        signed: true,
+        perfil: null,
+        token: user.accessToken,
+        email: user.email,
+    }
+
+    try {
+        const userProfile = await profile.getProfile(user.email)
+        return { ...payload, perfil: userProfile }
+    } catch {
+        return payload
+    }
+}
 
 function login(data) {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(auth, data.email, data.pwd)
             .then(async ({ user }) => {
-                const payload = {
-                    id: user.uid,
-                    signed: true,
-                    perfil: null,
-                    token: user.accessToken,
-                    email: user.email,
-                }
+                resolve(await buildUserPayload(user))
+            })
+            .catch((error) => {
+                reject(error.code)
+            });
+    })
+}
 
-                await profile.getProfile(user.email)
-                    .then((userProfile) => {
-                        console.log(userProfile)
-                        resolve({ ...payload, perfil: userProfile })
-                    })
-                    .catch(() => {
-                        resolve(payload)
-                    })
+function signup(data) {
+    return new Promise((resolve, reject) => {
+        createUserWithEmailAndPassword(auth, data.email, data.pwd)
+            .then(async ({ user }) => {
+                resolve(await buildUserPayload(user))
+            })
+            .catch((error) => {
+                reject(error.code)
+            });
+    })
+}
+
+function loginWithGoogle() {
+    return new Promise((resolve, reject) => {
+        const provider = new GoogleAuthProvider();
+
+        signInWithPopup(auth, provider)
+            .then(async ({ user }) => {
+                resolve(await buildUserPayload(user))
             })
             .catch((error) => {
                 reject(error.code)
@@ -36,17 +67,7 @@ function checkLoginStatus() {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (u) => {
             if (u) {
-                const payload = {
-                    id: u.uid,
-                    signed: true,
-                    perfil: null,
-                    token: u.accessToken,
-                    email: u.email,
-                }
-
-                await profile.getProfile(u.email)
-                    .then((perfil) => resolve({ ...payload, perfil }))
-                    .catch(() => resolve(payload))
+                resolve(await buildUserPayload(u))
             }
             else { reject() }
         });
@@ -55,5 +76,8 @@ function checkLoginStatus() {
 }
 
 export default {
-    login, checkLoginStatus
+    login,
+    signup,
+    loginWithGoogle,
+    checkLoginStatus
 }

@@ -9,8 +9,8 @@ export function getRoomCount(congregacion = {}) {
   return salas === 2 ? 2 : 1;
 }
 
-export function hasAuxRoom(congregacion = {}) {
-  return getRoomCount(congregacion) === 2;
+export function hasAuxRoom(congregacion = {}, reunion = {}) {
+  return getRoomCount(congregacion) === 2 && !reunion?.semanaVisita;
 }
 
 export function isAuxRoomAssignment(asignacion = {}, index = -1) {
@@ -118,11 +118,16 @@ export function getPublicProgramUrl(congregacionId, reunionId) {
   return `${window.location.origin}/programa/${congregacionId}/${reunionId}`;
 }
 
+export function getCurrentWeekPublicProgramUrl(congregacionId) {
+  if (!congregacionId) return "";
+  return `${window.location.origin}/programa/${congregacionId}`;
+}
+
 export function validateProgram(programa, congregacion = {}) {
   const warnings = [];
   if (!programa) return warnings;
 
-  const usaSalaB = hasAuxRoom(congregacion);
+  const usaSalaB = hasAuxRoom(congregacion, programa);
 
   if (!programa.presidente) warnings.push("Falta presidente.");
   if (usaSalaB && !programa.presidenteB) warnings.push("Falta presidente de sala B.");
@@ -164,7 +169,7 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
   const fecha = toDateKey(reunion.fecha);
   if (!fecha) return { matriculados, nombrados };
 
-  const usaSalaB = hasAuxRoom(congregacion);
+  const usaSalaB = hasAuxRoom(congregacion, reunion);
   const matriculadosById = new Map(matriculados.map((persona) => [persona.id, { ...persona }]));
   const nombradosById = new Map(nombrados.map((persona) => [persona.id, { ...persona }]));
 

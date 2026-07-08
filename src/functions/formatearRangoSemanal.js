@@ -1,7 +1,10 @@
 import { meses } from '../constants/meses'
 
 export default function formatearRangoSemanal(fecha) {
-  let fechaInicio = new Date(fecha);
+  const dateOnly = String(fecha).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  let fechaInicio = dateOnly
+    ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+    : new Date(fecha);
   const diaSemana = fechaInicio.getDay(); // 0 (domingo) a 6 (sábado)
   const ajusteLunes = diaSemana === 0 ? 1 : diaSemana === 1 ? 0 : 1 - diaSemana;
   fechaInicio = new Date(fechaInicio);

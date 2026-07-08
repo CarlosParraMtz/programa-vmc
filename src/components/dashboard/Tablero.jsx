@@ -1,10 +1,11 @@
 import { meses } from "../../constants/meses";
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal";
+import { parseLocalDate } from "../../functions/meetingDates";
 import { getPersonName, hasAuxRoom, isAuxRoomAssignment } from "../../functions/programHelpers";
 
 export default function Tablero({ programa, congregacion = null, congregacionNombre = "", showPrintHeader = true }) {
-  const date = new Date(programa.fecha);
-  const usaSalaB = hasAuxRoom(congregacion);
+  const date = parseLocalDate(programa.fecha);
+  const usaSalaB = hasAuxRoom(congregacion, programa);
   const presidente = getPersonName(programa.presidente) || "No asignado";
   const presidenteAuxiliar = usaSalaB ? getPersonName(programa.presidenteB) : "";
   const oracionFinal = getPersonName(programa.oracionFinal);
@@ -84,7 +85,7 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
         {cancion3 && (
           <p className="program-song program-final-song font-bold text-md pb-1">
             <span>Canción {cancion3} y oración</span>
-            {oracionFinal && <span className="program-final-prayer">Oración: {oracionFinal}</span>}
+            {oracionFinal && <span className="program-final-prayer">: {oracionFinal}</span>}
           </p>
         )}
       </div>

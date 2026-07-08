@@ -1,4 +1,4 @@
-import { useRoutes, Link } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import Dashboard from '../layouts/Dashboard'
 import Estudiantiles from '../pages/dashboard/Estudiantiles'
 import Meetings from '../pages/dashboard/Meetings'
@@ -9,6 +9,7 @@ import Config from '../pages/dashboard/Config'
 import NotFound from '../pages/NotFound'
 import Auth from '../layouts/Auth'
 import Login from '../pages/auth/Login'
+import Signup from '../pages/auth/Signup'
 import CargaReuniones from '../pages/CargaReuniones'
 import ProgramaPublico from '../pages/ProgramaPublico'
 import Home from '../pages/Home';
@@ -39,10 +40,11 @@ export default function Router() {
                     element: <Auth/>,
                     children: [
                         { path: "login", element: <Login /> },
-                        { path: "signup", element: <></> }
+                        { path: "signup", element: <Signup /> }
                     ]
                 },
                 { path:"cargareuniones", element: <CargaReuniones /> },
+                { path:"programa/:congregacionId", element: <ProgramaPublico /> },
                 { path:"programa/:congregacionId/:reunionId", element: <ProgramaPublico /> },
                 { path: "*", element: <NotFound /> },
             ]
