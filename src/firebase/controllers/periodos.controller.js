@@ -6,11 +6,11 @@ const dbPath = "programas";
 export default {
     createPeriodo: (payload, congregacionId) => {
         return new Promise((resolve, reject) => {
-            const docRef = addDoc(
+            addDoc(
                 collection(db, `congregaciones/${congregacionId}/${dbPath}`),
                 { ...payload, created: serverTimestamp() }
-            ).catch(error => reject(error));
-            resolve(docRef.id);
+            ).then(docRef => resolve(docRef.id))
+            .catch(error => reject(error));
         })
     },
 

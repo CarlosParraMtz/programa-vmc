@@ -14,12 +14,23 @@ import Advertencia from "../../components/common/Advertencia"
 import TableroEdicion from "../../components/dashboard/TableroEdicion"
 import useModal from '../../hooks/useModal'
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
-console.log(motion)
+import matriculadosController from "../../firebase/controllers/matriculados.controller"
+import nombradosController from "../../firebase/controllers/nombrados.controller"
+import { downloadStudentAssignmentCardsPng } from "../../functions/studentAssignmentCards"
+import {
+  applyMeetingHistory,
+  getPersonName,
+  getPublicProgramUrl,
+  stripUndefined,
+  validateProgram,
+} from "../../functions/programHelpers"
 
 export default function Meetings() {
   const periodo = useAtomValue(atoms.periodo)
   const congregacion = useAtomValue(atoms.congregacion)
   const reuniones = useAtomValue(atoms.reuniones)
+  const matriculados = useAtomValue(atoms.matriculados) || []
+  const nombrados = useAtomValue(atoms.nombrados) || []
   const [reunionesFilter, setReunionesFilter] = useState([])
   const [seleccion, setSeleccion] = useState(null)
   const [modalAgregarReunion, setModalAgregarReunion] = useState(false)
@@ -54,6 +65,75 @@ export default function Meetings() {
   }
 
   const cancelarEdicion = () => setEdicion(null)
+
+  const guardarEdicion = async () => {
+    if (!edicion || !congregacion) return
+
+    const warnings = validateProgram(edicion, congregacion)
+    if (warnings.length > 0) {
+      modalConfirm({
+        title: "El programa tiene advertencias",
+        text: warnings.slice(0, 5).join(" "),
+        textButton: "Guardar de todos modos",
+        onConfirm: () => guardarEdicionConfirmada(),
+      })
+      return
+    }
+
+    await guardarEdicionConfirmada()
+  }
+
+  const guardarEdicionConfirmada = async () => {
+    setLoading(true)
+    try {
+      const payload = {
+        ...edicion,
+        estado: "asignado",
+        actualizado: getDia(new Date()),
+      }
+      await reunionesController.updateReunion(stripUndefined(payload), congregacion.id, edicion.id)
+
+      const historiales = applyMeetingHistory({ reunion: payload, matriculados, nombrados, congregacion })
+      await Promise.all([
+        ...historiales.matriculados.map(({ id, ...persona }) =>
+          matriculadosController.updateMatriculado(stripUndefined(persona), congregacion.id, id)
+        ),
+        ...historiales.nombrados.map(({ id, ...persona }) =>
+          nombradosController.updateNombrado(stripUndefined(persona), congregacion.id, id)
+        ),
+      ])
+
+      setSeleccion(payload)
+      setEdicion(null)
+      toast.success("Programa guardado e historial actualizado")
+    } catch (error) {
+      console.error(error)
+      modalError({ title: "No se pudo guardar el programa", text: String(error?.message || error) })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const copiarEnlacePublico = async () => {
+    if (!seleccion || !congregacion) return
+    const url = getPublicProgramUrl(congregacion.id, seleccion.id)
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success("Enlace copiado")
+    } catch {
+      window.prompt("Copia el enlace del programa", url)
+    }
+  }
+
+  const descargarAsignacionesEstudiantiles = async () => {
+    if (!seleccion) return
+    const total = await downloadStudentAssignmentCardsPng(seleccion, congregacion)
+    if (total === 0) {
+      toast.error("No hay asignaciones estudiantiles para generar")
+      return
+    }
+    toast.success(`Se generaron ${total} PNG en un archivo ZIP`)
+  }
 
 
 
@@ -165,7 +245,7 @@ export default function Meetings() {
 
   useEffect(() => {
     if (seleccion) {
-      const asignados = seleccion.asignaciones.map(asignacion => asignacion.asignado)
+      const asignados = seleccion.asignaciones.map(asignacion => getPersonName(asignacion.asignado))
       setAsignadosVacios(asignados.includes(""))
     } else {
       setAsignadosVacios(false)
@@ -174,11 +254,11 @@ export default function Meetings() {
 
   return (
     <>
-      <div className="p-2.5 pl-5">
+      <div className="p-3 sm:p-4 no-print">
         <h1 className="text-2xl" >Reuniones</h1>
       </div>
-      <div className="flex flex-col lg:flex-row meetings">
-        <div className="w-full max-w-md p-2.5 pl-5">
+      <div className="flex flex-col xl:flex-row meetings gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
+        <div className="w-full xl:max-w-sm no-print">
           <div className="card">
             <div className="card_title">
               <h2><b>Reuniones en este periodo:</b></h2>
@@ -189,14 +269,14 @@ export default function Meetings() {
             <div className="divider"></div>
             {
               reunionesFilter.length === 0
-                ? <div className="p-16 flex flex-col items-center justify-center gap-5">
+                ? <div className="p-6 sm:p-10 flex flex-col items-center justify-center gap-5 text-center">
                   <p>No hay reuniones agregadas a este periodo</p>
                   <button className="btn main" onClick={abrirModalAgregarReunion} >
                     Agregar reuniones...
                   </button>
                 </div>
 
-                : <ul className="gap-2 flex flex-col max-h-[300px] overflow-auto">
+                : <ul className="gap-2 flex flex-col max-h-[260px] xl:max-h-[calc(100vh-260px)] overflow-auto">
                   {reunionesFilter.map(reunion =>{
                     return (<li key={reunion.id}
                       onClick={() => {
@@ -221,7 +301,7 @@ export default function Meetings() {
 
 
 
-        <div className="w-full max-w-4xl p-2.5">
+        <div className="w-full min-w-0 xl:flex-1">
           {
             (asignadosVacios && !edicion) &&
             <Advertencia text="Hay partes en esta reunión sin asignar a nadie. Edita esta reunión para poder asignar a alguien" />
@@ -230,7 +310,7 @@ export default function Meetings() {
           <div className="card">
             <div className="card_title">
               {seleccion &&
-                <div className="rounded-xl bg-gray-300" >
+                <div className="meeting-actions rounded-xl bg-gray-300" >
                   {
                     edicion
                       ? <>
@@ -241,7 +321,11 @@ export default function Meetings() {
                         {/*                         <button className="w-10 h-10 hover:text-white  hover:bg-primary">
                           <i className="fas fa-save" ></i>
                         </button> */}
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl">
+                        <button
+                          onClick={guardarEdicion}
+                          disabled={loading}
+                          className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl disabled:opacity-50"
+                        >
                           <i className="fas fa-save" ></i>
                         </button>
                       </>
@@ -250,7 +334,7 @@ export default function Meetings() {
                           className="w-10 h-10 hover:text-white hover:bg-violet-400 rounded-l-xl">
                           <i className="fas fa-edit" ></i>
                         </button>
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400">
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400" onClick={() => window.print()}>
                           <i className="fas fa-print" ></i>
                         </button>
                         <button className="w-10 h-10 hover:text-white  hover:bg-violet-400"
@@ -263,8 +347,11 @@ export default function Meetings() {
                         >
                           <i className="fas fa-trash" ></i>
                         </button>
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl">
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 " onClick={copiarEnlacePublico}>
                           <i className="fas fa-paper-plane" ></i>
+                        </button>
+                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl" onClick={descargarAsignacionesEstudiantiles}>
+                          <i className="fas fa-id-badge" ></i>
                         </button>
                       </>
                   }
@@ -279,8 +366,8 @@ export default function Meetings() {
               seleccion
                 ? edicion
                   ? <TableroEdicion useReunion={[edicion, setEdicion]} />
-                  : <Tablero programa={seleccion} />
-                : <div className="p-16">
+                  : <Tablero programa={seleccion} congregacion={congregacion} congregacionNombre={congregacion?.nombre} />
+                : <div className="p-8 sm:p-16">
                   <p className="text-center" >
                     Haz click en una reunión para ver y editar los detalles
                   </p>

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useAtom } from "jotai"
 import atoms from '../../jotai/atoms'
 import Input from "../../components/common/Input"
+import Select from "../../components/common/Select"
 import Tooltip from "../../components/common/Tooltip"
 import toast from '../../functions/toast'
 import { setProfile } from '../../firebase/controllers/profile.controller'
@@ -16,14 +17,15 @@ export default function Config() {
   const [user, setUser] = useAtom(atoms.user)
   const [congregacion, setCongregacion] = useAtom(atoms.congregacion)
   const [edicion, setEdicion] = useState({
-    user: false,
+    user: !user?.perfil,
     congregacion: ""
   })
   const [formUser, setFormUser] = useState({ nombre: "" })
   const [formCongregacion, setFormCongregacion] = useState({
     nombre: "",
     ubicacion: "",
-    pais: ""
+    pais: "",
+    salas: 1
   })
   const [busqueda, setBusqueda] = useState("")
 
@@ -33,13 +35,6 @@ export default function Config() {
   const toggleEdicionCongregacion = (tipo) => {
     setEdicion({ ...edicion, congregacion: edicion.congregacion === "" ? tipo : "" })
   }
-
-  useEffect(() => {
-    if (!user.perfil) {
-      toggleEdicionUser()
-    }
-  }, [user])
-
 
   const submitUser = async (e) => {
     e.preventDefault()
@@ -57,7 +52,7 @@ export default function Config() {
 
 
   const editarCongregacion = () => {
-    setFormCongregacion({ ...congregacion })
+    setFormCongregacion({ ...congregacion, salas: Number(congregacion?.salas || 1) })
     toggleEdicionCongregacion("edicion")
   }
 
@@ -65,7 +60,7 @@ export default function Config() {
     e.preventDefault()
     setLoading({ ...loading, congregacion: true })
 
-    const payload = { ...formCongregacion }
+    const payload = { ...formCongregacion, salas: Number(formCongregacion.salas || 1) }
     delete payload.id
 
     try {
@@ -111,6 +106,7 @@ export default function Config() {
     }
     catch (err) {
       toast.error("No se ha encontrado este ID de congregación")
+      console.error(err)
     }
 
     setLoading({ ...loading, congregacion: false })
@@ -125,16 +121,17 @@ export default function Config() {
       setCongregacion(null)
     } catch (err) {
       toast.error("Ha habido un error al intentar restablecer el perfil. Favor de reiniciar la página")
+      console.error(err)
     }
   }
 
   return (
     <>
-      <div className="p-2.5 flex gap-3">
+      <div className="p-3 sm:p-4 flex gap-3">
         <h1 className="text-2xl" >Configuración</h1>
       </div>
-      <div className="flex flex-col lg:flex-row">
-        <div className="w-full max-w-md p-2.5">
+      <div className="dashboard-settings flex flex-col lg:flex-row gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
+        <div className="w-full lg:max-w-md">
           <div className="card">
             <div className="card_title">
               <h2><b>Perfil:</b></h2>
@@ -176,7 +173,7 @@ export default function Config() {
             }
           </div>
         </div>
-        <div className="w-full max-w-md p-2.5">
+        <div className="w-full lg:max-w-md">
           <div className="card">
             <div className="card_title">
               <h2><b>Congregación:</b></h2>
@@ -214,7 +211,16 @@ export default function Config() {
                       value={formCongregacion.pais}
                       onChange={e => setFormCongregacion({ ...formCongregacion, pais: e.target.value })}
                     />
-                    <div className="flex gap-2">
+                    <Select
+                      name="config-cong-salas"
+                      label="Numero de salas"
+                      value={formCongregacion.salas || 1}
+                      onChange={e => setFormCongregacion({ ...formCongregacion, salas: Number(e.target.value) })}
+                    >
+                      <option value={1}>1 sala</option>
+                      <option value={2}>2 salas</option>
+                    </Select>
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <button className="btn main mt-5" type="submit" >Guardar</button>
                       <button
                         className="btn error mt-5"
@@ -233,7 +239,7 @@ export default function Config() {
                       value={busqueda}
                       onChange={e => setBusqueda(e.target.value)}
                     />
-                    <div className="flex gap-2 mt-5">
+                    <div className="flex flex-col sm:flex-row gap-2 mt-5">
 
                       <button
                         type="submit"
@@ -267,6 +273,10 @@ export default function Config() {
                           <b>País:</b>
                           <span> {congregacion?.pais} </span>
                         </div>
+                        <div className="flex gap-2">
+                          <b>Salas:</b>
+                          <span> {Number(congregacion?.salas || 1) === 2 ? "A y B" : "A"} </span>
+                        </div>
                         <div className="flex gap-2 lg:items-center flex-col lg:flex-row">
                           <b>ID de congregación:</b>
                           <span className="flex gap-3 items-center">
@@ -281,7 +291,7 @@ export default function Config() {
                       </>
                       : <>
                         <h4>No hay una congregación guardada</h4>
-                        <div className="flex gap-5 w-full justify-center" >
+                        <div className="flex flex-col sm:flex-row gap-3 w-full justify-center" >
                           <button className="btn main" onClick={() => toggleEdicionCongregacion("edicion")}>Crear congregación</button>
                           <button className="btn main" onClick={() => toggleEdicionCongregacion("busqueda")}>Administrar congregación existente</button>
                         </div>

@@ -1,12 +1,24 @@
-# React + Vite
+# Programa de la reunión Vida y Ministerio Cristianos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esta aplicación es una herramienta para uso de las congregaciones
+de testigos de Jehová. Tiene la finalidad de organizar la reunión
+de entre semana. 
 
-Currently, two official plugins are available:
+## Utilidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+En esta aplicación se pueden organizar las reuniones de entre semana,
+se pueden exportar los programas en formato PDF, y se puede llevar
+control de los asignados, los nombrados y las asignaciones. Así
+mismo, se puede consultar en línea cada programa finalizado con su
+enlace correspondiente.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Disclaimer
+
+En la aplicación no se utiliza ningún elemento que sea propiedad del
+sitio de internet oficial de los testigos de Jehová, ni tampoco se
+distribuyen publicaciones. Si desea conseguir alguna, puede ingresar
+directamente al sitio.
+
+Como desarrollador de esta aplicación no me hago responsable del uso
+que se le dé, solo de su correcto funcionamiento.

@@ -10,6 +10,8 @@ import NotFound from '../pages/NotFound'
 import Auth from '../layouts/Auth'
 import Login from '../pages/auth/Login'
 import CargaReuniones from '../pages/CargaReuniones'
+import ProgramaPublico from '../pages/ProgramaPublico'
+import Home from '../pages/Home';
 
 export default function Router() {
     return useRoutes([
@@ -18,7 +20,7 @@ export default function Router() {
             children: [
                 { 
                     path: "/",
-                    element: <p>nada por aquí. <Link to="/dashboard">Ir al dashboard</Link> </p> 
+                    element: <Home /> 
                 },
                 {
                     path: "dashboard",
@@ -41,6 +43,7 @@ export default function Router() {
                     ]
                 },
                 { path:"cargareuniones", element: <CargaReuniones /> },
+                { path:"programa/:congregacionId/:reunionId", element: <ProgramaPublico /> },
                 { path: "*", element: <NotFound /> },
             ]
         }

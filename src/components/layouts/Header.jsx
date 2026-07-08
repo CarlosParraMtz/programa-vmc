@@ -4,6 +4,20 @@ import atoms from "../../jotai/atoms"
 import Modal from "../common/Modal"
 import IconButton from "../common/IconButton"
 import { Link } from "react-router-dom"
+
+function NoHayProgramas({ onClose }) {
+    return (
+        <div className="w-full p-5 flex flex-col items-center gap-5" >
+            <p>No hay periodos agregados.</p>
+            <Link to="/dashboard/programas" >
+                <button className="btn main" onClick={onClose} >
+                    Administrar programas
+                </button>
+            </Link>
+        </div>
+    )
+}
+
 export default function Header({ setOpen }) {
     const congregacion = useAtomValue(atoms.congregacion)
     const user = useAtomValue(atoms.user)
@@ -17,17 +31,6 @@ export default function Header({ setOpen }) {
         setPeriodo(periodo)
         cerrarModalPeriodo()
     }
-
-    const NoHayProgramas = () => (
-        <div className="w-full p-5 flex flex-col items-center gap-5" >
-            <p>No hay periodos agregados.</p>
-            <Link to="/dashboard/programas" >
-                <button className="btn main" onClick={cerrarModalPeriodo} >
-                    Administrar programas
-                </button>
-            </Link>
-        </div>
-    )
 
     return (<>
         <div className='header' >
@@ -68,10 +71,10 @@ export default function Header({ setOpen }) {
         >
             {
                 !programas
-                    ? <NoHayProgramas />
+                    ? <NoHayProgramas onClose={cerrarModalPeriodo} />
 
                     : (programas && programas.length === 0)
-                        ? <NoHayProgramas />
+                        ? <NoHayProgramas onClose={cerrarModalPeriodo} />
                         : <ul className="flex flex-col gap-2 mb-5" >
                             {programas.map(programa =>
                                 <li key={programa.id}

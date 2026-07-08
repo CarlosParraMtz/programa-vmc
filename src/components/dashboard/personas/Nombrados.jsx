@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Modal from '../../common/Modal'
 import NombradoCollapse from './NombradoCollapse'
 import atoms from '../../../jotai/atoms'
@@ -13,6 +13,10 @@ import {nombradoInicial} from '../../../constants/nombradoInicial'
 export default function Nombrados() {
   const nombrados = useAtomValue(atoms.nombrados)
   const congregacion = useAtomValue(atoms.congregacion)
+  const [filtrosNombramiento, setFiltrosNombramiento] = useState({
+    a: true,
+    sm: true,
+  })
   const [modalAgregar, setModalAgregar] = useState(false)
   const abrirModalAgregar = () => setModalAgregar(true)
   const cerrarModalAgregar = () => {
@@ -27,6 +31,27 @@ export default function Nombrados() {
   const [agregarForm, setAgregarForm] = useState(nombradoInicial)
   const [loading, setLoading] = useState(false)
   const { modalSuccess, modalError, modalLoading } = useModal()
+
+  const nombradosFiltrados = useMemo(() => {
+    if (!nombrados) return []
+
+    return nombrados.filter(nombrado => filtrosNombramiento[nombrado.nombramiento])
+  }, [nombrados, filtrosNombramiento])
+
+  const toggleFiltroNombramiento = (nombramiento) => {
+    setFiltrosNombramiento((prev) => {
+      const next = { ...prev, [nombramiento]: !prev[nombramiento] }
+      return next.a || next.sm ? next : { a: true, sm: true }
+    })
+  }
+
+  const filtroClass = (active) => (
+    `text-xs px-3 py-1 rounded-full border transition cursor-pointer ${
+      active
+        ? "bg-purple-500 text-white border-purple-500"
+        : "bg-white text-gray-600 border-gray-300"
+    }`
+  )
 
   const submit = async (e) => {
     e.preventDefault()
@@ -108,18 +133,37 @@ export default function Nombrados() {
           <i className="fas fa-add"></i>
         </button>
       </div>
+      <div className="flex flex-wrap gap-2 mt-2">
+        <button
+          type="button"
+          className={filtroClass(filtrosNombramiento.a)}
+          onClick={() => toggleFiltroNombramiento("a")}
+        >
+          Ancianos
+        </button>
+        <button
+          type="button"
+          className={filtroClass(filtrosNombramiento.sm)}
+          onClick={() => toggleFiltroNombramiento("sm")}
+        >
+          Ministeriales
+        </button>
+      </div>
 
       {/* Contenido */}
       {
         nombrados && nombrados.length > 0
           ? <ul className='my-2 gap-2 max-h-[400px] overflow-y-auto border-b ' >
-            {nombrados.map(nombrado =>
+            {nombradosFiltrados.map(nombrado =>
               <NombradoCollapse
                 key={nombrado.id}
                 nombrado={nombrado}
                 onDelete={onDelete}
                 onEdit={onEdit}
               />
+            )}
+            {nombradosFiltrados.length === 0 && (
+              <p className='text-center text-gray-500 py-4'>No hay resultados con estos filtros</p>
             )}
           </ul>
           : <div className='p-5 border-2 border-dashed rounded-xl mt-5 border-purple-200 flex flex-col items-center gap-5 ' >

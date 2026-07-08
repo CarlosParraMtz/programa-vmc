@@ -8,6 +8,9 @@ import atoms from '../../jotai/atoms';
 import toast from '../../functions/toast';
 import { LoaderIcon } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import formatearRangoSemanal from '../../functions/formatearRangoSemanal';
+import { validateProgram } from '../../functions/programHelpers';
+import Tablero from '../../components/dashboard/Tablero';
 
 export default function Programs() {
 
@@ -53,6 +56,10 @@ export default function Programs() {
 		setPeriodo(data)
 		setSelected(data)
 	}
+	const imprimirPeriodo = () => {
+		if (!selected || reunionesDelPeriodo.length === 0) return
+		window.print()
+	}
 	const onSubmit = async (e) => {
 		e.preventDefault()
 		if (!congregacion) return;
@@ -69,13 +76,26 @@ export default function Programs() {
 		}
 	}
 	//TODO Función para actualizar periodo
+	const reunionesDelPeriodo = selected
+		? reuniones
+			.filter(reunion => reunion.periodo === selected.id)
+			.sort((a, b) => a.fecha.localeCompare(b.fecha))
+			.map(reunion => ({
+				...reunion,
+				advertencias: validateProgram(reunion, congregacion),
+			}))
+		: []
+
+	const reunionesCompletas = reunionesDelPeriodo.filter(reunion => reunion.advertencias.length === 0).length
+	const reunionesPendientes = reunionesDelPeriodo.length - reunionesCompletas
+
 	return (
 		<>
-			<div className="p-2.5">
+			<div className="p-3 sm:p-4 no-print">
 				<h1 className="text-2xl" >Programas</h1>
 			</div>
-			<div className='flex flex-col lg:flex-row periodos'>
-				<div className="w-full max-w-sm p-2.5">
+			<div className='flex flex-col xl:flex-row periodos no-print gap-3 sm:gap-4 px-3 sm:px-4 pb-4'>
+				<div className="w-full xl:max-w-sm">
 					<div className="card w-full">
 						<div className="card_title">
 							<h2><strong>Periodos</strong></h2>
@@ -87,7 +107,7 @@ export default function Programs() {
 						{
 							(programas && programas.length === 0)
 								? (
-									<div className="flex flex-col items-center justify-center gap-5 p-16">
+									<div className="flex flex-col items-center justify-center gap-5 p-8 sm:p-16 text-center">
 										<p>No hay periodos agregados</p>
 										<button
 											onClick={abrirDialogAgregar}
@@ -126,13 +146,17 @@ export default function Programs() {
 					</div>
 				</div>
 
-				<div className="w-full max-w-xl ">
+				<div className="w-full min-w-0 xl:max-w-3xl">
 					{selected &&
-						<div className="w-full p-2.5">
+						<div className="w-full">
 							<div className="card">
-								<div className="flex justify-center gap-2">
+								<div className="flex justify-start sm:justify-center gap-2 overflow-x-auto">
 									<Tooltip title="Imprimir" >
-										<button className="icon-button xl">
+										<button
+											className="icon-button xl"
+											onClick={imprimirPeriodo}
+											disabled={reunionesDelPeriodo.length === 0}
+										>
 											<i className="fas fa-print"></i>
 										</button>
 									</Tooltip>
@@ -163,7 +187,7 @@ export default function Programs() {
 					{
 						(programas && programas.length > 0) &&
 
-						<div className="w-full p-2.5">
+						<div className="w-full mt-3 sm:mt-4">
 							<div className="card w-full">
 								{
 									selected
@@ -174,18 +198,67 @@ export default function Programs() {
 											</div>
 											<div className="divider"></div>
 											{
-												reuniones.filter(reunion => reunion.periodo === selected.id).length === 0
-													? <div className="flex flex-col items-center justify-center gap-3 p-16 text-center">
+												reunionesDelPeriodo.length === 0
+													? <div className="flex flex-col items-center justify-center gap-3 p-8 sm:p-16 text-center">
 														<p>No hay reuniones agregadas en este periodo</p>
 														<Link to="/dashboard/reuniones" >
 															<button className="btn main">Ir a reuniones</button>
 														</Link>
 													</div>
-													: <div>lista</div>
+													: <div className="flex flex-col gap-4">
+														<div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+															<div className="rounded-lg border bg-gray-50 p-3 text-center">
+																<p className="text-2xl font-bold">{reunionesDelPeriodo.length}</p>
+																<p className="text-sm text-gray-600">Reuniones</p>
+															</div>
+															<div className="rounded-lg border bg-green-50 p-3 text-center">
+																<p className="text-2xl font-bold text-green-700">{reunionesCompletas}</p>
+																<p className="text-sm text-gray-600">Completas</p>
+															</div>
+															<div className="rounded-lg border bg-amber-50 p-3 text-center">
+																<p className="text-2xl font-bold text-amber-700">{reunionesPendientes}</p>
+																<p className="text-sm text-gray-600">Con pendientes</p>
+															</div>
+														</div>
+
+														<ul className="flex flex-col gap-2 max-h-[420px] overflow-auto">
+															{reunionesDelPeriodo.map(reunion => {
+																const tienePendientes = reunion.advertencias.length > 0
+																return (
+																	<li
+																		key={reunion.id}
+																		className={`rounded-lg border p-3 flex flex-col gap-2 ${tienePendientes ? "bg-amber-50 border-amber-300" : "bg-green-50 border-green-300"}`}
+																	>
+																		<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+																			<div>
+																				<p className="font-semibold">Semana {formatearRangoSemanal(reunion.fecha)}</p>
+																				{tienePendientes &&
+																					<p className="text-sm text-gray-700">
+																						{reunion.advertencias[0]}
+																					</p>
+																				}
+																			</div>
+																			<span className={`text-sm font-semibold px-3 py-1 rounded-full w-fit ${tienePendientes ? "bg-amber-200 text-amber-900" : "bg-green-200 text-green-900"}`}>
+																				{tienePendientes
+																					? `${reunion.advertencias.length} pendiente${reunion.advertencias.length === 1 ? "" : "s"}`
+																					: "Completa"}
+																			</span>
+																		</div>
+																	</li>
+																)
+															})}
+														</ul>
+
+														<div className="flex justify-end">
+															<Link to="/dashboard/reuniones">
+																<button className="btn main">Administrar reuniones</button>
+															</Link>
+														</div>
+													</div>
 											}
 
 										</>
-										: <div className="flex flex-col items-center justify-center gap-3 p-16 text-center">
+										: <div className="flex flex-col items-center justify-center gap-3 p-8 sm:p-16 text-center">
 											<p>Selecciona un periodo en la lista para mostrar las reuniones</p>
 										</div>
 								}
@@ -197,6 +270,28 @@ export default function Programs() {
 
 
 			</div>
+
+			{selected && reunionesDelPeriodo.length > 0 &&
+				<section className="period-print">
+					<div className="program-print-header period-print-header">
+						<p className="program-print-congregation">
+							{congregacion?.nombre ? `Cong. ${congregacion.nombre}` : "Congregación"}
+						</p>
+						<h2>Programa para la reunión de entre semana</h2>
+					</div>
+					<p className="period-print-title">{selected.periodo}</p>
+					{reunionesDelPeriodo.map((reunion) => (
+						<div className="period-print-meeting" key={reunion.id}>
+							<Tablero
+								programa={reunion}
+								congregacion={congregacion}
+								congregacionNombre={congregacion?.nombre}
+								showPrintHeader={false}
+							/>
+						</div>
+					))}
+				</section>
+			}
 
 			<Modal id="modal-agregar-periodo" open={dialogAgregar} onClose={cerrarDialogAgregar} title="Agregar periodo" >
 				<form className='flex flex-col gap-5' onSubmit={onSubmit}>

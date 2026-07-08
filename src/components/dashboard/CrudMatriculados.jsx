@@ -1,8 +1,9 @@
 import { useAtomValue } from "jotai"
 import atoms from "../../jotai/atoms"
 import { useState, useMemo } from "react"
+import MatriculadoCollapse from "./personas/MatriculadoCollapse"
 
-export default function CrudMatriculados() {
+export default function CrudMatriculados({ agregarMatriculado, agregarAyudante }) {
   const matriculados = useAtomValue(atoms.matriculados)
   const [filters, setFilters] = useState({
     genero: 'todos',
@@ -94,15 +95,14 @@ export default function CrudMatriculados() {
       tipoAsignacion: 'todos'
     })
   }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-w-0">
       {/* Barra de filtros */}
-      <div className="flex flex-wrap gap-4 px-4 py-2 bg-gray-100 rounded-xl">
-        <div className="flex flex-col">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 px-3 sm:px-4 py-3 bg-gray-100 rounded-xl">
+        <div className="flex flex-col min-w-0">
           <label className="text-xs mb-0">Género</label>
           <select
-            className="px-2 py-1 border border-gray-300 rounded-full"
+            className="px-2 py-2 border border-gray-300 rounded-full w-full"
             value={filters.genero}
             onChange={(e) => handleFilterChange('genero', e.target.value)}
           >
@@ -112,10 +112,10 @@ export default function CrudMatriculados() {
           </select>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           <label className="text-xs mb-0">Sala</label>
           <select
-            className="px-2 py-1 border border-gray-300 rounded-full"
+            className="px-2 py-2 border border-gray-300 rounded-full w-full"
             value={filters.sala}
             onChange={(e) => handleFilterChange('sala', e.target.value)}
           >
@@ -125,10 +125,10 @@ export default function CrudMatriculados() {
           </select>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           <label className="text-xs mb-0">Tipo de asignación</label>
           <select
-            className="px-2 py-1 border border-gray-300 rounded-full"
+            className="px-2 py-2 border border-gray-300 rounded-full w-full"
             value={filters.tipoAsignacion}
             onChange={(e) => handleFilterChange('tipoAsignacion', e.target.value)}
           >
@@ -140,16 +140,16 @@ export default function CrudMatriculados() {
           </select>
         </div>
 
-        <div className="flex items-end mb-1">
+        <div className="flex items-end">
           <button
-            className="text-xs bg-purple-500 cursor-pointer text-white px-4 py-1 rounded-full"
+            className="text-xs bg-purple-500 cursor-pointer text-white px-4 py-2 rounded-full w-full"
             onClick={clearFilters}
           >
             Limpiar filtros
           </button>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           <label className="text-xs mb-0">Ordenar por</label>
           <div className="flex gap-2">
             <button
@@ -172,82 +172,18 @@ export default function CrudMatriculados() {
         </div>
       </div>
 
-      {/* Tabla */}
-      <div className="max-w-4xl overflow-auto relative max-h-[400px]">
-        <table className="w-full">
-          <thead className="sticky top-0 bg-white z-30">
-            <tr className="
-              sticky left-0
-              [&>]:bg-gray-300
-              [&>*:not(:first-child)]:min-w-[100px] 
-            ">
-              <td
-                className="min-w-[150px] sticky left-0 bg-white cursor-pointer"
-                onClick={() => requestSort('nombre')}
-              >
-                Nombre 
-              </td>
-              <td>Género</td>
-              <td>Asignado Sala A</td>
-              <td>Ayudante Sala A</td>
-              <td>Asignado Sala B</td>
-              <td>Ayudante Sala B</td>
-              <td
-                className="cursor-pointer"
-                onClick={() => requestSort('ultimaAsignacion')}
-              >
-                Última asignación 
-              </td>
-              <td>Última sala</td>
-              <td>Último tipo</td>
-              <td>Observaciones</td>
-            </tr>
-          </thead>
-          <tbody
-            className="max-h-[500px] overflow-auto
-              [&>*]:nada
-              [&>*:not(:last-child)]:border-gray-700
-            ">
-            {
-              filteredAndSortedMatriculados.map((matriculado, index) => (
-                <tr
-                  key={matriculado.id}
-                  onClick={() => alert(`se ha clickado ${matriculado.nombre}`)}
-                  className="
-                    [&>*]:py-2
-                    [&>*]:sticky
-                    [&>*]:left-0
-                    [&>*:first-child]:z-20
-                    [&>*:not(:last-child)]:px-2
-                    [&>*]:text-xs
-                    odd:bg-gray-200
-                    even:bg-gray-50
-                    hover:[&>*]:bg-purple-200
-                    cursor-pointer
-                  "
-                >
-                  <td className={` ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-50'}`}>
-                    {matriculado.nombre}
-                  </td>
-                  <td>{matriculado.genero === 1 ? "Hombre" : matriculado.genero === 2 ? "Mujer" : "No especificado"}</td>
-                  <td>{matriculado.fechas[0]?.asignado[0] || "Sin fecha"}</td>
-                  <td>{matriculado.fechas[0]?.ayudante[0] || "Sin fecha"}</td>
-                  <td>{matriculado.fechas[1]?.asignado[0] || "Sin fecha"}</td>
-                  <td>{matriculado.fechas[1]?.ayudante[0] || "Sin fecha"}</td>
-                  <td>{matriculado.ultimaAsignacion || "Sin fecha"}</td>
-                  <td>{matriculado.ultimaSala === 0 ? "Sala A" : matriculado.ultimaSala === 1 ? "Sala B" : "Sin datos"}</td>
-                  <td>
-                    {matriculado.ultimoTipo === 1 ? "Ayudante" :
-                      matriculado.ultimoTipo === 2 ? "Demostración" :
-                        matriculado.ultimoTipo === 3 ? "Lectura" :
-                          matriculado.ultimoTipo === 4 ? "Discurso" : "Sin datos"}
-                  </td>
-                  <td className="text-ellipsis">{matriculado.detalles}</td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
+      {/* Lista de Matriculados */}
+      <div className="max-w-4xl max-h-[55vh] overflow-auto flex flex-col gap-2">
+        {
+          filteredAndSortedMatriculados.map((matriculado) => (
+            <MatriculadoCollapse
+              key={matriculado.id}
+              matriculado={matriculado}
+              onAdd={agregarMatriculado}
+              onAddAyudante={agregarAyudante}
+            />
+          ))
+        }
         {filteredAndSortedMatriculados.length === 0 && (
           <div className="p-4 text-center text-gray-500">
             No se encontraron resultados con los filtros aplicados

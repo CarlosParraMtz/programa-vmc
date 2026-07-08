@@ -7,15 +7,16 @@ import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
 export default function ThisWeek() {
 
 	const reuniones = useAtomValue(atoms.reuniones)
+	const congregacion = useAtomValue(atoms.congregacion)
 	const lunes = getLunesAnterior(new Date())
 	const estaSemana = reuniones.find(reunion => reunion.fecha == lunes)
 	return (
 		<>
-			<div className="p-2.5">
+			<div className="p-3 sm:p-4">
 				<h1 className="text-2xl" >Esta semana</h1>
 			</div>
-			<div className='flex flex-col lg:flex-row w-full' >
-				<div className="w-full lg:w-3/5 xl:w-2/4 p-2.5">
+			<div className='flex flex-col lg:flex-row w-full gap-3 sm:gap-4 px-3 sm:px-4 pb-4' >
+				<div className="w-full lg:w-3/5 xl:w-2/4">
 					<div className="card">
 						<div className="card_title">
 							<h2>
@@ -28,13 +29,13 @@ export default function ThisWeek() {
 						</div> */}
 						{
 							estaSemana != null
-								? <Tablero programa={estaSemana} />
+								? <Tablero programa={estaSemana} congregacion={congregacion} congregacionNombre={congregacion?.nombre} />
 								: <p>No se ha agregado un programa para esta semana</p>
 						}
 					</div>
 				</div>
 				{estaSemana &&
-					<div className="w-full lg:w-2/5 xl:w-1/4 p-2.5">
+					<div className="w-full lg:w-2/5 xl:w-1/4">
 						<div className="card p-5">
 							<h2>Personas asignadas:</h2>
 							<div className="separator"></div>

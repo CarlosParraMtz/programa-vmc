@@ -42,8 +42,8 @@ export default function Login() {
 	}
 
 	return (
-		<div className="flex flex-col gap-5 w-full ">
-			<h1 className='text-center' >Bienvenido de nuevo</h1>
+		<div className="login-panel flex flex-col gap-5 w-full max-w-sm">
+			<h1 className='text-center text-2xl font-bold' >Bienvenido de nuevo</h1>
 			<form onSubmit={goLogin} className='flex flex-col gap-5 w-full' >
 				<div
 					className={`input-component ${onError === "auth/user-not-found"

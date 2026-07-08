@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Modal from '../../common/Modal'
 import { useAtomValue } from 'jotai'
 import atoms from '../../../jotai/atoms'
@@ -29,9 +29,50 @@ export default function Nombrados() {
   const [loading, setLoading] = useState(false)
   const [modalAgregar, setModalAgregar] = useState(false)
   const [agregarForm, setAgregarForm] = useState(formInicial)
+  const [filtrosGenero, setFiltrosGenero] = useState({
+    hombres: true,
+    mujeres: true,
+  })
+  const [ordenarPorUltimaAsignacion, setOrdenarPorUltimaAsignacion] = useState(false)
   const matriculados = useAtomValue(atoms.matriculados)
   const congregacion = useAtomValue(atoms.congregacion)
   const { modalSuccess, modalError } = useModal()
+
+  const matriculadosFiltrados = useMemo(() => {
+    if (!matriculados) return []
+
+    return matriculados
+      .filter((matriculado) => {
+        if (matriculado.genero === 1) return filtrosGenero.hombres
+        if (matriculado.genero === 2) return filtrosGenero.mujeres
+        return true
+      })
+      .sort((a, b) => {
+        if (ordenarPorUltimaAsignacion) {
+          const fechaA = a.ultimaAsignacion || '0000-00-00'
+          const fechaB = b.ultimaAsignacion || '0000-00-00'
+          const comparacionFecha = fechaA.localeCompare(fechaB)
+          if (comparacionFecha !== 0) return comparacionFecha
+        }
+
+        return a.nombre.localeCompare(b.nombre)
+      })
+  }, [matriculados, filtrosGenero, ordenarPorUltimaAsignacion])
+
+  const toggleFiltroGenero = (genero) => {
+    setFiltrosGenero((prev) => {
+      const next = { ...prev, [genero]: !prev[genero] }
+      return next.hombres || next.mujeres ? next : { hombres: true, mujeres: true }
+    })
+  }
+
+  const filtroClass = (active) => (
+    `text-xs px-3 py-1 rounded-full border transition cursor-pointer ${
+      active
+        ? "bg-purple-500 text-white border-purple-500"
+        : "bg-white text-gray-600 border-gray-300"
+    }`
+  )
 
   const abrirModalAgregar = () => setModalAgregar(true)
   const cerrarModalAgregar = () => {
@@ -114,18 +155,44 @@ export default function Nombrados() {
           <i className="fas fa-add"></i>
         </button>
       </div>
+      <div className="flex flex-wrap gap-2 mt-2">
+        <button
+          type="button"
+          className={filtroClass(filtrosGenero.hombres)}
+          onClick={() => toggleFiltroGenero("hombres")}
+        >
+          Hombres
+        </button>
+        <button
+          type="button"
+          className={filtroClass(filtrosGenero.mujeres)}
+          onClick={() => toggleFiltroGenero("mujeres")}
+        >
+          Mujeres
+        </button>
+        <button
+          type="button"
+          className={filtroClass(ordenarPorUltimaAsignacion)}
+          onClick={() => setOrdenarPorUltimaAsignacion((prev) => !prev)}
+        >
+          Ultima asignacion
+        </button>
+      </div>
 
       {/* Contenido */}
       {
         matriculados && matriculados.length > 0
           ? <ul className='my-2 gap-2 max-h-[400px] overflow-y-auto border-b ' >
-            {matriculados.map(matriculado =>
+            {matriculadosFiltrados.map(matriculado =>
               <MatriculadoCollapse
                 key={matriculado.id}
                 matriculado={matriculado}
                 onDelete={onDelete}
                 onEdit={onEdit}
               />
+            )}
+            {matriculadosFiltrados.length === 0 && (
+              <p className='text-center text-gray-500 py-4'>No hay resultados con estos filtros</p>
             )}
           </ul>
           : <div className='p-5 border-2 border-dashed rounded-xl mt-5 border-purple-200 flex flex-col items-center gap-5 ' >

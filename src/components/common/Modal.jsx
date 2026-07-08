@@ -18,7 +18,7 @@ export default function Modal({ id, onClose, open, children, title, size = "lg",
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="bg-[#00000074] h-screen w-screen fixed top-0 left-0 z-50 flex items-center justify-center"
+                    className="bg-[#00000074] h-screen w-screen fixed top-0 p-3 sm:p-5 lg:py-10 left-0 z-50 flex items-center justify-center"
                 >
                     <motion.div
                         key={id}
@@ -26,8 +26,8 @@ export default function Modal({ id, onClose, open, children, title, size = "lg",
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -25 }}
                         className={`
-                            w-full p-5 rounded-xl shadow 
-                            max-h-screen overflow-auto flex flex-col
+                            w-full p-4 sm:p-5 rounded-xl shadow 
+                            max-h-[calc(100vh-24px)] sm:max-h-full overflow-auto flex flex-col
                             bg-white 
                             ${error ? "border-y border-red-500" : ""}
                             ${sizes[size]}
