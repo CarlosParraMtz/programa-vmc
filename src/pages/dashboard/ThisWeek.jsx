@@ -35,7 +35,7 @@ export default function ThisWeek() {
 	const lunes = getLunesAnterior(hoy)
 	const fechaLunes = getDia(lunes)
 	const estaSemana = reuniones.find(reunion => getWeekKey(reunion.fecha) === fechaLunes)
-	const asignaciones = estaSemana?.asignaciones?.filter(asignacion => asignacion.nombre) || []
+	//const asignaciones = estaSemana?.asignaciones?.filter(asignacion => asignacion.nombre) || []
 
 	const compartirEnlacePrograma = async () => {
 		if (!congregacion?.id) return
@@ -88,23 +88,6 @@ export default function ThisWeek() {
 						}
 					</div>
 				</div>
-				{estaSemana &&
-					<div className="w-full lg:w-2/5 xl:w-1/4">
-						<div className="card p-5">
-							<h2>Personas asignadas:</h2>
-							<div className="separator"></div>
-							<div className="flex flex-col gap-1" >
-								{
-									asignaciones.map((i, index) =>
-										<p key={index} >
-											{i.nombre}
-										</p>
-									)
-								}
-							</div>
-						</div>
-					</div>
-				}
 
 			</div>
 		</>

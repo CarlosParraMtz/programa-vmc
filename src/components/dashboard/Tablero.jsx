@@ -1,6 +1,6 @@
 import { meses } from "../../constants/meses";
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal";
-import { parseLocalDate } from "../../functions/meetingDates";
+import { getFechaReunionDesdeSemana, parseLocalDate } from "../../functions/meetingDates";
 import { getPersonName, hasAuxRoom, isAuxRoomAssignment } from "../../functions/programHelpers";
 
 export default function Tablero({ programa, congregacion = null, congregacionNombre = "", showPrintHeader = true }) {
@@ -11,7 +11,8 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
   const oracionFinal = getPersonName(programa.oracionFinal);
 
   function formatProgramDate(fecha) {
-    const [year, month, day] = String(fecha).split("-").map(Number);
+    const fechaReunion = getFechaReunionDesdeSemana(fecha, congregacion, programa);
+    const [year, month, day] = String(fechaReunion).split("-").map(Number);
     if (!year || !month || !day) return formatearRangoSemanal(fecha);
 
     return `${day} de ${meses[month - 1]} de ${year}`;
@@ -52,11 +53,15 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
             const ayudante = getPersonName(isSalaB ? asignacion.ayudanteB : asignacion.ayudante);
 
             return (
-              <p className="program-assignment-person text-left text-md break-words">
+              <p className={`program-assignment-person program-assignment-person--room-${isSalaB ? "b" : "a"} text-left text-md break-words`}>
                 {aplicaSalaB && <strong>Sala {sala}: </strong>}
-                {asignado}
+                <span className="program-assignment-name">{asignado}</span>
                 {ayudante && (
-                  <span className="text-sm"> / Ayudante: {ayudante}</span>
+                  <span className="program-assignment-helper text-sm">
+                    <span className="program-assignment-helper-label"> / Ayudante: </span>
+                    <span className="program-assignment-helper-separator"> / </span>
+                    {ayudante}
+                  </span>
                 )}
               </p>
             );
@@ -66,8 +71,9 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
             <div key={index} className="program-assignment-row border-gray-400 flex flex-col w-full justify-between py-2">
               <div className="program-assignment-title flex-1 sm:mr-5">
                 <p className="text-md leading-none">
-                  <strong>{index + 1}. {asignacion.titulo}</strong> ({asignacion.duracion} mins.)
-                  {asignacion.video && <i className="fas fa-video ml-2 sm:ml-5 text-purple-700"></i>}
+                  <strong>{index + 1}. {asignacion.titulo}</strong>
+                  <span className="program-assignment-duration"> ({asignacion.duracion} mins.)</span>
+                  {asignacion.video && <i className="program-video-icon fas fa-video ml-2 sm:ml-5 text-purple-700"></i>}
                 </p>
                 {asignacion.descripcion && (
                   <p className="program-assignment-description text-xs">{asignacion.descripcion}</p>
@@ -93,20 +99,20 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
   }
 
   return (
-    <div className="program-board w-full min-w-0 flex flex-col">
+    <div className={`program-board ${usaSalaB ? "program-board--two-rooms" : "program-board--one-room"} ${programa.semanaVisita ? "program-board--visit" : ""} w-full min-w-0 flex flex-col`}>
       {showPrintHeader && (
         <div className="program-print-header">
           <p className="program-print-congregation">
             {congregacionNombre ? `Cong. ${congregacionNombre}` : "Congregación"}
           </p>
-          <h2>Programa para la reunión de entre semana</h2>
+          <h2>Programa para la reuni&oacute;n de entre semana</h2>
         </div>
       )}
 
       <div className="program-print-meeting-head">
         <div>
           <p className="program-print-date">
-            {formatProgramDate(programa.fecha)} {programa.estudio && `| ${programa.estudio.toUpperCase()}`}
+            {formatProgramDate(programa.fecha)}
           </p>
           <p className="program-song">Canción {programa.canciones?.[0]}</p>
           <p className="program-song">Palabras de introducción (1 min.)</p>

@@ -611,6 +611,115 @@ a {
 
 }
 
+.program-actions {
+  width: 100%;
+  background: $color_white;
+  border: 1px solid rgba(83, 84, 89, .12);
+  border-radius: 10px;
+  box-shadow: 1px 1px 5px #00000012;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  &__summary {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: $color_dark;
+
+    strong {
+      font-size: 1.05rem;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+  }
+
+  &__label {
+    color: #6b7280;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  &__button {
+    min-height: 42px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    line-height: 1;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+
+    i {
+      font-size: 1rem;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba(103, 58, 183, .22);
+      outline-offset: 2px;
+    }
+
+    &--print {
+      background-color: $color_main;
+      color: $color_white;
+
+      &:not(:disabled):hover {
+        background-color: #7b45d7;
+        box-shadow: 0 8px 18px rgba(103, 58, 183, .18);
+      }
+    }
+
+    &--delete {
+      background-color: #fff;
+      border-color: rgba(220, 38, 38, .35);
+      color: #b91c1c;
+
+      &:hover {
+        background-color: #fef2f2;
+        border-color: rgba(220, 38, 38, .55);
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .program-actions {
+    align-items: stretch;
+    flex-direction: column;
+
+    &__buttons {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &__button {
+      width: 100%;
+      padding: 0 10px;
+    }
+  }
+}
+
 .input-component {
   width: 100%;
   position: relative;
@@ -1790,5 +1899,341 @@ a {
 
   .period-print-meeting .program-print-meeting-head {
     margin-top: 0;
+  }
+
+  @page {
+    size: letter portrait;
+    margin: 8mm 9mm;
+  }
+
+  .program-print-header {
+    grid-template-columns: 34% 66%;
+    gap: 0;
+    border-bottom: 3px double #000;
+    padding: 0 1mm 4mm;
+    margin-bottom: 5mm;
+  }
+
+  .program-print-congregation {
+    font-size: 13pt;
+  }
+
+  .program-print-header h2 {
+    grid-column: 2;
+    font-size: 16pt;
+    white-space: nowrap;
+  }
+
+  .period-print-page {
+    height: 263.4mm;
+    break-after: page;
+    page-break-after: always;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+  }
+
+  .period-print-page--first {
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .period-print-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .period-print-page--single {
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .period-print-page--first.period-print-page--single {
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .period-print-page--single::after {
+    content: "";
+  }
+
+  .period-print-meeting {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom: 0;
+    overflow: hidden;
+  }
+
+  .period-print-page:not(.period-print-page--single) .period-print-meeting:first-of-type {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .period-print-page:not(.period-print-page--single) .period-print-meeting + .period-print-meeting {
+    border-top: 1.5pt solid #000;
+    padding-top: 3.5mm;
+  }
+
+  .program-board {
+    height: 100%;
+    border-radius: 0;
+    overflow: visible;
+    font-size: 10pt;
+    line-height: 1.08;
+  }
+
+  .program-print-meeting-head {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) 88mm;
+    gap: 8mm;
+    padding: 0 1mm .8mm;
+  }
+
+  .program-board--visit .program-print-meeting-head::before {
+    content: "Visita de S.C.";
+    position: absolute;
+    left: 33%;
+    top: 0;
+    width: 38mm;
+    background: #fff200;
+    color: #000;
+    font-size: 9.8pt;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .program-print-date {
+    margin-bottom: 1.2mm;
+    font-size: 10.4pt;
+    line-height: 1.05;
+  }
+
+  .program-print-presidents {
+    font-size: 7pt;
+    line-height: 1.05;
+  }
+
+  .program-print-presidents p {
+    margin-bottom: 1.4mm;
+  }
+
+  .program-print-presidents span {
+    min-width: 34mm;
+    margin-right: 1.5mm;
+    font-size: 7.4pt;
+  }
+
+  .program-print-presidents p:first-child {
+    font-size: 11.4pt;
+  }
+
+  .program-section-heading {
+    display: grid !important;
+    grid-template-columns: 37% 33% 30%;
+    align-items: center;
+    padding: 1mm 1mm !important;
+    font-size: 11pt !important;
+    line-height: 1 !important;
+  }
+
+  .program-section-heading::before,
+  .program-section-heading::after {
+    color: inherit;
+    font-weight: 400;
+    text-align: center;
+    text-transform: none;
+  }
+
+  .program-section-heading::before {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .program-section-heading::after {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .program-board--two-rooms .program-section-heading::before {
+    content: "Sala B";
+  }
+
+  .program-section-heading::after {
+    content: "Sala principal";
+  }
+
+  .program-board--one-room .program-section-heading {
+    grid-template-columns: 70% 30%;
+  }
+
+  .program-section-heading-3 {
+    grid-template-columns: 70% 30%;
+  }
+
+  .program-section-heading-3::before {
+    content: "" !important;
+  }
+
+  .program-section-heading-3::after {
+    grid-column: 2;
+  }
+
+  .program-board--one-room .program-section-heading::after {
+    grid-column: 2;
+  }
+
+  .program-section-body {
+    overflow: hidden;
+  }
+
+  .program-section-intro {
+    padding: 0 !important;
+  }
+
+  .program-song {
+    padding: .6mm 1mm .6mm 4.5mm !important;
+    font-size: 9.8pt !important;
+    font-weight: 400 !important;
+    line-height: 1.08 !important;
+  }
+
+  .program-song::before {
+    content: "\2022";
+    left: 1.2mm;
+    top: .25mm;
+  }
+
+  .program-assignment-row {
+    display: grid !important;
+    grid-template-columns: 37% 33% 30%;
+    gap: 0;
+    align-items: start;
+    padding: .7mm 1mm !important;
+    border-top: 0 !important;
+  }
+
+  .program-board--one-room .program-assignment-row {
+    grid-template-columns: 70% 30%;
+  }
+
+  .program-section-3 .program-assignment-row {
+    grid-template-columns: 70% 30%;
+  }
+
+  .program-assignment-title .text-md,
+  .program-assignment-person {
+    font-size: 9.8pt !important;
+    line-height: 1.08 !important;
+  }
+
+  .program-assignment-duration,
+  .program-assignment-description,
+  .program-video-icon {
+    display: none !important;
+  }
+
+  .program-assignment-title,
+  .program-assignment-title .text-md,
+  .program-assignment-title strong,
+  .program-assignment-person,
+  .program-assignment-name,
+  .program-assignment-helper {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .program-assignment-title strong {
+    font-weight: 400;
+  }
+
+  .program-assignment-title {
+    grid-column: 1;
+    grid-row: 1;
+    display: contents !important;
+  }
+
+  .program-assignment-title .text-md {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .program-assignment-row > div:last-child {
+    display: contents !important;
+  }
+
+  .program-assignment-person {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 1mm !important;
+    align-self: start;
+    display: block !important;
+  }
+
+  .program-assignment-person strong,
+  .program-assignment-helper {
+    font-size: 9.8pt !important;
+    line-height: 1.08 !important;
+  }
+
+  .program-assignment-helper {
+    display: inline !important;
+    margin-top: 0;
+  }
+
+  .program-assignment-helper-label {
+    display: none !important;
+  }
+
+  .program-assignment-helper-separator {
+    display: inline !important;
+  }
+
+  .program-assignment-person strong {
+    display: none;
+  }
+
+  .program-assignment-person--room-b {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .program-assignment-person--room-a {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .program-board--one-room .program-assignment-person--room-a {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .program-section-3 .program-assignment-person--room-a {
+    grid-column: 2;
+  }
+
+  .program-section-2 .program-assignment-row {
+    min-height: 0;
+  }
+
+  .program-section-3 .program-assignment-row {
+    min-height: 0;
+  }
+
+  .program-final-song {
+    grid-template-columns: 70% 30%;
+    gap: 0;
+    align-items: start;
+    font-weight: 400 !important;
+  }
+
+  .program-final-prayer {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 9.8pt;
+    padding-inline: 1mm;
+  }
+
+  .program-final-prayer::first-line {
+    font-size: 9.8pt;
   }
 }

@@ -1,5 +1,4 @@
 import Modal from '../../components/common/Modal';
-import Tooltip from '../../components/common/Tooltip';
 import { useState } from 'react';
 import Input from '../../components/common/Input'
 import periodosController from '../../firebase/controllers/periodos.controller';
@@ -88,6 +87,11 @@ export default function Programs() {
 
 	const reunionesCompletas = reunionesDelPeriodo.filter(reunion => reunion.advertencias.length === 0).length
 	const reunionesPendientes = reunionesDelPeriodo.length - reunionesCompletas
+	const paginasImpresion = reunionesDelPeriodo.reduce((paginas, reunion, index) => {
+		if (index % 2 === 0) paginas.push([reunion])
+		else paginas[paginas.length - 1].push(reunion)
+		return paginas
+	}, [])
 
 	return (
 		<>
@@ -149,37 +153,29 @@ export default function Programs() {
 				<div className="w-full min-w-0 xl:max-w-3xl">
 					{selected &&
 						<div className="w-full">
-							<div className="card">
-								<div className="flex justify-start sm:justify-center gap-2 overflow-x-auto">
-									<Tooltip title="Imprimir" >
-										<button
-											className="icon-button xl"
-											onClick={imprimirPeriodo}
-											disabled={reunionesDelPeriodo.length === 0}
-										>
-											<i className="fas fa-print"></i>
-										</button>
-									</Tooltip>
-									<Tooltip title="Enviar" >
-										<button className="icon-button xl">
-											<i className="fas fa-paper-plane"></i>
-										</button>
-									</Tooltip>
-									<Tooltip title="Exportar" >
-										<button className="icon-button xl">
-											<i className="fas fa-download"></i>
-										</button>
-									</Tooltip>
-									<Tooltip title="Borrar" >
-										<button className="icon-button xl" onClick={abrirModalBorrar}>
-											<i className="fas fa-trash"></i>
-										</button>
-									</Tooltip>
-									<Tooltip title="Editar nombre de periodo" >
-										<button className="icon-button xl">
-											<i className="fas fa-edit"></i>
-										</button>
-									</Tooltip>
+							<div className="program-actions">
+								<div className="program-actions__summary">
+									<span className="program-actions__label">Periodo seleccionado</span>
+									<strong>{selected.periodo}</strong>
+								</div>
+								<div className="program-actions__buttons">
+									<button
+										className="program-actions__button program-actions__button--print"
+										onClick={imprimirPeriodo}
+										disabled={reunionesDelPeriodo.length === 0}
+										aria-label="Imprimir periodo"
+									>
+										<i className="fas fa-print"></i>
+										<span>Imprimir</span>
+									</button>
+									<button
+										className="program-actions__button program-actions__button--delete"
+										onClick={abrirModalBorrar}
+										aria-label="Borrar periodo"
+									>
+										<i className="fas fa-trash"></i>
+										<span>Borrar</span>
+									</button>
 								</div>
 							</div>
 						</div>
@@ -273,11 +269,41 @@ export default function Programs() {
 
 			{selected && reunionesDelPeriodo.length > 0 &&
 				<section className="period-print">
+					{paginasImpresion.map((pagina, pageIndex) => (
+						<div
+							className={`period-print-page ${pageIndex === 0 ? "period-print-page--first" : ""} ${pagina.length === 1 ? "period-print-page--single" : ""}`}
+							key={`print-page-${pageIndex}`}
+						>
+							{pageIndex === 0 && (
+								<div className="program-print-header period-print-header">
+									<p className="program-print-congregation">
+										{congregacion?.nombre ? `Cong. ${congregacion.nombre}` : "CongregaciÃ³n"}
+									</p>
+									<h2>Programa para la reuni&oacute;n de entre semana</h2>
+								</div>
+							)}
+							{pagina.map((reunion) => (
+								<div className="period-print-meeting" key={reunion.id}>
+									<Tablero
+										programa={reunion}
+										congregacion={congregacion}
+										congregacionNombre={congregacion?.nombre}
+										showPrintHeader={false}
+									/>
+								</div>
+							))}
+						</div>
+					))}
+				</section>
+			}
+
+			{selected && reunionesDelPeriodo.length < 0 &&
+				<section className="period-print">
 					<div className="program-print-header period-print-header">
 						<p className="program-print-congregation">
 							{congregacion?.nombre ? `Cong. ${congregacion.nombre}` : "Congregación"}
 						</p>
-						<h2>Programa para la reunión de entre semana</h2>
+						<h2>Programa para la reuni&oacute;n de entre semana</h2>
 					</div>
 					<p className="period-print-title">{selected.periodo}</p>
 					{reunionesDelPeriodo.map((reunion) => (
