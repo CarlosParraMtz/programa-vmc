@@ -13,26 +13,38 @@ export default function Login() {
 	const [googleLoading, setGoogleLoading] = useState(false)
 	const [onError, setOnError] = useState(null)
 	const navigate = useNavigate()
+	const setLoader = useSetAtom(atoms.loader)
 
 	useEffect(() => {
+		let isMounted = true
+		setLoader(true)
+
+		const completeLogin = (userData) => {
+			if (!isMounted) return
+
+			setUser(userData)
+			setOnError(null)
+			setLoader(false)
+			navigate("/dashboard")
+		}
+
 		auth.getGoogleRedirectResult()
 			.then((res) => {
 				if (res) {
-					setUser(res)
-					navigate("/dashboard")
-					setOnError(null)
+					completeLogin(res)
 					return
 				}
 
 				auth.checkLoginStatus()
 					.then((currentUser) => {
-						setUser(currentUser)
-						navigate("/dashboard")
-						setOnError(null)
+						completeLogin(currentUser)
 					})
-					.catch(() => {})
+					.catch(() => {
+						if (isMounted) setLoader(false)
+					})
 			})
 			.catch((error) => {
+				if (isMounted) setLoader(false)
 				console.error('Google redirect login error:', error)
 
 				const errorCode = error?.code || error
@@ -44,7 +56,12 @@ export default function Login() {
 
 				toast.error(errorMessages[errorCode] || `No se pudo completar el inicio con Google (${errorCode || 'error desconocido'})`)
 			})
-	}, [navigate, setUser])
+
+		return () => {
+			isMounted = false
+			setLoader(false)
+		}
+	}, [navigate, setLoader, setUser])
 
 	const goLogin = async (e) => {
 		e.preventDefault();
