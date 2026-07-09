@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import auth from '../../firebase/controllers/authController';
 import { useSetAtom } from 'jotai';
 import atoms from '../../jotai/atoms';
@@ -13,6 +13,29 @@ export default function Login() {
 	const [googleLoading, setGoogleLoading] = useState(false)
 	const [onError, setOnError] = useState(null)
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		auth.getGoogleRedirectResult()
+			.then((res) => {
+				if (!res) return
+
+				setUser(res)
+				navigate("/dashboard")
+				setOnError(null)
+			})
+			.catch((error) => {
+				console.error('Google redirect login error:', error)
+
+				const errorCode = error?.code || error
+				const errorMessages = {
+					'auth/unauthorized-domain': 'Este dominio no esta autorizado en Firebase para iniciar sesion con Google',
+					'auth/invalid-api-key': 'La configuracion de Firebase en produccion no es valida',
+					'auth/configuration-not-found': 'Falta configurar el proveedor de Google en Firebase',
+				}
+
+				toast.error(errorMessages[errorCode] || `No se pudo completar el inicio con Google (${errorCode || 'error desconocido'})`)
+			})
+	}, [navigate, setUser])
 
 	const goLogin = async (e) => {
 		e.preventDefault();
@@ -45,11 +68,6 @@ export default function Login() {
 	const goGoogleLogin = async () => {
 		setGoogleLoading(true)
 		await auth.loginWithGoogle()
-			.then((res) => {
-				setUser(res)
-				navigate("/dashboard")
-				setOnError(null)
-			})
 			.catch((error) => {
 				console.error('Google login error:', error)
 
@@ -58,13 +76,11 @@ export default function Login() {
 					'auth/unauthorized-domain': 'Este dominio no esta autorizado en Firebase para iniciar sesion con Google',
 					'auth/invalid-api-key': 'La configuracion de Firebase en produccion no es valida',
 					'auth/configuration-not-found': 'Falta configurar el proveedor de Google en Firebase',
-					'auth/popup-closed-by-user': 'Se cerro la ventana de Google antes de completar el inicio de sesion',
-					'auth/popup-blocked': 'El navegador bloqueo la ventana de inicio de sesion de Google',
 				}
 
 				toast.error(errorMessages[errorCode] || `No se pudo iniciar sesion con Google (${errorCode || 'error desconocido'})`)
+				setGoogleLoading(false)
 			})
-		setGoogleLoading(false)
 	}
 
 	return (

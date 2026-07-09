@@ -1,9 +1,10 @@
 import { auth } from "../config";
 import {
     createUserWithEmailAndPassword,
+    getRedirectResult,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
-    signInWithPopup,
+    signInWithRedirect,
     signOut,
     onAuthStateChanged,
 } from "firebase/auth";
@@ -54,9 +55,26 @@ function loginWithGoogle() {
     return new Promise((resolve, reject) => {
         const provider = new GoogleAuthProvider();
 
-        signInWithPopup(auth, provider)
-            .then(async ({ user }) => {
-                resolve(await buildUserPayload(user))
+        signInWithRedirect(auth, provider)
+            .then(() => {
+                resolve()
+            })
+            .catch((error) => {
+                reject(error)
+            });
+    })
+}
+
+function getGoogleRedirectResult() {
+    return new Promise((resolve, reject) => {
+        getRedirectResult(auth)
+            .then(async (result) => {
+                if (!result?.user) {
+                    resolve(null)
+                    return
+                }
+
+                resolve(await buildUserPayload(result.user))
             })
             .catch((error) => {
                 reject(error)
@@ -84,6 +102,7 @@ export default {
     login,
     signup,
     loginWithGoogle,
+    getGoogleRedirectResult,
     logout,
     checkLoginStatus
 }
