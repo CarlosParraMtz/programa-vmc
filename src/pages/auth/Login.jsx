@@ -17,11 +17,20 @@ export default function Login() {
 	useEffect(() => {
 		auth.getGoogleRedirectResult()
 			.then((res) => {
-				if (!res) return
+				if (res) {
+					setUser(res)
+					navigate("/dashboard")
+					setOnError(null)
+					return
+				}
 
-				setUser(res)
-				navigate("/dashboard")
-				setOnError(null)
+				auth.checkLoginStatus()
+					.then((currentUser) => {
+						setUser(currentUser)
+						navigate("/dashboard")
+						setOnError(null)
+					})
+					.catch(() => {})
 			})
 			.catch((error) => {
 				console.error('Google redirect login error:', error)
@@ -68,6 +77,14 @@ export default function Login() {
 	const goGoogleLogin = async () => {
 		setGoogleLoading(true)
 		await auth.loginWithGoogle()
+			.then((res) => {
+				if (!res) return
+
+				setUser(res)
+				navigate("/dashboard")
+				setOnError(null)
+				setGoogleLoading(false)
+			})
 			.catch((error) => {
 				console.error('Google login error:', error)
 

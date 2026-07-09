@@ -4,6 +4,7 @@ import {
     getRedirectResult,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
+    signInWithPopup,
     signInWithRedirect,
     signOut,
     onAuthStateChanged,
@@ -54,10 +55,22 @@ function signup(data) {
 function loginWithGoogle() {
     return new Promise((resolve, reject) => {
         const provider = new GoogleAuthProvider();
+        const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+        if (isLocalhost) {
+            signInWithPopup(auth, provider)
+                .then(async ({ user }) => {
+                    resolve(await buildUserPayload(user))
+                })
+                .catch((error) => {
+                    reject(error)
+                });
+            return
+        }
 
         signInWithRedirect(auth, provider)
             .then(() => {
-                resolve()
+                resolve(null)
             })
             .catch((error) => {
                 reject(error)
