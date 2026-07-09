@@ -1315,8 +1315,33 @@ a {
   &__actions {
     width: min(920px, 100%);
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     gap: 10px;
+  }
+
+  &__week-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__nav-button {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: white;
+    color: $color_dark;
+    box-shadow: $shadow-card;
+    transition: all 200ms ease;
+
+    &:hover {
+      background: $color_main;
+      color: $color_white;
+    }
   }
 
   &__sheet {
@@ -1347,6 +1372,35 @@ a {
     margin-top: 16px;
     border-top: 1px solid #ddd;
     padding-top: 12px;
+  }
+
+  &__empty {
+    min-height: 260px;
+    border: 1px dashed rgba(83, 84, 89, .28);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    padding: 28px;
+    text-align: center;
+    background: #fbfbfe;
+    color: $color_dark;
+
+    i {
+      color: $color_main;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0;
+      font-weight: 800;
+    }
+
+    span {
+      color: #6b7280;
+      font-size: .92rem;
+    }
   }
 }
 
@@ -1593,12 +1647,23 @@ a {
   }
 
   .public-program__actions {
-    justify-content: stretch;
+    align-items: stretch;
+    flex-direction: column;
 
     .btn,
     a {
       flex: 1 1 0;
     }
+  }
+
+  .public-program__week-controls {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+  }
+
+  .public-program__nav-button {
+    width: 44px;
+    height: 44px;
   }
 
   .public-program__sheet {

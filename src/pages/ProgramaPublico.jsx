@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import Tablero from "../components/dashboard/Tablero";
@@ -28,43 +28,44 @@ function getWeekKey(value) {
   return date ? getDia(getLunesAnterior(date)) : null;
 }
 
+function addWeeks(value, weeks) {
+  const date = parseLocalDate(value);
+  if (!date) return getWeekKey(new Date());
+  date.setDate(date.getDate() + weeks * 7);
+  return getDia(getLunesAnterior(date));
+}
+
 export default function ProgramaPublico() {
   const { congregacionId, reunionId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [semanaParamInicial] = useState(() => searchParams.get("semana"));
   const [programa, setPrograma] = useState(null);
+  const [reuniones, setReuniones] = useState([]);
   const [congregacion, setCongregacion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [semanaSeleccionada, setSemanaSeleccionada] = useState(() => {
+    const semanaParam = searchParams.get("semana");
+    return getWeekKey(semanaParam) || getWeekKey(new Date());
+  });
 
   useEffect(() => {
     async function cargarPrograma() {
       setLoading(true);
       setError("");
       try {
-        const [programaResultado, congregacionSnap] = await Promise.all([
-          reunionId
-            ? getDoc(doc(db, `congregaciones/${congregacionId}/reuniones`, reunionId))
-            : getDocs(collection(db, `congregaciones/${congregacionId}/reuniones`)),
+        const [reunionesSnap, congregacionSnap] = await Promise.all([
+          getDocs(collection(db, `congregaciones/${congregacionId}/reuniones`)),
           getDoc(doc(db, "congregaciones", congregacionId)),
         ]);
 
-        let reunion = null;
-        if (reunionId) {
-          if (programaResultado.exists()) {
-            reunion = { ...programaResultado.data(), id: programaResultado.id };
-          }
-        } else {
-          const semanaActual = getWeekKey(new Date());
-          reunion = programaResultado.docs
-            .map((documento) => ({ ...documento.data(), id: documento.id }))
-            .find((item) => getWeekKey(item.fecha) === semanaActual);
-        }
+        const reunionesCargadas = reunionesSnap.docs.map((documento) => ({ ...documento.data(), id: documento.id }));
+        const reunionInicial = reunionId ? reunionesCargadas.find((item) => item.id === reunionId) : null;
 
-        if (!reunion) {
-          setError("No se encontro este programa.");
-          return;
+        setReuniones(reunionesCargadas);
+        if (!semanaParamInicial && reunionInicial) {
+          setSemanaSeleccionada(getWeekKey(reunionInicial.fecha) || getWeekKey(new Date()));
         }
-
-        setPrograma(reunion);
         setCongregacion(congregacionSnap.exists() ? congregacionSnap.data() : null);
       } catch (e) {
         console.error(e);
@@ -75,7 +76,30 @@ export default function ProgramaPublico() {
     }
 
     cargarPrograma();
-  }, [congregacionId, reunionId]);
+  }, [congregacionId, reunionId, semanaParamInicial]);
+
+  useEffect(() => {
+    const semanaParam = searchParams.get("semana");
+    if (semanaParam) {
+      setSemanaSeleccionada(getWeekKey(semanaParam) || getWeekKey(new Date()));
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    setPrograma(reuniones.find((item) => getWeekKey(item.fecha) === semanaSeleccionada) || null);
+  }, [reuniones, semanaSeleccionada]);
+
+  const cambiarSemana = (weeks) => {
+    const nuevaSemana = addWeeks(semanaSeleccionada, weeks);
+    setSemanaSeleccionada(nuevaSemana);
+    setSearchParams({ semana: nuevaSemana });
+  };
+
+  const volverAEstaSemana = () => {
+    const semanaActual = getWeekKey(new Date());
+    setSemanaSeleccionada(semanaActual);
+    setSearchParams({});
+  };
 
   if (loading) {
     return <div className="public-program"><p>Cargando programa...</p></div>;
@@ -95,6 +119,17 @@ export default function ProgramaPublico() {
   return (
     <main className="public-program">
       <div className="public-program__actions no-print">
+        <div className="public-program__week-controls">
+          <button className="public-program__nav-button" onClick={() => cambiarSemana(-1)} aria-label="Semana anterior">
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button className="btn gray" onClick={volverAEstaSemana}>
+            Volver a esta semana
+          </button>
+          <button className="public-program__nav-button" onClick={() => cambiarSemana(1)} aria-label="Semana siguiente">
+            <i className="fas fa-chevron-right"></i>
+          </button>
+        </div>
         <button className="btn main" onClick={() => window.print()}>
           <i className="fas fa-print mr-2"></i>
           Imprimir
@@ -105,16 +140,26 @@ export default function ProgramaPublico() {
         <header className="public-program__header">
           <p>{congregacion?.nombre ? `Cong. ${congregacion.nombre}` : "Congregacion"}</p>
           <h1>Programa para la reunion de entre semana</h1>
-          <h2>Semana {formatearRangoSemanal(programa.fecha)}</h2>
+          <h2>Semana {formatearRangoSemanal(semanaSeleccionada)}</h2>
         </header>
 
-        <Tablero programa={programa} congregacion={congregacion} congregacionNombre={congregacion?.nombre} />
+        {programa ? (
+          <Tablero programa={programa} congregacion={congregacion} congregacionNombre={congregacion?.nombre} />
+        ) : (
+          <div className="public-program__empty">
+            <i className="fas fa-calendar-xmark"></i>
+            <p>No hay una reunion programada para esta semana.</p>
+            <span>Puedes seguir navegando a semanas anteriores o siguientes.</span>
+          </div>
+        )}
 
-        <footer className="public-program__footer">
-          {getPersonName(programa.oracionFinal) &&
+        {programa && (
+          <footer className="public-program__footer">
+            {getPersonName(programa.oracionFinal) &&
             <p><strong>Oracion final:</strong> {getPersonName(programa.oracionFinal)}</p>
-          }
-        </footer>
+            }
+          </footer>
+        )}
       </section>
     </main>
   );
