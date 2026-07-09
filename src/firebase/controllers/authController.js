@@ -59,7 +59,7 @@ function loginWithGoogle() {
                 resolve(await buildUserPayload(user))
             })
             .catch((error) => {
-                reject(error.code)
+                reject(error)
             });
     })
 }

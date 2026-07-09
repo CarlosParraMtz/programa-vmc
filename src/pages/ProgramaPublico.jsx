@@ -99,7 +99,6 @@ export default function ProgramaPublico() {
           <i className="fas fa-print mr-2"></i>
           Imprimir
         </button>
-        <Link to="/dashboard" className="btn gray">Dashboard</Link>
       </div>
 
       <section className="public-program__sheet">

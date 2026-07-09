@@ -50,8 +50,19 @@ export default function Login() {
 				navigate("/dashboard")
 				setOnError(null)
 			})
-			.catch(() => {
-				toast.error('No se pudo iniciar sesion con Google')
+			.catch((error) => {
+				console.error('Google login error:', error)
+
+				const errorCode = error?.code || error
+				const errorMessages = {
+					'auth/unauthorized-domain': 'Este dominio no esta autorizado en Firebase para iniciar sesion con Google',
+					'auth/invalid-api-key': 'La configuracion de Firebase en produccion no es valida',
+					'auth/configuration-not-found': 'Falta configurar el proveedor de Google en Firebase',
+					'auth/popup-closed-by-user': 'Se cerro la ventana de Google antes de completar el inicio de sesion',
+					'auth/popup-blocked': 'El navegador bloqueo la ventana de inicio de sesion de Google',
+				}
+
+				toast.error(errorMessages[errorCode] || `No se pudo iniciar sesion con Google (${errorCode || 'error desconocido'})`)
 			})
 		setGoogleLoading(false)
 	}
