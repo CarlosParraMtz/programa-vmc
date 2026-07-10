@@ -33,7 +33,7 @@ export default function TableroEdicion({ useReunion }) {
   const mostrarSuperintendenteComoNombrado = !!(
     reunion?.semanaVisita &&
     superintendenteCircuito &&
-    modalPersonas?.tipo === "asignacion"
+    (modalPersonas?.tipo === "asignacion" || modalPersonas?.field === "oracionFinal")
   );
   const superintendenteOpcion = mostrarSuperintendenteComoNombrado
     ? {

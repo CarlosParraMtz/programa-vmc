@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { db } from "../firebase/config";
 import Tablero from "../components/dashboard/Tablero";
 import formatearRangoSemanal from "../functions/formatearRangoSemanal";
-import { getPersonName } from "../functions/programHelpers";
+//import { getPersonName } from "../functions/programHelpers";
 import getDia from "../functions/getDia";
 import getLunesAnterior from "../functions/getLunesAnterior";
 
@@ -171,9 +171,7 @@ export default function ProgramaPublico() {
 
         {programa && (
           <footer className="public-program__footer">
-            {getPersonName(programa.oracionFinal) &&
-              <p><strong>Oracion final:</strong> {getPersonName(programa.oracionFinal)}</p>
-            }
+            
           </footer>
         )}
         <div className="w-full flex items-center justify-center">
