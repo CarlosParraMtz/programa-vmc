@@ -20,6 +20,8 @@ const formInicial = {
     },
   ],
   ultimaSala: 0, //* Index de salas, 0 es Sala principal, 1 es sala B. Si hubiera sala C, sería 2
+  ultimaAsignacionPrincipal: null,
+  ultimoRol: null,
   ultimaAsignacion: null,
   ayudantes: [], //* Hay que ir agregando el id del ayudante cada que tiene uno
   ultimoTipo: 1, //* 1 Ayudante; 2 Demostración; 3 Lectura; 4 Discurso

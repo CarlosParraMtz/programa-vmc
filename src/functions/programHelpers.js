@@ -109,6 +109,65 @@ export function sortByOldestAssignment(people = [], role = null) {
   });
 }
 
+export function getStudentHistory(person = {}) {
+  let lastParticipation = null;
+  let lastRole = person.ultimoRol || null;
+  let lastRoom = Number.isInteger(person.ultimaSala) ? person.ultimaSala : null;
+  let lastMainAssignment = null;
+
+  (Array.isArray(person.fechas) ? person.fechas : []).forEach((room = {}, roomIndex) => {
+    (room.asignado || []).forEach((value) => {
+      const date = parseDateValue(value);
+      if (date && (!lastMainAssignment || date > lastMainAssignment)) {
+        lastMainAssignment = date;
+        lastRoom = roomIndex;
+      }
+      if (date && (!lastParticipation || date > lastParticipation)) {
+        lastParticipation = date;
+        lastRole = "asignado";
+      }
+    });
+    (room.ayudante || []).forEach((value) => {
+      const date = parseDateValue(value);
+      if (date && (!lastParticipation || date > lastParticipation)) {
+        lastParticipation = date;
+        lastRole = "ayudante";
+      }
+    });
+  });
+
+  return {
+    lastParticipation: lastParticipation || parseDateValue(person.ultimaAsignacion),
+    lastRole,
+    lastRoom,
+    lastMainAssignment,
+  };
+}
+
+export function sortStudentSuggestions(people = [], { role = "asignado", room = 0, useAuxRoom = false } = {}) {
+  return [...people].sort((a, b) => {
+    const historyA = getStudentHistory(a);
+    const historyB = getStudentHistory(b);
+    const desiredPreviousRole = role === "ayudante" ? "asignado" : "ayudante";
+    const roleRankA = historyA.lastRole === desiredPreviousRole ? 0 : 1;
+    const roleRankB = historyB.lastRole === desiredPreviousRole ? 0 : 1;
+    if (roleRankA !== roleRankB) return roleRankA - roleRankB;
+
+    if (role !== "ayudante" && useAuxRoom) {
+      const roomRankA = historyA.lastRoom != null && historyA.lastRoom !== room ? 0 : 1;
+      const roomRankB = historyB.lastRoom != null && historyB.lastRoom !== room ? 0 : 1;
+      if (roomRankA !== roomRankB) return roomRankA - roomRankB;
+    }
+
+    const dateA = historyA.lastParticipation;
+    const dateB = historyB.lastParticipation;
+    if (!dateA && !dateB) return (a.nombre || "").localeCompare(b.nombre || "");
+    if (!dateA) return -1;
+    if (!dateB) return 1;
+    return dateA - dateB || (a.nombre || "").localeCompare(b.nombre || "");
+  });
+}
+
 export function isStudentAssignment(asignacion = {}) {
   return asignacion.seccion === 2 || getAssignmentType(asignacion) === "lectura";
 }
@@ -188,12 +247,21 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
     const bucket = field === "ayudante" ? "ayudante" : "asignado";
     if (!fechas[salaIndex][bucket].includes(fecha)) fechas[salaIndex][bucket].push(fecha);
 
+    const previousAssignment = parseDateValue(current.ultimaAsignacion);
+    const isLatestParticipation = !previousAssignment || parseDateValue(fecha) >= previousAssignment;
+    const previousMainAssignment = parseDateValue(current.ultimaAsignacionPrincipal)
+      || getStudentHistory(current).lastMainAssignment;
+    const isLatestMainAssignment = field === "asignado"
+      && (!previousMainAssignment || parseDateValue(fecha) >= previousMainAssignment);
+
     matriculadosById.set(ref.id, {
       ...current,
       fechas,
-      ultimaSala: salaIndex,
-      ultimaAsignacion: fecha,
-      ultimoTipo: getAssignmentType(asignacion),
+      ultimaSala: isLatestMainAssignment ? salaIndex : current.ultimaSala,
+      ultimaAsignacionPrincipal: isLatestMainAssignment ? fecha : current.ultimaAsignacionPrincipal,
+      ultimaAsignacion: isLatestParticipation ? fecha : current.ultimaAsignacion,
+      ultimoRol: isLatestParticipation ? bucket : current.ultimoRol,
+      ultimoTipo: isLatestParticipation ? getAssignmentType(asignacion) : current.ultimoTipo,
       ayudantes: field === "asignado" && ayudante?.id
         ? Array.from(new Set([...(current.ayudantes || []), ayudante.id]))
         : current.ayudantes || [],

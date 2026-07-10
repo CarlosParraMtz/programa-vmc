@@ -15,6 +15,7 @@ import {
   isAuxRoomAssignment,
   isStudentAssignment,
   sortByOldestAssignment,
+  sortStudentSuggestions,
 } from "../../functions/programHelpers";
 import { puedePasarTipoAsignacion } from "../../constants/tiposAsignacionMatriculado";
 import { TIPOS_ASIGNACION_NOMBRADO, puedePasarTipoNombrado } from "../../constants/tiposAsignacionNombrado";
@@ -158,7 +159,11 @@ export default function TableroEdicion({ useReunion }) {
     if (personasPage === "MATRICULADOS") {
       const asignadoId = asignacion[target.sala === "B" ? "asignadoB" : "asignado"]?.id;
       const tipoAsignacion = getTipoAsignacionMatriculado(target);
-      return sortByOldestAssignment(matriculados)
+      return sortStudentSuggestions(matriculados, {
+        role: target.field.includes("ayudante") ? "ayudante" : "asignado",
+        room: target.sala === "B" ? 1 : 0,
+        useAuxRoom: usaSalaB,
+      })
         .filter((persona) => puedePasarTipoAsignacion(persona, tipoAsignacion))
         .filter((persona) => !target.field.includes("ayudante") || persona.id !== asignadoId);
     }

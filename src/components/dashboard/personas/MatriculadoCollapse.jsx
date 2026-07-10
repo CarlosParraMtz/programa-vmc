@@ -2,12 +2,15 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import useModal from "../../../hooks/useModal"
 import { getTiposAsignacionLabels } from "../../../constants/tiposAsignacionMatriculado"
+import { getStudentHistory } from "../../../functions/programHelpers"
 //import formatearFecha from "../../../functions/formatearFecha"
 
 export default function MatriculadoCollapse({ matriculado, onDelete = () => { }, onEdit = () => { }, onAdd = null, onAddAyudante = null }) {
   const [open, setOpen] = useState(false)
   const { modalConfirm } = useModal()
   const tiposAsignacion = getTiposAsignacionLabels(matriculado.tiposAsignacion || [])
+  const history = getStudentHistory(matriculado)
+  const ultimaFecha = history.lastParticipation?.toLocaleDateString("es-MX")
 
   if(open) {
     console.log(matriculado)
@@ -78,10 +81,14 @@ export default function MatriculadoCollapse({ matriculado, onDelete = () => { },
                   </div>
               }
             </div>
-            {matriculado.ultimaAsignacion &&
+            {ultimaFecha &&
               <>
                 <p><strong>Última asignación:</strong></p>
-                <p className="pl-5" >
+                <p className="pl-5">
+                  {ultimaFecha} · {history.lastRole === "ayudante" ? "Ayudante" : "Asignado"}
+                  {history.lastRole !== "ayudante" && history.lastRoom != null
+                    ? ` · ${history.lastRoom === 1 ? "Sala B" : "Sala principal"}`
+                    : ""}
                 </p>
               </>}
             <p><strong>Puede pasar:</strong></p>
