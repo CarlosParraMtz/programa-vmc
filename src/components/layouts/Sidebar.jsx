@@ -81,6 +81,14 @@ export default function Sidebar({ useOpen }) {
 
                 <div>
                     <div className="separator"></div>
+                    <NavLink className='sidebar_link' to="/dashboard/guia" onClick={cerrarMenu} >
+                        <div className="sidebar_link-icon">
+                            <i className="fas fa-compass"></i>
+                        </div>
+                        <div className="sidebar_link-text">
+                            <span>Guía de uso</span>
+                        </div>
+                    </NavLink>
                     <NavLink className='sidebar_link' to="/dashboard/config" onClick={cerrarMenu} >
                         <div className="sidebar_link-icon">
                             <i className="fas fa-cog"></i>

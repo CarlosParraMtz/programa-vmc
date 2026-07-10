@@ -13,6 +13,7 @@ import Signup from '../pages/auth/Signup'
 import CargaReuniones from '../pages/CargaReuniones'
 import ProgramaPublico from '../pages/ProgramaPublico'
 import Home from '../pages/Home';
+import GuiaUso from '../pages/dashboard/GuiaUso';
 
 export default function Router() {
     return useRoutes([
@@ -32,6 +33,7 @@ export default function Router() {
                         { path: "reuniones", element: <Meetings /> },
                         { path: "programas", element: <Programs /> },
                         { path: "personas", element: <Personas /> },
+                        { path: "guia", element: <GuiaUso /> },
                         { path: "config", element: <Config /> },
                     ]
                 },
