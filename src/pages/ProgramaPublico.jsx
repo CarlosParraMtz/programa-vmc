@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { db } from "../firebase/config";
 import Tablero from "../components/dashboard/Tablero";
 import formatearRangoSemanal from "../functions/formatearRangoSemanal";
@@ -44,6 +45,8 @@ export default function ProgramaPublico() {
   const [congregacion, setCongregacion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [direccion, setDireccion] = useState(0);
+  const reducirMovimiento = useReducedMotion();
   const [semanaSeleccionada, setSemanaSeleccionada] = useState(() => {
     const semanaParam = searchParams.get("semana");
     return getWeekKey(semanaParam) || getWeekKey(new Date());
@@ -91,12 +94,14 @@ export default function ProgramaPublico() {
 
   const cambiarSemana = (weeks) => {
     const nuevaSemana = addWeeks(semanaSeleccionada, weeks);
+    setDireccion(Math.sign(weeks));
     setSemanaSeleccionada(nuevaSemana);
     setSearchParams({ semana: nuevaSemana });
   };
 
   const volverAEstaSemana = () => {
     const semanaActual = getWeekKey(new Date());
+    setDireccion(semanaActual > semanaSeleccionada ? 1 : -1);
     setSemanaSeleccionada(semanaActual);
     setSearchParams({});
   };
@@ -123,7 +128,7 @@ export default function ProgramaPublico() {
           <button className="public-program__nav-button" onClick={() => cambiarSemana(-1)} aria-label="Semana anterior">
             <i className="fas fa-chevron-left"></i>
           </button>
-          <button className="btn gray" onClick={volverAEstaSemana}>
+          <button className="btn bg-gray-100 hover:bg-white" onClick={volverAEstaSemana}>
             Volver a esta semana
           </button>
           <button className="public-program__nav-button" onClick={() => cambiarSemana(1)} aria-label="Semana siguiente">
@@ -133,7 +138,21 @@ export default function ProgramaPublico() {
 
       </div>
 
-      <section className="public-program__sheet">
+      <AnimatePresence initial={false} mode="wait" custom={direccion}>
+      <motion.section
+        className="public-program__sheet"
+        key={semanaSeleccionada}
+        custom={direccion}
+        variants={{
+          enter: (direction) => ({ x: reducirMovimiento ? 0 : direction * 72, opacity: 0 }),
+          center: { x: 0, opacity: 1 },
+          exit: (direction) => ({ x: reducirMovimiento ? 0 : direction * -72, opacity: 0 }),
+        }}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{ duration: reducirMovimiento ? 0.12 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+      >
         <header className="public-program__header">
           <p>{congregacion?.nombre ? `Cong. ${congregacion.nombre}` : "Congregacion"}</p>
           <h1>Programa para la reunion de entre semana</h1>
@@ -163,7 +182,8 @@ export default function ProgramaPublico() {
             Imprimir
           </button>
         </div>
-      </section>
+      </motion.section>
+      </AnimatePresence>
     </main>
   );
 }
