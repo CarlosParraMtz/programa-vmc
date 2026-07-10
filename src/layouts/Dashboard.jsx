@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/layouts/Sidebar'
 import Header from '../components/layouts/Header'
 import { useAtom, useSetAtom } from 'jotai';
@@ -23,6 +23,8 @@ export default function Dashboard() {
   const [programas, setProgramas] = useAtom(atoms.programas)
   const setReuniones = useSetAtom(atoms.reuniones)
   const navigate = useNavigate()
+  const location = useLocation()
+  const mostrarHeader = location.pathname !== '/dashboard/guia'
 
   useEffect(() => {
 
@@ -140,7 +142,7 @@ export default function Dashboard() {
     <div className='dashboard'>
       <Sidebar useOpen={[open, setOpen]} />
       <div className={`dashboard_content ${open ? "open" : ""}`}>
-        <Header setOpen={setOpen} />
+        {mostrarHeader && <Header setOpen={setOpen} />}
         <Outlet />
       </div>
     </div>
