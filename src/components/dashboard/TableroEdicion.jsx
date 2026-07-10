@@ -157,7 +157,8 @@ export default function TableroEdicion({ useReunion }) {
 
     const asignacion = reunion.asignaciones[target.index];
     if (personasPage === "MATRICULADOS") {
-      const asignadoId = asignacion[target.sala === "B" ? "asignadoB" : "asignado"]?.id;
+      const asignado = asignacion[target.sala === "B" ? "asignadoB" : "asignado"];
+      const asignadoId = asignado?.id;
       const tipoAsignacion = getTipoAsignacionMatriculado(target);
       return sortStudentSuggestions(matriculados, {
         role: target.field.includes("ayudante") ? "ayudante" : "asignado",
@@ -165,7 +166,12 @@ export default function TableroEdicion({ useReunion }) {
         useAuxRoom: usaSalaB,
       })
         .filter((persona) => puedePasarTipoAsignacion(persona, tipoAsignacion))
-        .filter((persona) => !target.field.includes("ayudante") || persona.id !== asignadoId);
+        .filter((persona) => !target.field.includes("ayudante") || persona.id !== asignadoId)
+        .filter((persona) => (
+          !target.field.includes("ayudante")
+          || asignado?.genero == null
+          || persona.genero === asignado.genero
+        ));
     }
 
     const tipoAsignacion = getTipoAsignacionNombrado(target);
