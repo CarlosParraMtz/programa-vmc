@@ -130,10 +130,7 @@ export default function ProgramaPublico() {
             <i className="fas fa-chevron-right"></i>
           </button>
         </div>
-        <button className="btn main" onClick={() => window.print()}>
-          <i className="fas fa-print mr-2"></i>
-          Imprimir
-        </button>
+
       </div>
 
       <section className="public-program__sheet">
@@ -156,10 +153,16 @@ export default function ProgramaPublico() {
         {programa && (
           <footer className="public-program__footer">
             {getPersonName(programa.oracionFinal) &&
-            <p><strong>Oracion final:</strong> {getPersonName(programa.oracionFinal)}</p>
+              <p><strong>Oracion final:</strong> {getPersonName(programa.oracionFinal)}</p>
             }
           </footer>
         )}
+        <div className="w-full flex items-center justify-center">
+          <button className="btn main" onClick={() => window.print()}>
+            <i className="fas fa-print mr-2"></i>
+            Imprimir
+          </button>
+        </div>
       </section>
     </main>
   );

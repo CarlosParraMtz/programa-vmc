@@ -1,10 +1,10 @@
 import { meses } from "../../constants/meses";
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal";
-import { getFechaReunionDesdeSemana, parseLocalDate } from "../../functions/meetingDates";
+import { getFechaReunionDesdeSemana /* parseLocalDate */ } from "../../functions/meetingDates";
 import { getPersonName, hasAuxRoom, isAuxRoomAssignment } from "../../functions/programHelpers";
 
 export default function Tablero({ programa, congregacion = null, congregacionNombre = "", showPrintHeader = true }) {
-  const date = parseLocalDate(programa.fecha);
+  //const date = parseLocalDate(programa.fecha);
   const usaSalaB = hasAuxRoom(congregacion, programa);
   const presidente = getPersonName(programa.presidente) || "No asignado";
   const presidenteAuxiliar = usaSalaB ? getPersonName(programa.presidenteB) : "";
@@ -123,7 +123,6 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
         </div>
       </div>
 
-      <h3 className="program-screen-week text-lg sm:text-xl">Semana del {formatearRangoSemanal(date)}</h3>
 
       <span className="program-section-heading program-section-heading-1 bg-program-treasures w-full text-white px-4 sm:px-5 py-2 rounded-t-lg font-thin text-md">
         Tesoros de la Biblia
