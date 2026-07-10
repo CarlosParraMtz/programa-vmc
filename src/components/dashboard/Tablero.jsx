@@ -58,7 +58,6 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
                 <span className="program-assignment-name">{asignado}</span>
                 {ayudante && (
                   <span className="program-assignment-helper text-sm">
-                    <span className="program-assignment-helper-label"> / Ayudante: </span>
                     <span className="program-assignment-helper-separator"> / </span>
                     {ayudante}
                   </span>
