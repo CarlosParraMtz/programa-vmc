@@ -46,7 +46,7 @@ export default function Dashboard() {
       toast.info('Por favor, completa el perfil para continuar')
     }
 
-    if (typeof user.perfil.congregacion === "string" && user.perfil.congregacion.length > 0) {
+    if (user?.perfil?.congregacion && typeof user.perfil.congregacion === "string" && user.perfil.congregacion.length > 0) {
       getCongregacion(user.perfil.congregacion)
         .then(congregacion => setCongregacion(congregacion))
         .catch(() => toast.error("Ha habido un error al intentar obtener la congregación"))

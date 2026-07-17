@@ -189,7 +189,7 @@ export default function Config() {
                 ? <form onSubmit={submitUser}>
                   <Input
                     name="config-user"
-                    label="¿Cómo se llama?"
+                    label="¿Cómo te llamas?"
                     value={formUser.nombre}
                     onChange={e => setFormUser({ ...formUser, nombre: e.target.value })}
                     required

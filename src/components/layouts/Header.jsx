@@ -47,7 +47,7 @@ export default function Header({ setOpen }) {
                         <h3><b>Cong. {congregacion.nombre}</b></h3>
                     }
                     {
-                        user && <span>{user.perfil.nombre}</span>
+                        user?.perfil?.nombre && <span>{user.perfil.nombre}</span>
                     }
                 </div>
 
