@@ -301,13 +301,28 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
   reunion.asignaciones?.forEach((asignacion, index) => {
     if (isStudentAssignment(asignacion)) {
       touchMatriculado(asignacion.asignado, asignacion, "asignado", 0, asignacion.ayudante);
+      touchNombrado(
+        asignacion.asignado,
+        ["lectura", "discurso"].includes(getAssignmentType(asignacion))
+          ? getAssignmentType(asignacion)
+          : "demostracion"
+      );
       touchMatriculado(asignacion.ayudante, asignacion, "ayudante", 0);
+      touchNombrado(asignacion.ayudante, "ayudante");
       if (usaSalaB && isAuxRoomAssignment(asignacion, index)) {
         touchMatriculado(asignacion.asignadoB, asignacion, "asignado", 1, asignacion.ayudanteB);
+        touchNombrado(
+          asignacion.asignadoB,
+          ["lectura", "discurso"].includes(getAssignmentType(asignacion))
+            ? getAssignmentType(asignacion)
+            : "demostracion"
+        );
         touchMatriculado(asignacion.ayudanteB, asignacion, "ayudante", 1);
+        touchNombrado(asignacion.ayudanteB, "ayudante");
       }
     } else {
       touchNombrado(asignacion.asignado, getNombradoRole(asignacion));
+      touchMatriculado(asignacion.asignado, asignacion, "asignado", 0);
     }
   });
 

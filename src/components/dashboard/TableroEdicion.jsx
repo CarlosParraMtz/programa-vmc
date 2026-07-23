@@ -69,7 +69,10 @@ export default function TableroEdicion({ useReunion }) {
     if (!target || target.tipo !== "asignacion") return null;
     if (target.field.includes("ayudante")) return "ayudante";
 
-    const assignmentType = getAssignmentType(reunion.asignaciones[target.index]);
+    const asignacion = reunion.asignaciones[target.index];
+    if (!isStudentAssignment(asignacion)) return null;
+
+    const assignmentType = getAssignmentType(asignacion);
     if (assignmentType === "lectura") return "lectura";
     if (assignmentType === "discurso") return "discurso";
     return "demostracion";
@@ -82,7 +85,16 @@ export default function TableroEdicion({ useReunion }) {
       return null;
     }
 
-    const role = getNombradoRole(reunion.asignaciones[target.index]);
+    const asignacion = reunion.asignaciones[target.index];
+    if (target.field.includes("ayudante")) return "ayudante";
+    if (isStudentAssignment(asignacion)) {
+      const assignmentType = getAssignmentType(asignacion);
+      if (assignmentType === "lectura") return "lectura";
+      if (assignmentType === "discurso") return "discurso";
+      return "demostracion";
+    }
+
+    const role = getNombradoRole(asignacion);
     return ["tesoros", "perlas", "analisis", "necesidades", "estudio"].includes(role) ? role : null;
   };
 
@@ -175,7 +187,8 @@ export default function TableroEdicion({ useReunion }) {
     }
 
     const tipoAsignacion = getTipoAsignacionNombrado(target);
-    return sortByOldestAssignment(nombradosSeleccionables, getNombradoRole(asignacion))
+    const role = isStudentAssignment(asignacion) ? null : getNombradoRole(asignacion);
+    return sortByOldestAssignment(nombradosSeleccionables, role)
       .filter((persona) => puedePasarTipoNombrado(persona, tipoAsignacion));
   };
 
@@ -412,13 +425,40 @@ export default function TableroEdicion({ useReunion }) {
           </div>
         }
 
-        <div className="flex justify-start overflow-x-auto">
-          <button className={`btn tab ${personasPage === "NOMBRADOS" ? "active" : ""} relative`} onClick={() => setPersonasPage("NOMBRADOS")}>Nombrados</button>
-          <button className={`btn tab ${personasPage === "MATRICULADOS" ? "active" : ""}`} onClick={() => setPersonasPage("MATRICULADOS")}>Estudiantes</button>
+        <div className="person-picker-tabs" role="tablist" aria-label="Tipo de persona">
+          <button
+            type="button"
+            id="tab-personas-nombrados"
+            role="tab"
+            aria-selected={personasPage === "NOMBRADOS"}
+            aria-controls="panel-personas-nombrados"
+            className={personasPage === "NOMBRADOS" ? "active" : ""}
+            onClick={() => setPersonasPage("NOMBRADOS")}
+          >
+            <i className="fas fa-user-tie" aria-hidden="true"></i>
+            Nombrados
+          </button>
+          <button
+            type="button"
+            id="tab-personas-matriculados"
+            role="tab"
+            aria-selected={personasPage === "MATRICULADOS"}
+            aria-controls="panel-personas-matriculados"
+            className={personasPage === "MATRICULADOS" ? "active" : ""}
+            onClick={() => setPersonasPage("MATRICULADOS")}
+          >
+            <i className="fas fa-users" aria-hidden="true"></i>
+            Matriculados
+          </button>
         </div>
 
         {personasPage === "NOMBRADOS" &&
-          <div className="p-2 sm:p-5">
+          <div
+            id="panel-personas-nombrados"
+            role="tabpanel"
+            aria-labelledby="tab-personas-nombrados"
+            className="p-2 sm:p-5"
+          >
             {nombradosSeleccionables.length === 0 &&
               <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
                 <p className="text-center text-gray-700">No hay nombrados agregados. Ve a la seccion de nombrados para administrar la lista.</p>
@@ -435,7 +475,12 @@ export default function TableroEdicion({ useReunion }) {
         }
 
         {personasPage === "MATRICULADOS" &&
-          <div className="p-2 sm:p-5">
+          <div
+            id="panel-personas-matriculados"
+            role="tabpanel"
+            aria-labelledby="tab-personas-matriculados"
+            className="p-2 sm:p-5"
+          >
             {matriculados.length === 0 &&
               <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
                 <p className="text-center text-gray-700">No hay matriculados agregados. Ve a la seccion de matriculados para administrar la lista.</p>

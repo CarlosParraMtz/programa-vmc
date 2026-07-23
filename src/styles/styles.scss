@@ -1145,6 +1145,7 @@ a {
 
     .header {
       position: sticky;
+      z-index: 40;
       background-color: $color_bg;
       top: 0;
       right: 0;
@@ -1487,6 +1488,22 @@ a {
   border: 1px solid rgba(83, 84, 89, .12);
   border-radius: 10px;
   background: #fbfaff;
+
+}
+
+.meeting-actions-sticky-shell {
+  position: sticky;
+  z-index: 30;
+  top: $header-height;
+  padding-block: 8px;
+  background: rgba(246, 250, 255, .94);
+  backdrop-filter: blur(10px);
+
+  .meeting-actions {
+    border-color: rgba(150, 95, 241, .25);
+    background: rgba(251, 250, 255, .98);
+    box-shadow: 0 8px 22px rgba(64, 45, 91, .16);
+  }
 }
 
 .meeting-action {
@@ -1561,6 +1578,358 @@ a {
     &:hover {
       border-color: rgba(220, 38, 38, .5);
       background: #fef2f2;
+    }
+  }
+}
+
+.person-picker-tabs {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(83, 84, 89, .15);
+  border-radius: 10px;
+  background: #eeedf2;
+
+  button {
+    min-height: 44px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #6d6874;
+    font-size: .82rem;
+    font-weight: 750;
+    cursor: pointer;
+    isolation: isolate;
+
+    &:hover {
+      color: #6f3ebc;
+      background: rgba(255, 255, 255, .55);
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba(103, 58, 183, .24);
+      outline-offset: -2px;
+    }
+
+    &.active {
+      background: #fff;
+      color: #6f3ebc;
+      box-shadow: 0 2px 7px rgba(64, 45, 91, .14);
+    }
+  }
+}
+
+.people-page-header {
+  padding: 12px 16px 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+
+  h1 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 3px;
+    color: #6b7280;
+    font-size: .86rem;
+  }
+}
+
+.people-view-switch {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(83, 84, 89, .14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .68);
+
+  button {
+    min-height: 38px;
+    border-radius: 7px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #68656f;
+    font-size: .8rem;
+    font-weight: 700;
+    transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+
+    &:hover {
+      color: #6f3ebc;
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba(103, 58, 183, .22);
+      outline-offset: 2px;
+    }
+
+    &.active {
+      background: #fff;
+      color: #6f3ebc;
+      box-shadow: 0 2px 7px rgba(64, 45, 91, .12);
+    }
+  }
+}
+
+.people-tables {
+  padding: 0 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.people-table-card {
+  overflow: hidden;
+  border: 1px solid rgba(83, 84, 89, .12);
+  border-radius: 10px;
+  background: $color_white;
+  box-shadow: $shadow-card;
+
+  &__header {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid rgba(83, 84, 89, .1);
+
+    > span {
+      flex-shrink: 0;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #eee6fa;
+      color: #7042ad;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+  }
+
+  &__toggle {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: $color_dark;
+    text-align: left;
+
+    > i {
+      width: 18px;
+      color: #8150ca;
+      font-size: .78rem;
+      text-align: center;
+    }
+
+    > span {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    strong {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    small {
+      margin-top: 2px;
+      color: #77727e;
+      font-size: .78rem;
+      font-weight: 400;
+    }
+
+    &:hover strong {
+      color: #6f3ebc;
+    }
+
+    &:focus-visible {
+      border-radius: 5px;
+      outline: 3px solid rgba(103, 58, 183, .22);
+      outline-offset: 4px;
+    }
+  }
+
+  &--collapsed &__header {
+    border-bottom-color: transparent;
+  }
+
+  &__empty {
+    padding: 40px 20px;
+    color: #77727e;
+    text-align: center;
+  }
+}
+
+.people-table-scroll {
+  width: 100%;
+  max-height: 520px;
+  overflow: auto;
+}
+
+.people-table-sort {
+  min-height: 42px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(83, 84, 89, .09);
+  background: #fbfaff;
+  color: #716a7a;
+  font-size: .72rem;
+
+  > div {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  > div > i {
+    flex-shrink: 0;
+    color: #8150ca;
+  }
+
+  button {
+    flex-shrink: 0;
+    border-radius: 6px;
+    padding: 5px 8px;
+    color: #7042ad;
+    font-weight: 800;
+
+    &:hover {
+      background: #eee6fa;
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgba(103, 58, 183, .22);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.people-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: $color_dark;
+  font-size: .78rem;
+
+  th {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    border-bottom: 1px solid #ded8e7;
+    background: #f2edf8;
+    color: #5d536b;
+    text-align: left;
+    white-space: nowrap;
+
+    button {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 800;
+      text-align: left;
+
+      &:hover {
+        background: #e8def4;
+        color: #603698;
+      }
+
+      &:focus-visible {
+        outline: 3px solid rgba(103, 58, 183, .24);
+        outline-offset: -3px;
+      }
+    }
+
+    i {
+      color: #9676bc;
+      font-size: .7rem;
+    }
+  }
+
+  td {
+    max-width: 260px;
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(83, 84, 89, .09);
+    background: $color_white;
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: #fbfaff;
+  }
+
+  tbody tr:hover td {
+    background: #f4effa;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  &__sticky {
+    position: sticky;
+    z-index: 1;
+    left: 0;
+    min-width: 190px;
+    box-shadow: 1px 0 0 rgba(83, 84, 89, .1);
+  }
+
+  th#{&}__sticky {
+    z-index: 3;
+  }
+
+  &__name {
+    font-weight: 750;
+  }
+
+  &__person {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    strong {
+      font-weight: 750;
+    }
+
+    small {
+      color: #81798a;
+      font-size: .68rem;
+      font-weight: 500;
+    }
+  }
+
+  &__sort-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    b {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: #8150ca;
+      color: #fff;
+      font-size: .62rem;
     }
   }
 }
@@ -1675,6 +2044,12 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     border-radius: 8px;
     padding: 10px;
+
+  }
+
+  .meeting-actions-sticky-shell {
+    top: 68px;
+    padding-block: 6px;
   }
 
   .meeting-action {
@@ -1688,6 +2063,61 @@ a {
       grid-row: 1;
       min-height: 48px;
       font-size: .82rem;
+    }
+  }
+
+  .people-page-header {
+    padding: 12px 12px 14px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .people-view-switch {
+    width: 100%;
+
+    button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+  .people-tables {
+    padding: 0 12px 16px;
+    gap: 12px;
+  }
+
+  .people-table-card {
+    border-radius: 8px;
+
+    &__header {
+      align-items: flex-start;
+      padding: 14px;
+
+      p {
+        max-width: 230px;
+      }
+    }
+  }
+
+  .people-table-scroll {
+    max-height: 65vh;
+  }
+
+  .people-table-sort {
+    align-items: flex-start;
+
+    > div {
+      align-items: flex-start;
+    }
+  }
+
+  .people-table {
+    font-size: .74rem;
+
+    &__sticky {
+      min-width: 155px;
+      max-width: 155px;
     }
   }
 

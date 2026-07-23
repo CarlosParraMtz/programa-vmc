@@ -327,7 +327,7 @@ export default function Meetings() {
           }
 
           <div className="card">
-            <div className="card_title">
+            <div className={`card_title ${edicion ? "meeting-actions-sticky-shell" : ""}`}>
               {seleccion &&
                 <div className="meeting-actions" aria-label="Acciones de la reunión">
                   {
