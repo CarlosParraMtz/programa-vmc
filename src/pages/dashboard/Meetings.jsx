@@ -40,6 +40,7 @@ export default function Meetings() {
   const { setLoader } = useLoader()
   const [agregarReunionesTab, setAgregarReunionesTab] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [generandoAsignaciones, setGenerandoAsignaciones] = useState(false)
 
   const [edicion, setEdicion] = useState(null)
   const [asignadosVacios, setAsignadosVacios] = useState(false)
@@ -131,13 +132,22 @@ export default function Meetings() {
   }
 
   const descargarAsignacionesEstudiantiles = async () => {
-    if (!seleccion) return
-    const total = await downloadStudentAssignmentCardsPng(seleccion, congregacion)
-    if (total === 0) {
-      toast.error("No hay asignaciones estudiantiles para generar")
-      return
+    if (!seleccion || generandoAsignaciones) return
+
+    setGenerandoAsignaciones(true)
+    try {
+      const total = await downloadStudentAssignmentCardsPng(seleccion, congregacion)
+      if (total === 0) {
+        toast.error("No hay asignaciones estudiantiles para generar")
+        return
+      }
+      toast.success(`Se generaron ${total} PNG en un archivo ZIP`)
+    } catch (error) {
+      console.error(error)
+      toast.error("No se pudieron generar las hojas de asignación")
+    } finally {
+      setGenerandoAsignaciones(false)
     }
-    toast.success(`Se generaron ${total} PNG en un archivo ZIP`)
   }
 
 
@@ -319,34 +329,51 @@ export default function Meetings() {
           <div className="card">
             <div className="card_title">
               {seleccion &&
-                <div className="meeting-actions rounded-xl bg-gray-300" >
+                <div className="meeting-actions" aria-label="Acciones de la reunión">
                   {
                     edicion
                       ? <>
                         <button onClick={cancelarEdicion}
-                          className="w-10 h-10 hover:text-white hover:bg-violet-400 rounded-l-xl bg-red-300">
-                          <i className="fas fa-cancel" ></i>
+                          className="meeting-action meeting-action--secondary">
+                          <i className="fas fa-xmark" aria-hidden="true"></i>
+                          <span>Cancelar</span>
                         </button>
-                        {/*                         <button className="w-10 h-10 hover:text-white  hover:bg-primary">
-                          <i className="fas fa-save" ></i>
-                        </button> */}
                         <button
                           onClick={guardarEdicion}
                           disabled={loading}
-                          className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl disabled:opacity-50"
+                          className="meeting-action meeting-action--primary"
                         >
-                          <i className="fas fa-save" ></i>
+                          <i className="fas fa-save" aria-hidden="true"></i>
+                          <span>Guardar cambios</span>
                         </button>
                       </>
                       : <>
                         <button onClick={activarEdicion}
-                          className="w-10 h-10 hover:text-white hover:bg-violet-400 rounded-l-xl">
-                          <i className="fas fa-edit" ></i>
+                          className="meeting-action meeting-action--secondary">
+                          <i className="fas fa-edit" aria-hidden="true"></i>
+                          <span>Editar</span>
                         </button>
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400" onClick={() => window.print()}>
-                          <i className="fas fa-print" ></i>
+                        <button className="meeting-action meeting-action--secondary" onClick={() => window.print()}>
+                          <i className="fas fa-print" aria-hidden="true"></i>
+                          <span>Imprimir</span>
                         </button>
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400"
+                        <button className="meeting-action meeting-action--secondary" onClick={copiarEnlacePublico}>
+                          <i className="fas fa-paper-plane" aria-hidden="true"></i>
+                          <span>Compartir</span>
+                        </button>
+                        <button
+                          className="meeting-action meeting-action--primary meeting-action--assignments"
+                          onClick={descargarAsignacionesEstudiantiles}
+                          disabled={generandoAsignaciones}
+                          aria-busy={generandoAsignaciones}
+                        >
+                          {generandoAsignaciones
+                            ? <LoaderIcon className="meeting-action__loader" />
+                            : <i className="fas fa-id-badge" aria-hidden="true"></i>
+                          }
+                          <span>{generandoAsignaciones ? "Generando hojas…" : "Generar hojas de asignación"}</span>
+                        </button>
+                        <button className="meeting-action meeting-action--danger"
                           onClick={() => modalConfirm({
                             title: "¿Seguro que desea borrar esta reunión y sus datos?",
                             text: "Esta acción es imposible deshacerla",
@@ -354,13 +381,8 @@ export default function Meetings() {
                             textButton: "Borrar",
                           })}
                         >
-                          <i className="fas fa-trash" ></i>
-                        </button>
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 " onClick={copiarEnlacePublico}>
-                          <i className="fas fa-paper-plane" ></i>
-                        </button>
-                        <button className="w-10 h-10 hover:text-white  hover:bg-violet-400 rounded-r-xl" onClick={descargarAsignacionesEstudiantiles}>
-                          <i className="fas fa-id-badge" ></i>
+                          <i className="fas fa-trash" aria-hidden="true"></i>
+                          <span>Borrar</span>
                         </button>
                       </>
                   }

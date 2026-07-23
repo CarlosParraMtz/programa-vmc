@@ -1477,15 +1477,92 @@ a {
 }
 
 .meeting-actions {
+  width: 100%;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(83, 84, 89, .12);
+  border-radius: 10px;
+  background: #fbfaff;
 }
 
-.meeting-actions button {
-  display: grid;
-  place-items: center;
-  flex: 0 0 40px;
+.meeting-action {
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: $color_dark;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+
+  i {
+    font-size: .95rem;
+  }
+
+  &__loader {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    border-color: rgba(255, 255, 255, .45);
+    border-right-color: $color_white;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .55;
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba(103, 58, 183, .22);
+    outline-offset: 2px;
+  }
+
+  &--secondary {
+    border-color: rgba(83, 84, 89, .18);
+    background: #fff;
+
+    &:hover {
+      border-color: rgba(150, 95, 241, .45);
+      background: #f5f0fc;
+      color: #6f3ebc;
+    }
+  }
+
+  &--primary {
+    background: $color_main;
+    color: $color_white;
+    box-shadow: 0 6px 14px rgba(103, 58, 183, .14);
+
+    &:not(:disabled):hover {
+      background: #7b45d7;
+      box-shadow: 0 8px 18px rgba(103, 58, 183, .2);
+    }
+  }
+
+  &--assignments {
+    padding-inline: 15px;
+  }
+
+  &--danger {
+    border-color: rgba(220, 38, 38, .3);
+    background: #fff;
+    color: #b91c1c;
+
+    &:hover {
+      border-color: rgba(220, 38, 38, .5);
+      background: #fef2f2;
+    }
+  }
 }
 
 @media (max-width: 767px) {
@@ -1594,15 +1671,24 @@ a {
 
   .meeting-actions {
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     border-radius: 8px;
-    overflow-x: auto;
-    justify-content: flex-start;
+    padding: 10px;
   }
 
-  .meeting-actions button {
-    flex-basis: 44px;
-    min-width: 44px;
-    min-height: 42px;
+  .meeting-action {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 9px;
+    white-space: normal;
+
+    &--assignments {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      min-height: 48px;
+      font-size: .82rem;
+    }
   }
 
   .meeting-editor {
