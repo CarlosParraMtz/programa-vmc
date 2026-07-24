@@ -25,6 +25,7 @@ export default function Programs() {
 	const [periodoText, setPeriodoText] = useState("")
 	const [sending, setSending] = useState(false)
 	const [modalBorrar, setModalBorrar] = useState(false)
+	const [exportingPdf, setExportingPdf] = useState(false)
 
 	//Funciones
 	const abrirDialogAgregar = () => setDialogAgregar(true)
@@ -55,9 +56,36 @@ export default function Programs() {
 		setPeriodo(data)
 		setSelected(data)
 	}
-	const imprimirPeriodo = () => {
+	const exportarPeriodoPdf = async () => {
 		if (!selected || reunionesDelPeriodo.length === 0) return
-		window.print()
+
+		setExportingPdf(true)
+		try {
+			const nombreArchivo = `Programa VMC - ${selected.periodo}`
+			if (window.desktopAPI?.exportPeriodPdf) {
+				const result = await window.desktopAPI.exportPeriodPdf(nombreArchivo)
+				if (!result.canceled) toast.success("El programa se exportó correctamente a PDF")
+				return
+			}
+
+			if (document.fonts?.ready) await document.fonts.ready
+			await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+
+			const tituloOriginal = document.title
+			document.title = nombreArchivo
+			try {
+				window.print()
+			}
+			finally {
+				document.title = tituloOriginal
+			}
+		}
+		catch (error) {
+			toast.error(error?.message || "No se pudo exportar el programa a PDF")
+		}
+		finally {
+			setExportingPdf(false)
+		}
 	}
 	const onSubmit = async (e) => {
 		e.preventDefault()
@@ -161,12 +189,15 @@ export default function Programs() {
 								<div className="program-actions__buttons">
 									<button
 										className="program-actions__button program-actions__button--print"
-										onClick={imprimirPeriodo}
-										disabled={reunionesDelPeriodo.length === 0}
-										aria-label="Imprimir periodo"
+										onClick={exportarPeriodoPdf}
+										disabled={reunionesDelPeriodo.length === 0 || exportingPdf}
+										aria-label="Exportar periodo a PDF"
 									>
-										<i className="fas fa-print"></i>
-										<span>Imprimir</span>
+										{exportingPdf
+											? <LoaderIcon />
+											: <i className="fas fa-file-pdf"></i>
+										}
+										<span>{exportingPdf ? "Exportando..." : "Exportar PDF"}</span>
 									</button>
 									<button
 										className="program-actions__button program-actions__button--delete"

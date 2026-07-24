@@ -22,3 +22,28 @@ directamente al sitio.
 
 Como desarrollador de esta aplicación no me hago responsable del uso
 que se le dé, solo de su correcto funcionamiento.
+
+## Desarrollo y distribución
+
+La versión web y la versión para Windows comparten el mismo código:
+
+```bash
+# Servidor web de desarrollo
+npm run dev
+
+# Build web para Vercel u otro hosting
+npm run build
+
+# Aplicación de escritorio en modo desarrollo
+npm run desktop:dev
+
+# Probar localmente el build de escritorio
+npm run desktop:preview
+
+# Crear el instalador de Windows en release/
+npm run desktop:build
+```
+
+`VITE_PUBLIC_WEB_URL` debe contener la dirección de la versión web.
+La aplicación de escritorio usa esa dirección cuando genera enlaces
+públicos de los programas.

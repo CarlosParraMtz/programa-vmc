@@ -117,8 +117,16 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
           <p className="program-song">Palabras de introducción (1 min.)</p>
         </div>
         <div className="program-print-presidents">
-          <p><span>Presidente:</span> {presidente}</p>
-          {presidenteAuxiliar && <p><span>Presidente de sala auxiliar:</span> {presidenteAuxiliar}</p>}
+          <p>
+            <span className="program-print-president-label">Presidente:</span>
+            <span className="program-print-president-name">{presidente}</span>
+          </p>
+          {presidenteAuxiliar && (
+            <p>
+              <span className="program-print-president-label">Presidente de sala auxiliar:</span>
+              <span className="program-print-president-name">{presidenteAuxiliar}</span>
+            </p>
+          )}
         </div>
       </div>
 

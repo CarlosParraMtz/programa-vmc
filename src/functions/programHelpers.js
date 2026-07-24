@@ -174,12 +174,14 @@ export function isStudentAssignment(asignacion = {}) {
 
 export function getPublicProgramUrl(congregacionId, reunionId) {
   if (!congregacionId || !reunionId) return "";
-  return `${window.location.origin}/programa/${congregacionId}/${reunionId}`;
+  const publicOrigin = (import.meta.env.VITE_PUBLIC_WEB_URL || window.location.origin).replace(/\/+$/, "");
+  return `${publicOrigin}/programa/${congregacionId}/${reunionId}`;
 }
 
 export function getCurrentWeekPublicProgramUrl(congregacionId) {
   if (!congregacionId) return "";
-  return `${window.location.origin}/programa/${congregacionId}`;
+  const publicOrigin = (import.meta.env.VITE_PUBLIC_WEB_URL || window.location.origin).replace(/\/+$/, "");
+  return `${publicOrigin}/programa/${congregacionId}`;
 }
 
 export function validateProgram(programa, congregacion = {}) {

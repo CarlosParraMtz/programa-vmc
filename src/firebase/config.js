@@ -5,7 +5,8 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-const authDomain = import.meta.env.PROD && !isLocalhost
+const isDesktop = window.desktopAPI?.isDesktop === true;
+const authDomain = import.meta.env.PROD && !isLocalhost && !isDesktop
     ? window.location.hostname
     : import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
 
@@ -21,6 +22,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+export const analytics = isDesktop ? null : getAnalytics(app);
 export const db = getFirestore(app)
 export const auth = getAuth(app);
