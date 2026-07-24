@@ -16,7 +16,7 @@
     "build": "vite build",
     "desktop:dev": "concurrently -k \"vite --host localhost\" \"wait-on http://localhost:5173 && electron .\"",
     "desktop:preview": "npm run build && electron .",
-    "desktop:build": "npm run build && electron-builder --win nsis",
+    "desktop:build": "npm run build && electron-builder --win nsis --publish never",
     "release:patch": "npm version patch && git push --follow-tags",
     "release:minor": "npm version minor && git push --follow-tags",
     "release:major": "npm version major && git push --follow-tags",
