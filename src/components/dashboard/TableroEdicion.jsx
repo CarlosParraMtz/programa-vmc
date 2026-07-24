@@ -8,17 +8,58 @@ import CrudNombrados from "./CrudNombrados";
 import CrudMatriculados from "./CrudMatriculados";
 import {
   getAssignmentType,
+  getDraftAssignedPersonIds,
+  getLastPrayerDate,
   getNombradoRole,
   getPersonName,
   getPersonRef,
   hasAuxRoom,
   isAuxRoomAssignment,
   isStudentAssignment,
+  moveAssignedPeopleToEnd,
   sortByOldestAssignment,
+  sortPrayerCandidates,
   sortStudentSuggestions,
 } from "../../functions/programHelpers";
 import { puedePasarTipoAsignacion } from "../../constants/tiposAsignacionMatriculado";
 import { TIPOS_ASIGNACION_NOMBRADO, puedePasarTipoNombrado } from "../../constants/tiposAsignacionNombrado";
+
+const formatoFechaOracion = new Intl.DateTimeFormat("es-MX", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
+
+function PersonaSelector({
+  label,
+  persona,
+  onClick,
+  icon = "fa-user",
+  tone = "neutral",
+}) {
+  const nombre = getPersonName(persona);
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`person-selection person-selection--${tone} ${nombre ? "is-selected" : "is-empty"}`}
+      aria-label={`${nombre ? "Cambiar" : "Seleccionar"} ${label.toLowerCase()}`}
+    >
+      <span className="person-selection__icon" aria-hidden="true">
+        <i className={`fas ${icon}`}></i>
+      </span>
+      <span className="person-selection__content">
+        <small>{label}</small>
+        <strong>{nombre || "Seleccionar persona"}</strong>
+        <span>{nombre ? "Pulsa para cambiar" : "Pulsa aquí para asignar"}</span>
+      </span>
+      <span className="person-selection__action" aria-hidden="true">
+        <i className={`fas ${nombre ? "fa-pen" : "fa-plus"}`}></i>
+      </span>
+    </button>
+  );
+}
 
 export default function TableroEdicion({ useReunion }) {
   const [reunion, setReunion] = useReunion;
@@ -46,6 +87,15 @@ export default function TableroEdicion({ useReunion }) {
     : null;
   const opcionesNombrados = superintendenteOpcion ? [superintendenteOpcion] : [];
   const nombradosSeleccionables = [...opcionesNombrados, ...nombrados];
+  const candidatosOracion = sortPrayerCandidates([
+    ...nombrados
+      .filter((persona) => persona.puedeOrar)
+      .map((persona) => ({ ...persona, tipoPersona: "nombrado" })),
+    ...matriculados
+      .filter((persona) => persona.puedeOrar)
+      .map((persona) => ({ ...persona, tipoPersona: "matriculado" })),
+  ]);
+  const esSelectorOracion = modalPersonas?.tipo === "campo" && modalPersonas.field === "oracionFinal";
 
   const abrirModalPersonas = (target, sala = "A") => {
     if (typeof target === "number") {
@@ -159,12 +209,17 @@ export default function TableroEdicion({ useReunion }) {
 
   const sugerirPersonas = (target) => {
     if (!target) return [];
+    const assignedIds = getDraftAssignedPersonIds(reunion, target, congregacion);
 
     if (target.tipo === "campo") {
+      if (target.field === "oracionFinal") {
+        return moveAssignedPeopleToEnd(candidatosOracion, assignedIds);
+      }
       const role = target.field === "presidente" ? "presidir" : target.field === "presidenteB" ? "salaAux" : "oracion";
       const tipoAsignacion = getTipoAsignacionNombrado(target);
-      return sortByOldestAssignment(nombradosSeleccionables, role)
+      const people = sortByOldestAssignment(nombradosSeleccionables, role)
         .filter((persona) => puedePasarTipoNombrado(persona, tipoAsignacion));
+      return moveAssignedPeopleToEnd(people, assignedIds);
     }
 
     const asignacion = reunion.asignaciones[target.index];
@@ -172,7 +227,7 @@ export default function TableroEdicion({ useReunion }) {
       const asignado = asignacion[target.sala === "B" ? "asignadoB" : "asignado"];
       const asignadoId = asignado?.id;
       const tipoAsignacion = getTipoAsignacionMatriculado(target);
-      return sortStudentSuggestions(matriculados, {
+      const people = sortStudentSuggestions(matriculados, {
         role: target.field.includes("ayudante") ? "ayudante" : "asignado",
         room: target.sala === "B" ? 1 : 0,
         useAuxRoom: usaSalaB,
@@ -184,15 +239,22 @@ export default function TableroEdicion({ useReunion }) {
           || asignado?.genero == null
           || persona.genero === asignado.genero
         ));
+      return moveAssignedPeopleToEnd(people, assignedIds);
     }
 
     const tipoAsignacion = getTipoAsignacionNombrado(target);
     const role = isStudentAssignment(asignacion) ? null : getNombradoRole(asignacion);
-    return sortByOldestAssignment(nombradosSeleccionables, role)
+    const people = sortByOldestAssignment(nombradosSeleccionables, role)
       .filter((persona) => puedePasarTipoNombrado(persona, tipoAsignacion));
+    return moveAssignedPeopleToEnd(people, assignedIds);
   };
 
-  const sugerencias = sugerirPersonas(modalPersonas).slice(0, 3);
+  const personasSelectorOracion = esSelectorOracion ? sugerirPersonas(modalPersonas) : [];
+  const sugerencias = (esSelectorOracion
+    ? personasSelectorOracion
+    : sugerirPersonas(modalPersonas)
+  ).slice(0, esSelectorOracion ? 1 : 3);
+  const assignedIds = getDraftAssignedPersonIds(reunion, modalPersonas, congregacion);
 
   function getItems(seccion) {
     return reunion.asignaciones.map((asignacion, index) => {
@@ -205,28 +267,38 @@ export default function TableroEdicion({ useReunion }) {
         const ayudanteKey = isSalaB ? "ayudanteB" : "ayudante";
 
         return (
-          <div className={`w-full min-w-0 ${aplicaSalaB ? "rounded-lg border border-gray-200 bg-white/60 p-3" : ""}`}>
-            {aplicaSalaB && <p className="mb-2 font-semibold text-gray-700">Sala {sala}</p>}
-            <div className="w-full">
-              <p>Asignado</p>
-              <button onClick={() => abrirModalPersonas(index, sala)} className="px-4 bg-gray-100 hover:bg-white py-2 rounded-lg sm:rounded-full w-full text-left sm:text-center break-words">
-                {getPersonName(asignacion[asignadoKey]) || "No se ha seleccionado"}
-              </button>
+          <div className={`assignment-room ${aplicaSalaB ? "assignment-room--divided" : ""}`}>
+            {aplicaSalaB &&
+              <div className="assignment-room__title">
+                <i className="fas fa-door-open" aria-hidden="true"></i>
+                <strong>Sala {sala}</strong>
+              </div>
+            }
+            <div className="assignment-room__selectors">
+              <PersonaSelector
+                label="Asignado"
+                persona={asignacion[asignadoKey]}
+                onClick={() => abrirModalPersonas(index, sala)}
+                icon="fa-user"
+                tone={`section-${asignacion.seccion}`}
+              />
               {!isSalaB && sugerido &&
-                <small className="block mt-1 text-gray-500">
+                <small className="assignment-room__suggestion">
+                  <i className="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                   Sugerido: {getPersonName(sugerido)} ({getAssignmentType(asignacion)})
                 </small>
               }
-            </div>
 
-            {asignacion.seccion === 2 &&
-              <div className="mt-2">
-                <p>Ayudante</p>
-                <button onClick={() => abrirModalAyudante(index, sala)} className="px-4 bg-gray-100 hover:bg-white w-full py-2 rounded-lg sm:rounded-full text-left sm:text-center break-words">
-                  {getPersonName(asignacion[ayudanteKey]) || "No se ha seleccionado"}
-                </button>
-              </div>
-            }
+              {asignacion.seccion === 2 &&
+                <PersonaSelector
+                  label="Ayudante"
+                  persona={asignacion[ayudanteKey]}
+                  onClick={() => abrirModalAyudante(index, sala)}
+                  icon="fa-handshake"
+                  tone={`section-${asignacion.seccion}`}
+                />
+              }
+            </div>
           </div>
         );
       };
@@ -241,6 +313,20 @@ export default function TableroEdicion({ useReunion }) {
                   <i className="fas fa-trash"></i>
                 </button>
               }
+            </div>
+
+            <div className="assignment-participants">
+              <div className="assignment-participants__heading">
+                <span>
+                  <i className="fas fa-users" aria-hidden="true"></i>
+                  Participantes
+                </span>
+                <small>Pulsa una tarjeta para seleccionar o cambiar a alguien</small>
+              </div>
+              <div className={`grid gap-3 min-w-0 ${aplicaSalaB ? "md:grid-cols-2" : "grid-cols-1"}`}>
+                {renderParticipantes("A")}
+                {aplicaSalaB && renderParticipantes("B")}
+              </div>
             </div>
 
             <Input
@@ -300,10 +386,6 @@ export default function TableroEdicion({ useReunion }) {
               </div>
             }
 
-            <div className={`grid gap-3 min-w-0 ${aplicaSalaB ? "md:grid-cols-2" : "grid-cols-1"}`}>
-              {renderParticipantes("A")}
-              {aplicaSalaB && renderParticipantes("B")}
-            </div>
           </div>
         </div>
       );
@@ -312,6 +394,13 @@ export default function TableroEdicion({ useReunion }) {
 
   return (
     <div className="meeting-editor w-full rounded-xl py-3 sm:py-5">
+      <div className="meeting-editor__selection-hint">
+        <span><i className="fas fa-hand-pointer" aria-hidden="true"></i></span>
+        <div>
+          <strong>Asigna a cada participante</strong>
+          <p>Busca las tarjetas destacadas dentro de cada parte y pulsa para seleccionar o cambiar una persona.</p>
+        </div>
+      </div>
       <div className="mb-4 rounded-lg border border-purple-200 bg-purple-50 px-3 sm:px-5 py-3">
         <label htmlFor="semana-visita-input" className="flex items-center gap-3 cursor-pointer">
           <input
@@ -328,21 +417,24 @@ export default function TableroEdicion({ useReunion }) {
       <div className="bg-program-treasures w-full text-white px-4 sm:px-5 py-2 rounded-t-lg font-thin text-md">Tesoros de la Biblia</div>
       <div className={bgs[1]}>
         <div className="flex flex-col justify-between">
-          <div className="flex flex-col gap-2 items-start px-3 sm:px-5 my-2">
-            <strong>Presidente:</strong>
-            <button onClick={() => abrirModalPersonas("presidente")} className="px-4 sm:px-5 py-2 bg-gray-100 hover:bg-white rounded-md w-full text-gray-500 text-left sm:text-center break-words">
-              {getPersonName(reunion.presidente) || "No se ha seleccionado"}
-            </button>
+          <div className={`meeting-leadership-grid ${usaSalaB ? "meeting-leadership-grid--two" : ""}`}>
+            <PersonaSelector
+              label="Presidente"
+              persona={reunion.presidente}
+              onClick={() => abrirModalPersonas("presidente")}
+              icon="fa-user-tie"
+              tone="section-1"
+            />
+            {usaSalaB &&
+              <PersonaSelector
+                label="Presidente de la sala B"
+                persona={reunion.presidenteB}
+                onClick={() => abrirModalPersonas("presidenteB")}
+                icon="fa-user-tie"
+                tone="section-1"
+              />
+            }
           </div>
-
-          {usaSalaB &&
-            <div className="flex flex-col gap-2 px-3 sm:px-5">
-              <strong>Presidente de la sala B:</strong>
-              <button onClick={() => abrirModalPersonas("presidenteB")} className="px-4 sm:px-5 py-2 bg-gray-100 w-full hover:bg-white rounded-md text-gray-500 text-left sm:text-center break-words">
-                {getPersonName(reunion.presidenteB) || "No se ha seleccionado"}
-              </button>
-            </div>
-          }
 
           <div className="block">
             <span className="flex gap-3 sm:gap-5 items-center justify-between p-3 sm:p-5">
@@ -379,11 +471,14 @@ export default function TableroEdicion({ useReunion }) {
             </button>
           </span>
         </div>
-        <div className="flex flex-col gap-2 items-start px-3 sm:px-5 pb-6">
-          <strong>Oracion final:</strong>
-          <button onClick={() => abrirModalPersonas("oracionFinal")} className="px-4 sm:px-5 py-2 bg-gray-100 hover:bg-white rounded-md w-full text-gray-500 text-left sm:text-center break-words">
-            {getPersonName(reunion.oracionFinal) || "No se ha seleccionado"}
-          </button>
+        <div className="px-3 sm:px-5 pb-6 pt-3">
+          <PersonaSelector
+            label="Oración final"
+            persona={reunion.oracionFinal}
+            onClick={() => abrirModalPersonas("oracionFinal")}
+            icon="fa-hands-praying"
+            tone="section-3"
+          />
         </div>
       </div>
 
@@ -414,7 +509,9 @@ export default function TableroEdicion({ useReunion }) {
       <Modal title="Selecciona una persona de la lista" open={modalPersonas != null} onClose={cerrarModalPersonas} size="xl4">
         {sugerencias.length > 0 &&
           <div className="mb-3 rounded-lg bg-purple-50 p-3">
-            <p className="text-sm font-semibold text-purple-700">Sugerencias por mayor tiempo sin pasar</p>
+            <p className="text-sm font-semibold text-purple-700">
+              {esSelectorOracion ? "Siguiente sugerido para la oración" : "Sugerencias por mayor tiempo sin pasar"}
+            </p>
             <div className="mt-2 flex flex-wrap gap-2">
               {sugerencias.map((persona) =>
                 <button key={persona.id} className="btn main" onClick={() => setPersona(persona)}>
@@ -425,74 +522,112 @@ export default function TableroEdicion({ useReunion }) {
           </div>
         }
 
-        <div className="person-picker-tabs" role="tablist" aria-label="Tipo de persona">
-          <button
-            type="button"
-            id="tab-personas-nombrados"
-            role="tab"
-            aria-selected={personasPage === "NOMBRADOS"}
-            aria-controls="panel-personas-nombrados"
-            className={personasPage === "NOMBRADOS" ? "active" : ""}
-            onClick={() => setPersonasPage("NOMBRADOS")}
-          >
-            <i className="fas fa-user-tie" aria-hidden="true"></i>
-            Nombrados
-          </button>
-          <button
-            type="button"
-            id="tab-personas-matriculados"
-            role="tab"
-            aria-selected={personasPage === "MATRICULADOS"}
-            aria-controls="panel-personas-matriculados"
-            className={personasPage === "MATRICULADOS" ? "active" : ""}
-            onClick={() => setPersonasPage("MATRICULADOS")}
-          >
-            <i className="fas fa-users" aria-hidden="true"></i>
-            Matriculados
-          </button>
-        </div>
-
-        {personasPage === "NOMBRADOS" &&
-          <div
-            id="panel-personas-nombrados"
-            role="tabpanel"
-            aria-labelledby="tab-personas-nombrados"
-            className="p-2 sm:p-5"
-          >
-            {nombradosSeleccionables.length === 0 &&
-              <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
-                <p className="text-center text-gray-700">No hay nombrados agregados. Ve a la seccion de nombrados para administrar la lista.</p>
+        {esSelectorOracion
+          ? <div className="prayer-picker">
+            {personasSelectorOracion.length > 0
+              ? personasSelectorOracion.map((persona, index) => {
+                const fecha = getLastPrayerDate(persona);
+                return (
+                  <button
+                    type="button"
+                    key={`${persona.tipoPersona}-${persona.id}`}
+                    className={index === 0 ? "is-next" : ""}
+                    onClick={() => setPersona(persona)}
+                  >
+                    <span className="prayer-picker__position">{index + 1}</span>
+                    <span className="prayer-picker__person">
+                      <strong>{persona.nombre}</strong>
+                      <small>
+                        {persona.tipoPersona === "nombrado" ? "Nombrado" : "Matriculado"}
+                        {" · "}
+                        {fecha ? `Última oración: ${formatoFechaOracion.format(fecha)}` : "Sin oraciones registradas"}
+                      </small>
+                    </span>
+                    {index === 0 && <span className="prayer-picker__next">Siguiente</span>}
+                    <i className="fas fa-chevron-right" aria-hidden="true"></i>
+                  </button>
+                );
+              })
+              : <div className="p-6 text-center rounded-lg border-2 border-dashed border-purple-200">
+                <i className="fas fa-hands-praying text-3xl text-purple-400" aria-hidden="true"></i>
+                <p className="mt-3 text-gray-700">No hay personas configuradas para hacer oración.</p>
+                <small className="text-gray-500">Agrégalas desde la nueva lista “Oración final” en Personas.</small>
               </div>
             }
-            {nombradosSeleccionables.length > 0 && (
-              <CrudNombrados
-                agregarNombrado={setPersona}
-                tipoAsignacionPermitida={getTipoAsignacionNombrado(modalPersonas)}
-                opcionesExtra={opcionesNombrados}
-              />
-            )}
           </div>
-        }
+          : <>
+            <div className="person-picker-tabs" role="tablist" aria-label="Tipo de persona">
+              <button
+                type="button"
+                id="tab-personas-nombrados"
+                role="tab"
+                aria-selected={personasPage === "NOMBRADOS"}
+                aria-controls="panel-personas-nombrados"
+                className={personasPage === "NOMBRADOS" ? "active" : ""}
+                onClick={() => setPersonasPage("NOMBRADOS")}
+              >
+                <i className="fas fa-user-tie" aria-hidden="true"></i>
+                Nombrados
+              </button>
+              <button
+                type="button"
+                id="tab-personas-matriculados"
+                role="tab"
+                aria-selected={personasPage === "MATRICULADOS"}
+                aria-controls="panel-personas-matriculados"
+                className={personasPage === "MATRICULADOS" ? "active" : ""}
+                onClick={() => setPersonasPage("MATRICULADOS")}
+              >
+                <i className="fas fa-users" aria-hidden="true"></i>
+                Matriculados
+              </button>
+            </div>
 
-        {personasPage === "MATRICULADOS" &&
-          <div
-            id="panel-personas-matriculados"
-            role="tabpanel"
-            aria-labelledby="tab-personas-matriculados"
-            className="p-2 sm:p-5"
-          >
-            {matriculados.length === 0 &&
-              <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
-                <p className="text-center text-gray-700">No hay matriculados agregados. Ve a la seccion de matriculados para administrar la lista.</p>
+            {personasPage === "NOMBRADOS" &&
+              <div
+                id="panel-personas-nombrados"
+                role="tabpanel"
+                aria-labelledby="tab-personas-nombrados"
+                className="p-2 sm:p-5"
+              >
+                {nombradosSeleccionables.length === 0 &&
+                  <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
+                    <p className="text-center text-gray-700">No hay nombrados agregados. Ve a la seccion de nombrados para administrar la lista.</p>
+                  </div>
+                }
+                {nombradosSeleccionables.length > 0 && (
+                  <CrudNombrados
+                    agregarNombrado={setPersona}
+                    tipoAsignacionPermitida={getTipoAsignacionNombrado(modalPersonas)}
+                    opcionesExtra={opcionesNombrados}
+                    assignedIds={assignedIds}
+                  />
+                )}
               </div>
             }
-            {matriculados.length > 0 && (
-              <CrudMatriculados
-                agregarMatriculado={setPersona}
-                tipoAsignacionPermitida={getTipoAsignacionMatriculado(modalPersonas)}
-              />
-            )}
-          </div>
+
+            {personasPage === "MATRICULADOS" &&
+              <div
+                id="panel-personas-matriculados"
+                role="tabpanel"
+                aria-labelledby="tab-personas-matriculados"
+                className="p-2 sm:p-5"
+              >
+                {matriculados.length === 0 &&
+                  <div className="p-5 rounded-lg border-dashed border-2 border-purple-300">
+                    <p className="text-center text-gray-700">No hay matriculados agregados. Ve a la seccion de matriculados para administrar la lista.</p>
+                  </div>
+                }
+                {matriculados.length > 0 && (
+                  <CrudMatriculados
+                    agregarMatriculado={setPersona}
+                    tipoAsignacionPermitida={getTipoAsignacionMatriculado(modalPersonas)}
+                    assignedIds={assignedIds}
+                  />
+                )}
+              </div>
+            }
+          </>
         }
       </Modal>
     </div>

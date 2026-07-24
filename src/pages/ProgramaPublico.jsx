@@ -2,32 +2,14 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import toast, { LoaderIcon } from "react-hot-toast";
 import { db } from "../firebase/config";
 import Tablero from "../components/dashboard/Tablero";
 import formatearRangoSemanal from "../functions/formatearRangoSemanal";
-//import { getPersonName } from "../functions/programHelpers";
+import { downloadStudentAssignmentCardsPng } from "../functions/studentAssignmentCards";
+import { getWeekKey, parseLocalDate } from "../functions/meetingDates";
 import getDia from "../functions/getDia";
 import getLunesAnterior from "../functions/getLunesAnterior";
-
-function parseLocalDate(value) {
-  if (!value) return null;
-  if (value instanceof Date) return value;
-  if (value.seconds) return new Date(value.seconds * 1000);
-
-  const dateOnly = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (dateOnly) {
-    const [, year, month, day] = dateOnly;
-    return new Date(Number(year), Number(month) - 1, Number(day));
-  }
-
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
-
-function getWeekKey(value) {
-  const date = parseLocalDate(value);
-  return date ? getDia(getLunesAnterior(date)) : null;
-}
 
 function addWeeks(value, weeks) {
   const date = parseLocalDate(value);
@@ -46,6 +28,8 @@ export default function ProgramaPublico() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [direccion, setDireccion] = useState(0);
+  const [generandoAsignaciones, setGenerandoAsignaciones] = useState(false);
+  const [preparandoImpresion, setPreparandoImpresion] = useState(false);
   const reducirMovimiento = useReducedMotion();
   const [semanaSeleccionada, setSemanaSeleccionada] = useState(() => {
     const semanaParam = searchParams.get("semana");
@@ -106,6 +90,48 @@ export default function ProgramaPublico() {
     setSearchParams({});
   };
 
+  const reunionesDelPeriodo = programa?.periodo
+    ? reuniones
+      .filter((reunion) => reunion.periodo === programa.periodo)
+      .sort((a, b) => a.fecha.localeCompare(b.fecha))
+    : [];
+
+  const paginasImpresion = reunionesDelPeriodo.reduce((paginas, reunion, index) => {
+    if (index % 2 === 0) paginas.push([reunion]);
+    else paginas[paginas.length - 1].push(reunion);
+    return paginas;
+  }, []);
+
+  const descargarAsignaciones = async () => {
+    if (!programa || !congregacion) return;
+    setGenerandoAsignaciones(true);
+    try {
+      const total = await downloadStudentAssignmentCardsPng(programa, congregacion);
+      if (total === 0) {
+        toast.error("No hay asignaciones estudiantiles para generar");
+        return;
+      }
+      toast.success(`Se generaron ${total} PNG en un archivo ZIP`);
+    } catch (e) {
+      console.error(e);
+      toast.error("No se pudieron generar las hojas de asignación");
+    } finally {
+      setGenerandoAsignaciones(false);
+    }
+  };
+
+  const imprimirPeriodo = async () => {
+    if (reunionesDelPeriodo.length === 0) return;
+    setPreparandoImpresion(true);
+    try {
+      if (document.fonts?.ready) await document.fonts.ready;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      window.print();
+    } finally {
+      setPreparandoImpresion(false);
+    }
+  };
+
   if (loading) {
     return <div className="public-program"><p>Cargando programa...</p></div>;
   }
@@ -140,7 +166,7 @@ export default function ProgramaPublico() {
 
       <AnimatePresence initial={false} mode="wait" custom={direccion}>
       <motion.section
-        className="public-program__sheet"
+        className="public-program__sheet public-program__screen"
         key={semanaSeleccionada}
         custom={direccion}
         variants={{
@@ -169,19 +195,66 @@ export default function ProgramaPublico() {
           </div>
         )}
 
-        {programa && (
-          <footer className="public-program__footer">
-            
+        {programa &&
+          <footer className="public-program__footer no-print">
+            <button
+              className="btn main"
+              type="button"
+              onClick={imprimirPeriodo}
+              disabled={preparandoImpresion || reunionesDelPeriodo.length === 0}
+            >
+              {preparandoImpresion
+                ? <LoaderIcon />
+                : <i className="fas fa-print" aria-hidden="true"></i>
+              }
+              <span>{preparandoImpresion ? "Preparando..." : "Imprimir periodo"}</span>
+            </button>
+            <button
+              className="btn main"
+              type="button"
+              onClick={descargarAsignaciones}
+              disabled={generandoAsignaciones}
+            >
+              {generandoAsignaciones
+                ? <LoaderIcon />
+                : <i className="fas fa-id-badge" aria-hidden="true"></i>
+              }
+              <span>{generandoAsignaciones ? "Generando..." : "Hojas de asignación"}</span>
+            </button>
           </footer>
-        )}
-        <div className="w-full flex items-center justify-center">
-          <button className="btn main" onClick={() => window.print()}>
-            <i className="fas fa-print mr-2"></i>
-            Imprimir
-          </button>
-        </div>
+        }
       </motion.section>
       </AnimatePresence>
+
+      {paginasImpresion.length > 0 &&
+        <section className="period-print public-period-print">
+          {paginasImpresion.map((pagina, pageIndex) => (
+            <div
+              className={`period-print-page ${pageIndex === 0 ? "period-print-page--first" : ""} ${pagina.length === 1 ? "period-print-page--single" : ""}`}
+              key={`public-print-page-${pageIndex}`}
+            >
+              {pageIndex === 0 &&
+                <div className="program-print-header period-print-header">
+                  <p className="program-print-congregation">
+                    {congregacion?.nombre ? `Cong. ${congregacion.nombre}` : "Congregación"}
+                  </p>
+                  <h2>Programa para la reunión de entre semana</h2>
+                </div>
+              }
+              {pagina.map((reunion) => (
+                <div className="period-print-meeting" key={reunion.id}>
+                  <Tablero
+                    programa={reunion}
+                    congregacion={congregacion}
+                    congregacionNombre={congregacion?.nombre}
+                    showPrintHeader={false}
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
+        </section>
+      }
     </main>
   );
 }

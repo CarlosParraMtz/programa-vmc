@@ -1,3 +1,5 @@
+import { getFechaReunionDesdeSemana } from "./meetingDates.js";
+
 export function getPersonName(person) {
   if (!person) return "";
   if (typeof person === "string") return person;
@@ -35,6 +37,7 @@ export function getPersonRef(person) {
     nombre: person.nombre || "",
     genero: person.genero || null,
     nombramiento: person.nombramiento || null,
+    tipoPersona: person.tipoPersona || null,
   };
 }
 
@@ -42,6 +45,13 @@ export function parseDateValue(value) {
   if (!value) return null;
   if (value instanceof Date) return value;
   if (value.seconds) return new Date(value.seconds * 1000);
+
+  const dateOnly = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (dateOnly) {
+    const [, year, month, day] = dateOnly;
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
 }
@@ -109,11 +119,41 @@ export function sortByOldestAssignment(people = [], role = null) {
   });
 }
 
+export function getLastPrayerDate(person = {}) {
+  const dates = [
+    ...(person.ultimasAsignaciones?.oracion || []),
+    ...(person.ultimasOraciones || []),
+  ].map(parseDateValue).filter(Boolean);
+  const fallback = parseDateValue(person.ultimaOracion);
+
+  if (fallback) dates.push(fallback);
+  return dates.length
+    ? new Date(Math.max(...dates.map((date) => date.getTime())))
+    : null;
+}
+
+export function sortPrayerCandidates(people = []) {
+  return [...people].sort((a, b) => {
+    const dateA = getLastPrayerDate(a);
+    const dateB = getLastPrayerDate(b);
+    if (!dateA && !dateB) return (a.nombre || "").localeCompare(b.nombre || "");
+    if (!dateA) return -1;
+    if (!dateB) return 1;
+    return dateA - dateB || (a.nombre || "").localeCompare(b.nombre || "");
+  });
+}
+
 export function getStudentHistory(person = {}) {
   let lastParticipation = null;
   let lastRole = person.ultimoRol || null;
-  let lastRoom = Number.isInteger(person.ultimaSala) ? person.ultimaSala : null;
-  let lastMainAssignment = null;
+  let lastMainAssignment = parseDateValue(person.ultimaAsignacionPrincipal);
+  let lastRoom = lastMainAssignment && Number.isInteger(person.ultimaSala)
+    ? person.ultimaSala
+    : null;
+  const savedLastParticipation = parseDateValue(person.ultimaAsignacion);
+  const savedLastRole = ["asignado", "ayudante"].includes(person.ultimoRol)
+    ? person.ultimoRol
+    : null;
 
   (Array.isArray(person.fechas) ? person.fechas : []).forEach((room = {}, roomIndex) => {
     (room.asignado || []).forEach((value) => {
@@ -136,8 +176,19 @@ export function getStudentHistory(person = {}) {
     });
   });
 
+  // When both buckets contain the latest date, use the role saved with that
+  // participation instead of depending on the traversal order above.
+  if (
+    savedLastParticipation
+    && savedLastRole
+    && (!lastParticipation || savedLastParticipation >= lastParticipation)
+  ) {
+    lastParticipation = savedLastParticipation;
+    lastRole = savedLastRole;
+  }
+
   return {
-    lastParticipation: lastParticipation || parseDateValue(person.ultimaAsignacion),
+    lastParticipation: lastParticipation || savedLastParticipation,
     lastRole,
     lastRoom,
     lastMainAssignment,
@@ -166,6 +217,45 @@ export function sortStudentSuggestions(people = [], { role = "asignado", room = 
     if (!dateB) return 1;
     return dateA - dateB || (a.nombre || "").localeCompare(b.nombre || "");
   });
+}
+
+export function getDraftAssignedPersonIds(reunion = {}, target = null, congregacion = {}) {
+  const assignedIds = new Set();
+  const isCurrentField = (type, field, index = null) => (
+    target?.tipo === type
+    && target.field === field
+    && (type !== "asignacion" || target.index === index)
+  );
+  const addPerson = (person, type, field, index = null) => {
+    if (isCurrentField(type, field, index)) return;
+    const id = typeof person === "object" ? person?.id : null;
+    if (id) assignedIds.add(id);
+  };
+
+  addPerson(reunion.presidente, "campo", "presidente");
+  addPerson(reunion.presidenteB, "campo", "presidenteB");
+  addPerson(reunion.oracionFinal, "campo", "oracionFinal");
+
+  const usaSalaB = hasAuxRoom(congregacion, reunion);
+  (reunion.asignaciones || []).forEach((asignacion, index) => {
+    addPerson(asignacion.asignado, "asignacion", "asignado", index);
+    addPerson(asignacion.ayudante, "asignacion", "ayudante", index);
+
+    if (usaSalaB && isAuxRoomAssignment(asignacion, index)) {
+      addPerson(asignacion.asignadoB, "asignacion", "asignadoB", index);
+      addPerson(asignacion.ayudanteB, "asignacion", "ayudanteB", index);
+    }
+  });
+
+  return assignedIds;
+}
+
+export function moveAssignedPeopleToEnd(people = [], assignedIds = new Set()) {
+  const ids = assignedIds instanceof Set ? assignedIds : new Set(assignedIds);
+  return [
+    ...people.filter((person) => !ids.has(person.id)),
+    ...people.filter((person) => ids.has(person.id)),
+  ];
 }
 
 export function isStudentAssignment(asignacion = {}) {
@@ -227,7 +317,8 @@ export function validateProgram(programa, congregacion = {}) {
 }
 
 export function applyMeetingHistory({ reunion, matriculados = [], nombrados = [], congregacion = {} }) {
-  const fecha = toDateKey(reunion.fecha);
+  const fechaReunion = getFechaReunionDesdeSemana(reunion.fecha, congregacion, reunion);
+  const fecha = toDateKey(fechaReunion);
   if (!fecha) return { matriculados, nombrados };
 
   const usaSalaB = hasAuxRoom(congregacion, reunion);
@@ -263,7 +354,9 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
       ultimaAsignacionPrincipal: isLatestMainAssignment ? fecha : current.ultimaAsignacionPrincipal,
       ultimaAsignacion: isLatestParticipation ? fecha : current.ultimaAsignacion,
       ultimoRol: isLatestParticipation ? bucket : current.ultimoRol,
-      ultimoTipo: isLatestParticipation ? getAssignmentType(asignacion) : current.ultimoTipo,
+      ultimoTipo: isLatestParticipation
+        ? (bucket === "ayudante" ? "ayudante" : getAssignmentType(asignacion))
+        : current.ultimoTipo,
       ayudantes: field === "asignado" && ayudante?.id
         ? Array.from(new Set([...(current.ayudantes || []), ayudante.id]))
         : current.ayudantes || [],
@@ -272,6 +365,7 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
 
   const touchNombrado = (person, role) => {
     const ref = getPersonRef(person);
+    if (ref?.tipoPersona === "matriculado") return;
     if (!ref?.id || !nombradosById.has(ref.id)) return;
 
     const current = nombradosById.get(ref.id);
@@ -296,9 +390,24 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
     });
   };
 
+  const touchMatriculadoPrayer = (person) => {
+    const ref = getPersonRef(person);
+    if (ref?.tipoPersona === "nombrado") return;
+    if (!ref?.id || !matriculadosById.has(ref.id)) return;
+
+    const current = matriculadosById.get(ref.id);
+    const dates = new Set([...(current.ultimasOraciones || []), fecha]);
+    matriculadosById.set(ref.id, {
+      ...current,
+      ultimasOraciones: Array.from(dates).sort(),
+      ultimaOracion: fecha,
+    });
+  };
+
   touchNombrado(reunion.presidente, "presidir");
   if (usaSalaB) touchNombrado(reunion.presidenteB, "salaAux");
   touchNombrado(reunion.oracionFinal, "oracion");
+  touchMatriculadoPrayer(reunion.oracionFinal);
 
   reunion.asignaciones?.forEach((asignacion, index) => {
     if (isStudentAssignment(asignacion)) {
@@ -332,4 +441,52 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
     matriculados: Array.from(matriculadosById.values()),
     nombrados: Array.from(nombradosById.values()),
   };
+}
+
+export function rebuildMeetingHistory({
+  reuniones = [],
+  matriculados = [],
+  nombrados = [],
+  congregacion = {},
+}) {
+  const roomCount = getRoomCount(congregacion);
+  let history = {
+    matriculados: matriculados.map((persona) => ({
+      ...persona,
+      fechas: Array.from({ length: roomCount }, () => ({ asignado: [], ayudante: [] })),
+      ultimaSala: null,
+      ultimaAsignacionPrincipal: null,
+      ultimaAsignacion: null,
+      ultimoRol: null,
+      ultimoTipo: null,
+      ayudantes: [],
+      ultimasOraciones: [],
+      ultimaOracion: null,
+    })),
+    nombrados: nombrados.map((persona) => ({
+      ...persona,
+      ultimasAsignaciones: {},
+      ultimaAsignacion: null,
+    })),
+  };
+
+  const reunionesOrdenadas = [...reuniones].sort((a, b) => {
+    const fechaA = parseDateValue(getFechaReunionDesdeSemana(a.fecha, congregacion, a));
+    const fechaB = parseDateValue(getFechaReunionDesdeSemana(b.fecha, congregacion, b));
+    if (!fechaA && !fechaB) return 0;
+    if (!fechaA) return -1;
+    if (!fechaB) return 1;
+    return fechaA - fechaB;
+  });
+
+  reunionesOrdenadas.forEach((reunion) => {
+    history = applyMeetingHistory({
+      reunion,
+      matriculados: history.matriculados,
+      nombrados: history.nombrados,
+      congregacion,
+    });
+  });
+
+  return history;
 }

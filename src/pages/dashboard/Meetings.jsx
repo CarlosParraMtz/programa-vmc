@@ -19,13 +19,29 @@ import matriculadosController from "../../firebase/controllers/matriculados.cont
 import nombradosController from "../../firebase/controllers/nombrados.controller"
 import { downloadStudentAssignmentCardsPng } from "../../functions/studentAssignmentCards"
 import {
-  applyMeetingHistory,
   getPersonName,
   getPublicProgramUrl,
+  rebuildMeetingHistory,
   stripUndefined,
   validateProgram,
 } from "../../functions/programHelpers"
-import { getFechaReunionDesdeSemana } from "../../functions/meetingDates"
+import { getFechaReunionDesdeSemana, getWeekKey, parseLocalDate } from "../../functions/meetingDates"
+
+const formatoFechaReunion = new Intl.DateTimeFormat("es-MX", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+})
+
+function formatearFechaReunion(reunion, congregacion) {
+  if (!reunion) return ""
+  const fechaExacta = getFechaReunionDesdeSemana(reunion.fecha, congregacion, reunion)
+  const fecha = parseLocalDate(fechaExacta)
+  if (!fecha) return ""
+  const texto = formatoFechaReunion.format(fecha)
+  return texto.charAt(0).toUpperCase() + texto.slice(1)
+}
 
 export default function Meetings() {
   const periodo = useAtomValue(atoms.periodo)
@@ -93,12 +109,21 @@ export default function Meetings() {
     try {
       const payload = {
         ...edicion,
+        fecha: getFechaReunionDesdeSemana(edicion.fecha, congregacion, edicion),
         estado: "asignado",
         actualizado: getDia(new Date()),
       }
       await reunionesController.updateReunion(stripUndefined(payload), congregacion.id, edicion.id)
 
-      const historiales = applyMeetingHistory({ reunion: payload, matriculados, nombrados, congregacion })
+      const reunionesActualizadas = reuniones.some((reunion) => reunion.id === payload.id)
+        ? reuniones.map((reunion) => reunion.id === payload.id ? payload : reunion)
+        : [...reuniones, payload]
+      const historiales = rebuildMeetingHistory({
+        reuniones: reunionesActualizadas,
+        matriculados,
+        nombrados,
+        congregacion,
+      })
       await Promise.all([
         ...historiales.matriculados.map(({ id, ...persona }) =>
           matriculadosController.updateMatriculado(stripUndefined(persona), congregacion.id, id)
@@ -191,12 +216,58 @@ export default function Meetings() {
       await reunionesController.createReunion(nuevaReunion, congregacion.id)
     }
 
+    const separarSemanasDisponibles = (reunionesCandidatas) => {
+      const semanasOcupadas = new Set(
+        reuniones
+          .map((reunion) => getWeekKey(reunion.fecha))
+          .filter(Boolean)
+      )
+      const semanasDelLote = new Set()
+
+      return reunionesCandidatas.reduce((resultado, reunion) => {
+        const semana = getWeekKey(reunion.fecha)
+        if (!semana || semanasOcupadas.has(semana) || semanasDelLote.has(semana)) {
+          resultado.duplicadas.push(reunion)
+        } else {
+          semanasDelLote.add(semana)
+          resultado.disponibles.push(reunion)
+        }
+        return resultado
+      }, { disponibles: [], duplicadas: [] })
+    }
+
+    const informarSemanasDuplicadas = (cantidad, seAgregaronOtras = false) => {
+      const plural = cantidad === 1 ? "semana" : "semanas"
+      const texto = seAgregaronOtras
+        ? `${cantidad} ${plural} no se agregaron porque ya pertenecen a un periodo.`
+        : `No se puede agregar: ${cantidad === 1 ? "la semana seleccionada ya pertenece" : "las semanas seleccionadas ya pertenecen"} a un periodo.`
+
+      if (seAgregaronOtras) {
+        toast.error(texto)
+      } else {
+        modalError({
+          title: cantidad === 1 ? "Esta semana ya está agregada" : "Estas semanas ya están agregadas",
+          text: texto,
+        })
+      }
+    }
+
     setLoading(true)
     if (agregarReunionesTab === 0) {
       try {
-        const reuniones = await datareunionesController.getDataReuniones(rangoFechas)
-        console.log(reuniones)
-        await Promise.all(reuniones.map((reunion) => guardarReunion(reunion)))
+        const reunionesEncontradas = await datareunionesController.getDataReuniones(rangoFechas)
+        const { disponibles, duplicadas } = separarSemanasDisponibles(reunionesEncontradas)
+
+        if (disponibles.length === 0 && duplicadas.length > 0) {
+          informarSemanasDuplicadas(duplicadas.length)
+          setLoading(false)
+          return
+        }
+
+        await Promise.all(disponibles.map((reunion) => guardarReunion(reunion)))
+        if (duplicadas.length > 0) {
+          informarSemanasDuplicadas(duplicadas.length, true)
+        }
         cerrarModalAgregarReunion()
       } catch (e) {
         modalError({
@@ -210,7 +281,13 @@ export default function Meetings() {
       try {
         const reunion = await datareunionesController.getDataReunion(rangoFechas.inicial)
         if (reunion) {
-          await guardarReunion(reunion)
+          const { disponibles, duplicadas } = separarSemanasDisponibles([reunion])
+          if (duplicadas.length > 0) {
+            informarSemanasDuplicadas(duplicadas.length)
+            setLoading(false)
+            return
+          }
+          await guardarReunion(disponibles[0])
           cerrarModalAgregarReunion()
         } else {
           modalError({ title: "Error", text: "No hay información guardada para esta reunión" })
@@ -237,6 +314,20 @@ export default function Meetings() {
     setLoading(true);
     try {
       await reunionesController.deleteReunion(seleccion.id, congregacion.id);
+      const historiales = rebuildMeetingHistory({
+        reuniones: reuniones.filter((reunion) => reunion.id !== seleccion.id),
+        matriculados,
+        nombrados,
+        congregacion,
+      })
+      await Promise.all([
+        ...historiales.matriculados.map(({ id, ...persona }) =>
+          matriculadosController.updateMatriculado(stripUndefined(persona), congregacion.id, id)
+        ),
+        ...historiales.nombrados.map(({ id, ...persona }) =>
+          nombradosController.updateNombrado(stripUndefined(persona), congregacion.id, id)
+        ),
+      ])
       toast.success("Se ha borrado esta reunión correctamente")
       setSeleccion(null);
     } catch (error) {
@@ -332,23 +423,37 @@ export default function Meetings() {
           <div className="card">
             <div className={`card_title ${edicion ? "meeting-actions-sticky-shell" : ""}`}>
               {seleccion &&
-                <div className="meeting-actions" aria-label="Acciones de la reunión">
+                <div
+                  className={`meeting-actions ${edicion ? "meeting-actions--editing" : ""}`}
+                  aria-label="Acciones de la reunión"
+                >
                   {
                     edicion
                       ? <>
-                        <button onClick={cancelarEdicion}
-                          className="meeting-action meeting-action--secondary">
-                          <i className="fas fa-xmark" aria-hidden="true"></i>
-                          <span>Cancelar</span>
-                        </button>
-                        <button
-                          onClick={guardarEdicion}
-                          disabled={loading}
-                          className="meeting-action meeting-action--primary"
-                        >
-                          <i className="fas fa-save" aria-hidden="true"></i>
-                          <span>Guardar cambios</span>
-                        </button>
+                        <div className="meeting-actions__date">
+                          <span aria-hidden="true">
+                            <i className="fas fa-calendar-alt"></i>
+                          </span>
+                          <div>
+                            <small>Fecha de la reunión</small>
+                            <strong>{formatearFechaReunion(edicion, congregacion)}</strong>
+                          </div>
+                        </div>
+                        <div className="meeting-actions__buttons">
+                          <button onClick={cancelarEdicion}
+                            className="meeting-action meeting-action--secondary">
+                            <i className="fas fa-xmark" aria-hidden="true"></i>
+                            <span>Cancelar</span>
+                          </button>
+                          <button
+                            onClick={guardarEdicion}
+                            disabled={loading}
+                            className="meeting-action meeting-action--primary"
+                          >
+                            <i className="fas fa-save" aria-hidden="true"></i>
+                            <span>Guardar cambios</span>
+                          </button>
+                        </div>
                       </>
                       : <>
                         <button onClick={activarEdicion}

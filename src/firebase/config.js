@@ -1,7 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import {
+    getFirestore,
+    initializeFirestore,
+    persistentLocalCache,
+    persistentMultipleTabManager,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
@@ -23,5 +28,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const analytics = isDesktop ? null : getAnalytics(app);
-export const db = getFirestore(app)
+export const db = isDesktop
+    ? getFirestore(app)
+    : initializeFirestore(app, {
+        localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager(),
+        }),
+    });
 export const auth = getAuth(app);

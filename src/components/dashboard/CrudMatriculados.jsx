@@ -3,8 +3,32 @@ import atoms from "../../jotai/atoms"
 import { useState, useMemo } from "react"
 import MatriculadoCollapse from "./personas/MatriculadoCollapse"
 import { puedePasarTipoAsignacion } from "../../constants/tiposAsignacionMatriculado"
+import { getStudentHistory } from "../../functions/programHelpers"
 
-export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, tipoAsignacionPermitida = null }) {
+const TIPOS_ANTERIORES = {
+  1: "ayudante",
+  2: "demostracion",
+  3: "lectura",
+  4: "discurso",
+}
+
+function getUltimoTipo(matriculado) {
+  const history = getStudentHistory(matriculado)
+  if (!history.lastParticipation) return null
+  if (history.lastRole === "ayudante") return "ayudante"
+
+  const tipo = TIPOS_ANTERIORES[matriculado.ultimoTipo] || matriculado.ultimoTipo
+  return ["revisita", "conversacion", "curso", "creencias", "discipulos"].includes(tipo)
+    ? "demostracion"
+    : tipo
+}
+
+export default function CrudMatriculados({
+  agregarMatriculado,
+  agregarAyudante,
+  tipoAsignacionPermitida = null,
+  assignedIds = new Set(),
+}) {
   const matriculados = useAtomValue(atoms.matriculados)
   const [filters, setFilters] = useState({
     genero: 'todos',
@@ -45,18 +69,12 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, 
     if (filters.sala !== 'todos') {
       const salaNum = parseInt(filters.sala)
       filteredData = filteredData.filter(m => {
-        // Si tiene última sala definida, comparamos con ella
-        if (m.ultimaSala !== undefined && m.ultimaSala !== null) {
-          return m.ultimaSala === salaNum
-        }
-        // Si no, verificamos si tiene asignaciones en la sala solicitada
-        return m.fechas[salaNum]?.asignado?.length > 0 ||
-          m.fechas[salaNum]?.ayudante?.length > 0
+        return getStudentHistory(m).lastRoom === salaNum
       })
     }
 
     if (filters.tipoAsignacion !== 'todos') {
-      filteredData = filteredData.filter(m => m.ultimoTipo === parseInt(filters.tipoAsignacion))
+      filteredData = filteredData.filter(m => getUltimoTipo(m) === filters.tipoAsignacion)
     }
 
     if (tipoAsignacionPermitida) {
@@ -66,6 +84,10 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, 
     // Aplicar ordenación
     if (sortConfig.key) {
       filteredData.sort((a, b) => {
+        const assignedA = assignedIds.has(a.id)
+        const assignedB = assignedIds.has(b.id)
+        if (assignedA !== assignedB) return assignedA ? 1 : -1
+
         if (sortConfig.key === 'nombre') {
           if (a.nombre < b.nombre) {
             return sortConfig.direction === 'ascending' ? -1 : 1
@@ -90,7 +112,7 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, 
     }
 
     return filteredData
-  }, [matriculados, filters, sortConfig, tipoAsignacionPermitida])
+  }, [assignedIds, matriculados, filters, sortConfig, tipoAsignacionPermitida])
 
   // Función para limpiar filtros
   const clearFilters = () => {
@@ -118,7 +140,7 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, 
         </div>
 
         <div className="flex flex-col min-w-0">
-          <label className="text-xs mb-0">Sala</label>
+          <label className="text-xs mb-0">Última sala como asignado</label>
           <select
             className="px-2 py-2 border border-gray-300 rounded-full w-full"
             value={filters.sala}
@@ -138,10 +160,10 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, 
             onChange={(e) => handleFilterChange('tipoAsignacion', e.target.value)}
           >
             <option value="todos">Todos</option>
-            <option value="1">Ayudante</option>
-            <option value="2">Demostración</option>
-            <option value="3">Lectura</option>
-            <option value="4">Discurso</option>
+            <option value="ayudante">Ayudante</option>
+            <option value="demostracion">Demostración</option>
+            <option value="lectura">Lectura</option>
+            <option value="discurso">Discurso</option>
           </select>
         </div>
 

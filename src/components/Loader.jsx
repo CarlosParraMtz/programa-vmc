@@ -21,26 +21,20 @@ export default function Loader() {
           aria-label="Cargando"
         >
           <motion.div
-            className="app-loader__panel"
-            initial={{ opacity: 0, y: 18, scale: 0.96 }}
+            className="app-loader__content"
+            initial={{ opacity: 0, y: 12, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 240, damping: 22 }}
+            exit={{ opacity: 0, y: -8, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 220, damping: 24 }}
           >
             <div className="app-loader__mark" aria-hidden="true">
-              <span className="app-loader__ring app-loader__ring--outer" />
-              <span className="app-loader__ring app-loader__ring--middle" />
-              <span className="app-loader__ring app-loader__ring--inner" />
-              <span className="app-loader__spark app-loader__spark--one" />
-              <span className="app-loader__spark app-loader__spark--two" />
-              <span className="app-loader__spark app-loader__spark--three" />
+              <span className="app-loader__halo" />
+              <span className="app-loader__orbit" />
+              <i className="fas fa-calendar-alt app-loader__icon app-loader__icon--calendar" />
+              <i className="fas fa-users app-loader__icon app-loader__icon--people" />
+              <i className="fas fa-book-open app-loader__icon app-loader__icon--book" />
             </div>
-            <p>Cargando</p>
-            <div className="app-loader__dots" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
+            <p>Cargando...</p>
           </motion.div>
         </motion.div>
       )}

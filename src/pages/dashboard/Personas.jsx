@@ -1,11 +1,18 @@
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useAtomValue } from "jotai"
 import Matriculados from "../../components/dashboard/personas/Matriculados"
 import Nombrados from "../../components/dashboard/personas/Nombrados"
+import Oraciones from "../../components/dashboard/personas/Oraciones"
 import atoms from "../../jotai/atoms"
 import { getStudentHistory, parseDateValue } from "../../functions/programHelpers"
-import { getTiposAsignacionLabels } from "../../constants/tiposAsignacionMatriculado"
-import { getTiposAsignacionNombradoLabels } from "../../constants/tiposAsignacionNombrado"
+import {
+  getTiposAsignacionLabels,
+  TIPOS_ASIGNACION_MATRICULADO,
+} from "../../constants/tiposAsignacionMatriculado"
+import {
+  getTiposAsignacionNombradoLabels,
+  TIPOS_ASIGNACION_NOMBRADO,
+} from "../../constants/tiposAsignacionNombrado"
 import { nombramientos } from "../../constants/nombramientos"
 
 const formatoFecha = new Intl.DateTimeFormat("es-MX", {
@@ -48,13 +55,83 @@ function compareValues(a, b) {
   return String(a).localeCompare(String(b), "es", { numeric: true, sensitivity: "base" })
 }
 
+function isFilterActive(value) {
+  if (Array.isArray(value)) return value.length > 0
+  return value != null && value !== "todos"
+}
+
+function getDefaultVisibleColumns(columnas) {
+  return columnas
+    .filter((columna) => columna.defaultVisible !== false)
+    .map((columna) => columna.key)
+}
+
 function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgregar }) {
   const [orden, setOrden] = useState([])
   const [abierta, setAbierta] = useState(true)
+  const [configurandoColumnas, setConfigurandoColumnas] = useState(false)
+  const [configurandoFiltros, setConfigurandoFiltros] = useState(false)
+  const [filtros, setFiltros] = useState({})
+  const [columnasVisibles, setColumnasVisibles] = useState(() => {
+    const defaults = getDefaultVisibleColumns(columnas)
+    if (typeof window === "undefined") return new Set(defaults)
+
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(`personas-columnas-${id}`))
+      if (!Array.isArray(saved)) return new Set(defaults)
+
+      const validKeys = new Set(columnas.map((columna) => columna.key))
+      const visible = saved.filter((key) => validKeys.has(key))
+      columnas
+        .filter((columna) => columna.alwaysVisible)
+        .forEach((columna) => visible.push(columna.key))
+      return new Set(visible)
+    } catch {
+      return new Set(defaults)
+    }
+  })
   const contenidoId = `${id}-contenido`
+  const columnasId = `${id}-columnas`
+  const filtrosId = `${id}-filtros`
+  const columnasFiltrables = useMemo(
+    () => columnas.filter((columna) => columna.filterOptions?.length),
+    [columnas],
+  )
+  const filtrosActivos = Object.values(filtros).filter(isFilterActive).length
+  const columnasMostradas = useMemo(
+    () => columnas.filter((columna) => columnasVisibles.has(columna.key)),
+    [columnas, columnasVisibles],
+  )
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      `personas-columnas-${id}`,
+      JSON.stringify(Array.from(columnasVisibles)),
+    )
+  }, [columnasVisibles, id])
 
   const filasOrdenadas = useMemo(() => {
     return personas
+      .filter((persona) => (
+        Object.entries(filtros).every(([key, selected]) => {
+          if (!isFilterActive(selected)) return true
+          const columna = columnas.find((item) => item.key === key)
+          if (!columna) return true
+
+          if (Array.isArray(selected)) {
+            const values = columna.filterValues
+              ? columna.filterValues(persona)
+              : [columna.filterValue?.(persona)]
+            const normalizedValues = values.map(String)
+            return selected.some((value) => normalizedValues.includes(value))
+          }
+
+          const value = columna.filterValue
+            ? columna.filterValue(persona)
+            : columna.sortValue(persona)
+          return String(value) === selected
+        })
+      ))
       .map((persona, index) => ({ persona, index }))
       .sort((a, b) => {
         for (const nivel of orden) {
@@ -77,7 +154,7 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
         return a.index - b.index
       })
       .map(({ persona }) => persona)
-  }, [columnas, orden, personas])
+  }, [columnas, filtros, orden, personas])
 
   const cambiarOrden = (key) => {
     setOrden((actual) => {
@@ -94,6 +171,45 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
       return actual.filter((_, index) => index !== indice)
     })
   }
+
+  const cambiarVisibilidadColumna = (columna) => {
+    if (columna.alwaysVisible) return
+
+    const estabaVisible = columnasVisibles.has(columna.key)
+    setColumnasVisibles((actuales) => {
+      const siguientes = new Set(actuales)
+      if (estabaVisible) siguientes.delete(columna.key)
+      else siguientes.add(columna.key)
+      return siguientes
+    })
+    if (estabaVisible) {
+      setOrden((ordenActual) => ordenActual.filter((nivel) => nivel.key !== columna.key))
+    }
+  }
+
+  const restablecerColumnas = () => {
+    const defaults = new Set(getDefaultVisibleColumns(columnas))
+    setColumnasVisibles(defaults)
+    setOrden((actual) => actual.filter((nivel) => defaults.has(nivel.key)))
+  }
+
+  const cambiarFiltro = (key, value) => {
+    setFiltros((actuales) => ({ ...actuales, [key]: value }))
+  }
+
+  const cambiarFiltroMultiple = (key, value) => {
+    setFiltros((actuales) => {
+      const selected = Array.isArray(actuales[key]) ? actuales[key] : []
+      return {
+        ...actuales,
+        [key]: selected.includes(value)
+          ? selected.filter((item) => item !== value)
+          : [...selected, value],
+      }
+    })
+  }
+
+  const limpiarFiltros = () => setFiltros({})
 
   return (
     <section className={`people-table-card ${abierta ? "" : "people-table-card--collapsed"}`}>
@@ -115,7 +231,45 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
           </span>
         </button>
         <div className="people-table-card__actions">
-          <span>{personas.length} personas</span>
+          <span>
+            {filtrosActivos > 0
+              ? `${filasOrdenadas.length} de ${personas.length}`
+              : `${personas.length} personas`
+            }
+          </span>
+          {columnasFiltrables.length > 0 &&
+            <button
+              type="button"
+              className={`icon-button people-table-filter-button ${configurandoFiltros ? "active" : ""}`}
+              onClick={() => {
+                setAbierta(true)
+                setConfigurandoColumnas(false)
+                setConfigurandoFiltros((actual) => !actual)
+              }}
+              aria-label={`Filtrar ${titulo.toLowerCase()}`}
+              aria-expanded={configurandoFiltros}
+              aria-controls={filtrosId}
+              title="Aplicar filtros"
+            >
+              <i className="fas fa-filter" aria-hidden="true"></i>
+              {filtrosActivos > 0 && <b>{filtrosActivos}</b>}
+            </button>
+          }
+          <button
+            type="button"
+            className={`icon-button ${configurandoColumnas ? "active" : ""}`}
+            onClick={() => {
+              setAbierta(true)
+              setConfigurandoFiltros(false)
+              setConfigurandoColumnas((actual) => !actual)
+            }}
+            aria-label={`Configurar columnas de ${titulo.toLowerCase()}`}
+            aria-expanded={configurandoColumnas}
+            aria-controls={columnasId}
+            title="Seleccionar columnas"
+          >
+            <i className="fas fa-table-columns" aria-hidden="true"></i>
+          </button>
           <button
             type="button"
             className="icon-button"
@@ -130,6 +284,91 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
 
       {abierta &&
         <div id={contenidoId}>
+          {configurandoFiltros &&
+            <div id={filtrosId} className="people-table-filters">
+              <div className="people-table-filters__heading">
+                <div>
+                  <strong>Filtrar personas</strong>
+                  <small>Los filtros activos se aplican al mismo tiempo.</small>
+                </div>
+                {filtrosActivos > 0 &&
+                  <button type="button" onClick={limpiarFiltros}>
+                    Limpiar filtros
+                  </button>
+                }
+              </div>
+              <div className="people-table-filters__options">
+                {columnasFiltrables.map((columna) => (
+                  columna.filterType === "checkboxes"
+                    ? <fieldset key={columna.key}>
+                      <legend>{columna.filterLabel || columna.label}</legend>
+                      <div className="people-table-filters__checks">
+                        {columna.filterOptions.map((option) => {
+                          const inputId = `${id}-${columna.key}-${option.value}`
+                          return (
+                            <label key={option.value} htmlFor={inputId}>
+                              <input
+                                id={inputId}
+                                type="checkbox"
+                                checked={(filtros[columna.key] || []).includes(option.value)}
+                                onChange={() => cambiarFiltroMultiple(columna.key, option.value)}
+                              />
+                              <span>{option.label}</span>
+                            </label>
+                          )
+                        })}
+                      </div>
+                    </fieldset>
+                    : <label key={columna.key}>
+                      <span>{columna.filterLabel || columna.label}</span>
+                      <select
+                        value={filtros[columna.key] || "todos"}
+                        onChange={(event) => cambiarFiltro(columna.key, event.target.value)}
+                      >
+                        <option value="todos">Todos</option>
+                        {columna.filterOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                ))}
+              </div>
+            </div>
+          }
+          {configurandoColumnas &&
+            <div id={columnasId} className="people-table-columns">
+              <div className="people-table-columns__heading">
+                <div>
+                  <strong>Columnas visibles</strong>
+                  <small>
+                    {columnasMostradas.length} de {columnas.length} seleccionadas
+                  </small>
+                </div>
+                <button type="button" onClick={restablecerColumnas}>
+                  Predeterminadas
+                </button>
+              </div>
+              <div className="people-table-columns__options">
+                {columnas.map((columna) => (
+                  <label
+                    key={columna.key}
+                    className={columna.alwaysVisible ? "is-required" : ""}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={columnasVisibles.has(columna.key)}
+                      disabled={columna.alwaysVisible}
+                      onChange={() => cambiarVisibilidadColumna(columna)}
+                    />
+                    <span>{columna.label}</span>
+                    {columna.alwaysVisible && <small>Siempre visible</small>}
+                  </label>
+                ))}
+              </div>
+            </div>
+          }
           {personas.length > 0
             ? <>
               <div className="people-table-sort">
@@ -155,7 +394,7 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
                 <table className="people-table">
                   <thead>
                     <tr>
-                      {columnas.map((columna) => {
+                      {columnasMostradas.map((columna) => {
                         const prioridad = orden.findIndex((nivel) => nivel.key === columna.key)
                         const nivel = prioridad >= 0 ? orden[prioridad] : null
                         const ariaSort = nivel
@@ -194,7 +433,7 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
                   <tbody>
                     {filasOrdenadas.map((persona) => (
                       <tr key={persona.id || persona.nombre}>
-                        {columnas.map((columna) => (
+                        {columnasMostradas.map((columna) => (
                           <td
                             key={columna.key}
                             className={columna.sticky ? "people-table__sticky people-table__name" : ""}
@@ -232,8 +471,23 @@ export default function Personas() {
       key: "nombre",
       label: "Nombre",
       sticky: true,
+      alwaysVisible: true,
       sortValue: (persona) => persona.nombre,
       render: (persona) => persona.nombre,
+    },
+    {
+      key: "genero",
+      label: "Género",
+      defaultVisible: false,
+      sortValue: (persona) => persona.genero,
+      filterOptions: [
+        { value: "1", label: "Hombres" },
+        { value: "2", label: "Mujeres" },
+      ],
+      filterValue: (persona) => persona.genero,
+      render: (persona) => (
+        persona.genero === 1 ? "Hombre" : persona.genero === 2 ? "Mujer" : "—"
+      ),
     },
     {
       key: "ultimaAsignacion",
@@ -245,6 +499,12 @@ export default function Personas() {
       key: "ultimoRol",
       label: "Participación",
       sortValue: (persona) => getStudentHistory(persona).lastRole,
+      filterLabel: "Última participación",
+      filterOptions: [
+        { value: "asignado", label: "Asignado" },
+        { value: "ayudante", label: "Ayudante" },
+      ],
+      filterValue: (persona) => getStudentHistory(persona).lastRole,
       render: (persona) => {
         const rol = getStudentHistory(persona).lastRole
         return rol === "ayudante" ? "Ayudante" : rol === "asignado" ? "Asignado" : "—"
@@ -252,8 +512,14 @@ export default function Personas() {
     },
     {
       key: "ultimaSala",
-      label: "Sala",
+      label: "Sala como asignado",
       sortValue: (persona) => getStudentHistory(persona).lastRoom,
+      filterLabel: "Última sala como asignado",
+      filterOptions: [
+        { value: "0", label: "Sala principal" },
+        { value: "1", label: "Sala B" },
+      ],
+      filterValue: (persona) => getStudentHistory(persona).lastRoom,
       render: (persona) => {
         const sala = getStudentHistory(persona).lastRoom
         return sala == null ? "—" : sala === 1 ? "Sala B" : "Principal"
@@ -263,6 +529,12 @@ export default function Personas() {
       key: "tiposAsignacion",
       label: "Puede pasar",
       sortValue: (persona) => getTiposAsignacionLabels(persona.tiposAsignacion || []).join(", "),
+      filterType: "checkboxes",
+      filterOptions: TIPOS_ASIGNACION_MATRICULADO.map((tipo) => ({
+        value: tipo.id,
+        label: tipo.label,
+      })),
+      filterValues: (persona) => persona.tiposAsignacion || [],
       render: (persona) => {
         const tipos = getTiposAsignacionLabels(persona.tiposAsignacion || [])
         return tipos.length > 0 ? tipos.join(", ") : "Sin definir"
@@ -297,6 +569,7 @@ export default function Personas() {
         key: "nombre",
         label: "Nombre",
         sticky: true,
+        alwaysVisible: true,
         sortValue: (persona) => persona.nombre,
         render: (persona) => (
           <span className="people-table__person">
@@ -316,6 +589,12 @@ export default function Personas() {
         key: "tiposAsignacion",
         label: "Puede pasar",
         sortValue: (persona) => getTiposAsignacionNombradoLabels(persona.tiposAsignacion || []).join(", "),
+        filterType: "checkboxes",
+        filterOptions: TIPOS_ASIGNACION_NOMBRADO.map((tipo) => ({
+          value: tipo.id,
+          label: tipo.label,
+        })),
+        filterValues: (persona) => persona.tiposAsignacion || [],
         render: (persona) => {
           const tipos = getTiposAsignacionNombradoLabels(persona.tiposAsignacion || [])
           return tipos.length > 0 ? tipos.join(", ") : "Sin definir"
@@ -390,6 +669,9 @@ export default function Personas() {
         <div className={vista === "lista" ? "w-full xl:max-w-md" : "contents"}>
           <Matriculados ref={matriculadosRef} mostrarTarjeta={vista === "lista"} />
         </div>
+      </div>
+      <div className="px-3 sm:px-4 pb-4">
+        <Oraciones />
       </div>
     </>
   )

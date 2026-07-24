@@ -32,3 +32,9 @@ export function getFechaReunionDesdeSemana(fechaSemana, congregacion = {}, reuni
 
   return getDia(lunes);
 }
+
+export function getWeekKey(value) {
+  const fecha = parseLocalDate(value);
+  if (!fecha) return null;
+  return getDia(getLunesAnterior(fecha));
+}

@@ -44,6 +44,42 @@ npm run desktop:preview
 npm run desktop:build
 ```
 
+## Publicar una versión de Windows
+
+El instalador y las actualizaciones se publican automáticamente en
+GitHub Releases. Antes de publicar, confirma que todos los cambios
+estén guardados en un commit y que la rama esté actualizada en GitHub.
+
+Para una corrección o cambio pequeño:
+
+```bash
+npm run release:patch
+```
+
+Para una versión con funciones nuevas:
+
+```bash
+npm run release:minor
+```
+
+Para una versión con cambios incompatibles:
+
+```bash
+npm run release:major
+```
+
+Estos comandos actualizan la versión, crean la etiqueta de Git y la
+envían a GitHub. El workflow `Publicar aplicación de Windows` compila
+y publica automáticamente:
+
+- `Programa-VMC-Setup.exe`
+- `Programa-VMC-Setup.exe.blockmap`
+- `latest.yml`
+
+La aplicación instalada comprueba actualizaciones al iniciarse y cada
+seis horas. Cuando termina la descarga, permite reiniciar para instalar
+la nueva versión; si se elige hacerlo después, se instala al cerrar.
+
 `VITE_PUBLIC_WEB_URL` debe contener la dirección de la versión web.
 La aplicación de escritorio usa esa dirección cuando genera enlaces
 públicos de los programas.

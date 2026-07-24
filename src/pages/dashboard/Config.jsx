@@ -11,6 +11,7 @@ import { setProfile } from '../../firebase/controllers/profile.controller'
 import congregationController, { getCongregacion } from "../../firebase/controllers/congregation.controller.js"
 import { diasSemana, getDiaSemanaLabel } from "../../constants/diasSemana"
 
+const WINDOWS_INSTALLER_URL = "https://github.com/CarlosParraMtz/programa-vmc/releases/latest/download/Programa-VMC-Setup.exe"
 
 //TODO: Pedir confirmación para abandonar congregación, y borrar del store todo lo relacionado con esta al terminar de abandonar
 
@@ -379,6 +380,34 @@ export default function Config() {
                   }
                 </div>
             }
+          </div>
+        </div>
+        <div className="w-full lg:max-w-md">
+          <div className="card">
+            <div className="card_title">
+              <h2><b>Aplicación para Windows</b></h2>
+              <span className="config-platform-icon" aria-hidden="true">
+                <i className="fab fa-windows"></i>
+              </span>
+            </div>
+            <div className="divider"></div>
+            <div className="flex flex-col gap-4">
+              <p className="text-sm text-gray-600">
+                Descarga la versión de escritorio. Después de instalarla, buscará y descargará automáticamente las nuevas versiones.
+              </p>
+              <a
+                className="btn main inline-flex items-center justify-center gap-2"
+                href={WINDOWS_INSTALLER_URL}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="fas fa-download" aria-hidden="true"></i>
+                Descargar para Windows
+              </a>
+              <small className="text-gray-500">
+                Cuando una actualización esté lista, Programa VMC te pedirá reiniciar para instalarla.
+              </small>
+            </div>
           </div>
         </div>
       </div>

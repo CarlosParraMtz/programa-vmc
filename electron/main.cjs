@@ -1,4 +1,5 @@
 const { app, BrowserWindow, dialog, ipcMain, shell } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
@@ -6,6 +7,50 @@ const path = require("node:path");
 const isDevelopment = !app.isPackaged;
 const developmentUrl = "http://localhost:5173";
 let applicationServer;
+let updateCheckTimer;
+let updatePromptOpen = false;
+
+function checkForApplicationUpdates() {
+  if (isDevelopment || process.platform !== "win32") return;
+  autoUpdater.checkForUpdates().catch((error) => {
+    console.error("No se pudo comprobar si hay actualizaciones:", error);
+  });
+}
+
+function configureAutoUpdater(mainWindow) {
+  if (isDevelopment || process.platform !== "win32") return;
+
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.allowPrerelease = false;
+
+  autoUpdater.on("error", (error) => {
+    console.error("Error de actualización:", error);
+  });
+
+  autoUpdater.on("update-downloaded", async (info) => {
+    if (updatePromptOpen || mainWindow.isDestroyed()) return;
+    updatePromptOpen = true;
+    const { response } = await dialog.showMessageBox(mainWindow, {
+      type: "info",
+      title: "Actualización lista",
+      message: `Programa VMC ${info.version} está listo para instalarse.`,
+      detail: "Reinicia la aplicación para completar la actualización. Si eliges hacerlo después, se instalará al cerrar Programa VMC.",
+      buttons: ["Reiniciar e instalar", "Después"],
+      defaultId: 0,
+      cancelId: 1,
+      noLink: true,
+    });
+    updatePromptOpen = false;
+
+    if (response === 0) {
+      setImmediate(() => autoUpdater.quitAndInstall(false, true));
+    }
+  });
+
+  setTimeout(checkForApplicationUpdates, 8_000);
+  updateCheckTimer = setInterval(checkForApplicationUpdates, 6 * 60 * 60 * 1000);
+}
 
 ipcMain.handle("export-period-pdf", async (event, requestedName) => {
   const parentWindow = BrowserWindow.fromWebContents(event.sender);
@@ -175,6 +220,7 @@ async function createWindow() {
   });
 
   await mainWindow.loadURL(`${applicationUrl}/dashboard`);
+  configureAutoUpdater(mainWindow);
 }
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
@@ -201,5 +247,6 @@ app.on("window-all-closed", () => {
 });
 
 app.on("before-quit", () => {
+  if (updateCheckTimer) clearInterval(updateCheckTimer);
   applicationServer?.close();
 });

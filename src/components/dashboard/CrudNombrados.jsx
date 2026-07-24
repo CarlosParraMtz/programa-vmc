@@ -58,6 +58,7 @@ export default function CrudNombrados({
   agregarNombrado,
   tipoAsignacionPermitida = null,
   opcionesExtra = [],
+  assignedIds = new Set(),
 }) {
   const nombrados = useAtomValue(atoms.nombrados)
   const [filtros, setFiltros] = useState({
@@ -105,6 +106,10 @@ export default function CrudNombrados({
       ))
       .map((nombrado, index) => ({ nombrado, index }))
       .sort((a, b) => {
+        const assignedA = assignedIds.has(a.nombrado.id)
+        const assignedB = assignedIds.has(b.nombrado.id)
+        if (assignedA !== assignedB) return assignedA ? 1 : -1
+
         for (const nivel of orden) {
           const valorA = valorDeOrden(a.nombrado, nivel.key)
           const valorB = valorDeOrden(b.nombrado, nivel.key)
@@ -124,6 +129,7 @@ export default function CrudNombrados({
       })
       .map(({ nombrado }) => nombrado)
   }, [
+    assignedIds,
     filtros,
     nombrados,
     opcionesExtra,

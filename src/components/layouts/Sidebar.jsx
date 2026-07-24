@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import atoms from '../../jotai/atoms';
 import { AnimatePresence, motion } from 'framer-motion'
+import InstallPWAButton from '../common/InstallPWAButton';
 
 export default function Sidebar({ useOpen }) {
 
@@ -81,6 +82,7 @@ export default function Sidebar({ useOpen }) {
 
                 <div>
                     <div className="separator"></div>
+                    <InstallPWAButton onInstalled={cerrarMenu} />
                     <NavLink className='sidebar_link' to="/dashboard/guia" onClick={cerrarMenu} >
                         <div className="sidebar_link-icon">
                             <i className="fas fa-compass"></i>

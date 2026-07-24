@@ -1,0 +1,47 @@
+name: Publicar aplicación de Windows
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Compilar y publicar
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Comprobar la versión
+        shell: pwsh
+        run: |
+          $packageVersion = node -p "require('./package.json').version"
+          $tagVersion = "${{ github.ref_name }}".TrimStart("v")
+          if ($packageVersion -ne $tagVersion) {
+            throw "La etiqueta ${{ github.ref_name }} no coincide con la versión $packageVersion de package.json"
+          }
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar y publicar la release
+        run: npm run desktop:publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
