@@ -51,10 +51,11 @@ export default function Home() {
       <section className="landing__hero">
         <div className="landing__hero-content">
           <p className="landing__eyebrow">Organizacion sencilla para la reunion de entre semana</p>
-          <h1>Prepara, asigna y comparte programas sin perder el hilo.</h1>
+          <h1>Prepara la reunión de entre semana sin perder el hilo.</h1>
           <p className="landing__intro">
             Programa VMC ayuda a llevar el control de periodos, reuniones,
-            participantes y asignaciones desde un solo panel, con alertas para
+            participantes y asignaciones de la reunión de entre semana
+            desde un solo panel, con alertas para
             detectar pendientes antes de publicar o imprimir.
           </p>
 

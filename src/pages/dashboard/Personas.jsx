@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { useAtomValue } from "jotai"
 import Matriculados from "../../components/dashboard/personas/Matriculados"
 import Nombrados from "../../components/dashboard/personas/Nombrados"
@@ -48,7 +48,7 @@ function compareValues(a, b) {
   return String(a).localeCompare(String(b), "es", { numeric: true, sensitivity: "base" })
 }
 
-function TablaPersonas({ id, titulo, descripcion, personas = [], columnas }) {
+function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgregar }) {
   const [orden, setOrden] = useState([])
   const [abierta, setAbierta] = useState(true)
   const contenidoId = `${id}-contenido`
@@ -114,7 +114,18 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas }) {
             <small>{descripcion}</small>
           </span>
         </button>
-        <span>{personas.length} personas</span>
+        <div className="people-table-card__actions">
+          <span>{personas.length} personas</span>
+          <button
+            type="button"
+            className="icon-button"
+            onClick={onAgregar}
+            aria-label={`Agregar a ${titulo.toLowerCase()}`}
+            title={`Agregar a ${titulo.toLowerCase()}`}
+          >
+            <i className="fas fa-add" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
 
       {abierta &&
@@ -206,7 +217,13 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas }) {
 }
 
 export default function Personas() {
-  const [vista, setVista] = useState("lista")
+  const [vista, setVista] = useState(() => (
+    typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+      ? "lista"
+      : "tabla"
+  ))
+  const nombradosRef = useRef(null)
+  const matriculadosRef = useRef(null)
   const matriculados = useAtomValue(atoms.matriculados) || []
   const nombrados = useAtomValue(atoms.nombrados) || []
 
@@ -342,22 +359,15 @@ export default function Personas() {
         </div>
       </div>
 
-      {vista === "lista"
-        ? <div className="flex flex-col xl:flex-row matriculados gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
-          <div className="w-full xl:max-w-md">
-            <Nombrados />
-          </div>
-          <div className="w-full xl:max-w-md">
-            <Matriculados />
-          </div>
-        </div>
-        : <div className="people-tables">
+      {vista === "tabla" &&
+        <div className="people-tables">
           <TablaPersonas
             id="tabla-matriculados"
             titulo="Matriculados"
             descripcion="Sin las marcas de participación de los últimos tres meses."
             personas={matriculados}
             columnas={columnasMatriculados}
+            onAgregar={() => matriculadosRef.current?.abrirModalAgregar()}
           />
           <TablaPersonas
             id="tabla-nombrados"
@@ -365,9 +375,22 @@ export default function Personas() {
             descripcion="Última fecha registrada para cada tipo de asignación."
             personas={nombrados}
             columnas={columnasNombrados}
+            onAgregar={() => nombradosRef.current?.abrirModalAgregar()}
           />
         </div>
       }
+
+      <div className={vista === "lista"
+        ? "flex flex-col xl:flex-row matriculados gap-3 sm:gap-4 px-3 sm:px-4 pb-4"
+        : "contents"
+      }>
+        <div className={vista === "lista" ? "w-full xl:max-w-md" : "contents"}>
+          <Nombrados ref={nombradosRef} mostrarTarjeta={vista === "lista"} />
+        </div>
+        <div className={vista === "lista" ? "w-full xl:max-w-md" : "contents"}>
+          <Matriculados ref={matriculadosRef} mostrarTarjeta={vista === "lista"} />
+        </div>
+      </div>
     </>
   )
 }

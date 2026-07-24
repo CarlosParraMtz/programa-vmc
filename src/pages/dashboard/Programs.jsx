@@ -123,8 +123,11 @@ export default function Programs() {
 
 	return (
 		<>
-			<div className="p-3 sm:p-4 no-print">
-				<h1 className="text-2xl" >Programas</h1>
+			<div className="dashboard-page-header no-print">
+				<div className="dashboard-page-heading">
+					<h1>Programas</h1>
+					<p>Organiza los periodos y revisa el avance de sus reuniones.</p>
+				</div>
 			</div>
 			<div className='flex flex-col xl:flex-row periodos no-print gap-3 sm:gap-4 px-3 sm:px-4 pb-4'>
 				<div className="w-full xl:max-w-sm">
@@ -248,7 +251,7 @@ export default function Programs() {
 															</div>
 														</div>
 
-														<ul className="flex flex-col gap-2 max-h-[420px] overflow-auto">
+														<ul className="flex flex-col gap-2 xl:max-h-[420px] xl:overflow-auto">
 															{reunionesDelPeriodo.map(reunion => {
 																const tienePendientes = reunion.advertencias.length > 0
 																return (

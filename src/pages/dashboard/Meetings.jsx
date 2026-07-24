@@ -268,8 +268,11 @@ export default function Meetings() {
 
   return (
     <>
-      <div className="p-3 sm:p-4 no-print">
-        <h1 className="text-2xl" >Reuniones</h1>
+      <div className="dashboard-page-header no-print">
+        <div className="dashboard-page-heading">
+          <h1>Reuniones</h1>
+          <p>Carga las reuniones, asigna participantes y prepara cada programa.</p>
+        </div>
       </div>
       <div className="flex flex-col xl:flex-row meetings gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
         <div className="w-full xl:max-w-sm no-print">
@@ -290,7 +293,7 @@ export default function Meetings() {
                   </button>
                 </div>
 
-                : <ul className="gap-2 flex flex-col max-h-[260px] xl:max-h-[calc(100vh-260px)] overflow-auto">
+                : <ul className="gap-2 flex flex-col xl:max-h-[calc(100vh-260px)] xl:overflow-auto">
                   {reunionesFilter.map(reunion =>{
                     return (<li key={reunion.id}
                       onClick={() => {

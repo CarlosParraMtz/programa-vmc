@@ -167,8 +167,11 @@ export default function Config() {
 
   return (
     <>
-      <div className="p-3 sm:p-4 flex gap-3">
-        <h1 className="text-2xl" >Configuración</h1>
+      <div className="dashboard-page-header">
+        <div className="dashboard-page-heading">
+          <h1>Configuración</h1>
+          <p>Actualiza tu perfil, los datos de la congregación y las opciones de acceso.</p>
+        </div>
       </div>
       <div className="dashboard-settings flex flex-col lg:flex-row gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
         <div className="w-full lg:max-w-md">

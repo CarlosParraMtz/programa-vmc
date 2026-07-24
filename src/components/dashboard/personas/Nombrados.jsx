@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
 import Modal from '../../common/Modal'
 import NombradoCollapse from './NombradoCollapse'
 import atoms from '../../../jotai/atoms'
@@ -12,15 +12,19 @@ import {nombradoInicial} from '../../../constants/nombradoInicial'
 import { TIPOS_ASIGNACION_NOMBRADO } from '../../../constants/tiposAsignacionNombrado'
 import { stripUndefined } from '../../../functions/programHelpers'
 
-export default function Nombrados() {
+const Nombrados = forwardRef(function Nombrados({ mostrarTarjeta = true }, ref) {
   const nombrados = useAtomValue(atoms.nombrados)
   const congregacion = useAtomValue(atoms.congregacion)
+  const [abierta, setAbierta] = useState(true)
   const [filtrosNombramiento, setFiltrosNombramiento] = useState({
     a: true,
     sm: true,
   })
   const [modalAgregar, setModalAgregar] = useState(false)
   const abrirModalAgregar = () => setModalAgregar(true)
+  useImperativeHandle(ref, () => ({
+    abrirModalAgregar: () => setModalAgregar(true),
+  }), [])
   const cerrarModalAgregar = () => {
     setModalAgregar(false)
     setAgregarForm(nombradoInicial)
@@ -135,14 +139,24 @@ export default function Nombrados() {
 
 
   return (<>
-    <div className="card">
+    {mostrarTarjeta && <div className="card">
       <div className="card_title">
-        <h2><b>Nombrados:</b></h2>
+        <button
+          type="button"
+          className="people-list-section-toggle"
+          onClick={() => setAbierta((actual) => !actual)}
+          aria-expanded={abierta}
+          aria-controls="lista-nombrados-contenido"
+        >
+          <i className={`fas fa-chevron-${abierta ? "down" : "right"}`} aria-hidden="true"></i>
+          <h2><b>Nombrados:</b></h2>
+        </button>
         <button className="icon-button" onClick={abrirModalAgregar}>
           <i className="fas fa-add"></i>
         </button>
       </div>
-      <div className="flex flex-wrap gap-2 mt-2">
+      {abierta && <div id="lista-nombrados-contenido">
+        <div className="flex flex-wrap gap-2 mt-2">
         <button
           type="button"
           className={filtroClass(filtrosNombramiento.a)}
@@ -157,11 +171,11 @@ export default function Nombrados() {
         >
           Ministeriales
         </button>
-      </div>
+        </div>
 
-      {/* Contenido */}
-      {
-        nombrados && nombrados.length > 0
+        {/* Contenido */}
+        {
+          nombrados && nombrados.length > 0
           ? <ul className='my-2 gap-2 max-h-[400px] overflow-y-auto border-b ' >
             {nombradosFiltrados.map(nombrado =>
               <NombradoCollapse
@@ -179,8 +193,9 @@ export default function Nombrados() {
             <p className='text-center' >No hay nombrados agregados</p>
             <button className='btn main' onClick={abrirModalAgregar} >Agregar uno</button>
           </div>
-      }
-    </div>
+        }
+      </div>}
+    </div>}
 
     <Modal title="Agregar nombrado" size='md' open={modalAgregar} onClose={cerrarModalAgregar} >
       <form onSubmit={submit} className='flex flex-col gap-5 my-5' >
@@ -245,4 +260,8 @@ export default function Nombrados() {
     </Modal >
   </>
   )
-}
+})
+
+Nombrados.displayName = "Nombrados"
+
+export default Nombrados

@@ -3,11 +3,66 @@ import { useState } from "react"
 import useModal from "../../../hooks/useModal"
 import { nombramientos } from "../../../constants/nombramientos"
 import { getTiposAsignacionNombradoLabels } from "../../../constants/tiposAsignacionNombrado"
+import { parseDateValue } from "../../../functions/programHelpers"
+
+const ETIQUETAS_ASIGNACION = {
+  presidir: "Presidir",
+  salaAux: "Sala auxiliar",
+  tesoros: "Tesoros de la Biblia",
+  perlas: "Perlas escondidas",
+  analisis: "Análisis con el auditorio",
+  estudio: "Estudio bíblico",
+  necesidades: "Necesidades",
+  oracion: "Oración",
+  lectura: "Lectura de la Biblia",
+  discurso: "Discurso",
+  demostracion: "Demostración",
+  ayudante: "Ayudante",
+}
+
+const formatoFecha = new Intl.DateTimeFormat("es-MX", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+})
+
+function obtenerUltimasAsignaciones(nombrado) {
+  const asignaciones = Object.entries(nombrado.ultimasAsignaciones || {})
+    .map(([rol, valores]) => {
+      const fechas = (Array.isArray(valores) ? valores : [valores])
+        .map(parseDateValue)
+        .filter(Boolean)
+      const fecha = fechas.length
+        ? new Date(Math.max(...fechas.map((valor) => valor.getTime())))
+        : null
+
+      return fecha
+        ? { rol, etiqueta: ETIQUETAS_ASIGNACION[rol] || rol, fecha }
+        : null
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.fecha - a.fecha)
+
+  if (asignaciones.length === 0) {
+    const fecha = parseDateValue(nombrado.ultimaAsignacion)
+    if (fecha) {
+      asignaciones.push({
+        rol: "ultimaAsignacion",
+        etiqueta: "Última asignación",
+        fecha,
+      })
+    }
+  }
+
+  return asignaciones
+}
 
 export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdit = () => { }, onAdd = null }) {
   const [open, setOpen] = useState(false)
   const { modalConfirm } = useModal()
   const tiposAsignacion = getTiposAsignacionNombradoLabels(nombrado.tiposAsignacion || [])
+  const ultimasAsignaciones = obtenerUltimasAsignaciones(nombrado)
 
   return (
     <AnimatePresence>
@@ -69,12 +124,16 @@ export default function NombradoCollapse({ nombrado, onDelete = () => { }, onEdi
               }
 
             </div>
-            {nombrado.ultimaAsignacion &&
+            {ultimasAsignaciones.length > 0 &&
               <>
-                <p><strong>Última asignación:</strong></p>
-                <p className="pl-5" >
-                  Presidir - 24 de mayo de 2025
-                </p>
+                <p><strong>Últimas asignaciones:</strong></p>
+                <div className="pl-5">
+                  {ultimasAsignaciones.map(({ rol, etiqueta, fecha }) => (
+                    <p key={rol}>
+                      {etiqueta} - {formatoFecha.format(fecha)}
+                    </p>
+                  ))}
+                </div>
               </>}
             <p><strong>Puede pasar:</strong></p>
             <p className="pl-5">

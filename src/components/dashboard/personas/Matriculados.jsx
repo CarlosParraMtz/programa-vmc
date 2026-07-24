@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
 import Modal from '../../common/Modal'
 import { useAtomValue } from 'jotai'
 import atoms from '../../../jotai/atoms'
@@ -28,9 +28,10 @@ const formInicial = {
   tiposAsignacion: [],
 }
 
-export default function Nombrados() {
+const Matriculados = forwardRef(function Matriculados({ mostrarTarjeta = true }, ref) {
 
   const [loading, setLoading] = useState(false)
+  const [abierta, setAbierta] = useState(true)
   const [modalAgregar, setModalAgregar] = useState(false)
   const [agregarForm, setAgregarForm] = useState(formInicial)
   const [filtrosGenero, setFiltrosGenero] = useState({
@@ -79,6 +80,9 @@ export default function Nombrados() {
   )
 
   const abrirModalAgregar = () => setModalAgregar(true)
+  useImperativeHandle(ref, () => ({
+    abrirModalAgregar: () => setModalAgregar(true),
+  }), [])
   const cerrarModalAgregar = () => {
     setModalAgregar(false)
     setAgregarForm(formInicial)
@@ -163,14 +167,24 @@ export default function Nombrados() {
   }
 
   return (<>
-    <div className="card">
+    {mostrarTarjeta && <div className="card">
       <div className="card_title">
-        <h2><b>Matriculados:</b></h2>
+        <button
+          type="button"
+          className="people-list-section-toggle"
+          onClick={() => setAbierta((actual) => !actual)}
+          aria-expanded={abierta}
+          aria-controls="lista-matriculados-contenido"
+        >
+          <i className={`fas fa-chevron-${abierta ? "down" : "right"}`} aria-hidden="true"></i>
+          <h2><b>Matriculados:</b></h2>
+        </button>
         <button className="icon-button" onClick={abrirModalAgregar}>
           <i className="fas fa-add"></i>
         </button>
       </div>
-      <div className="flex flex-wrap gap-2 mt-2">
+      {abierta && <div id="lista-matriculados-contenido">
+        <div className="flex flex-wrap gap-2 mt-2">
         <button
           type="button"
           className={filtroClass(filtrosGenero.hombres)}
@@ -192,11 +206,11 @@ export default function Nombrados() {
         >
           Ultima asignacion
         </button>
-      </div>
+        </div>
 
-      {/* Contenido */}
-      {
-        matriculados && matriculados.length > 0
+        {/* Contenido */}
+        {
+          matriculados && matriculados.length > 0
           ? <ul className='my-2 gap-2 max-h-[400px] overflow-y-auto border-b ' >
             {matriculadosFiltrados.map(matriculado =>
               <MatriculadoCollapse
@@ -214,8 +228,9 @@ export default function Nombrados() {
             <p className='text-center' >No hay matriculados agregados</p>
             <button className='btn main' onClick={abrirModalAgregar} >Agregar uno</button>
           </div>
-      }
-    </div>
+        }
+      </div>}
+    </div>}
 
     <Modal title="Agregar matriculado" open={modalAgregar} onClose={cerrarModalAgregar} >
       <form onSubmit={submit} className='flex flex-col gap-5 my-5' >
@@ -287,4 +302,8 @@ export default function Nombrados() {
     </Modal>
   </>
   )
-}
+})
+
+Matriculados.displayName = "Matriculados"
+
+export default Matriculados

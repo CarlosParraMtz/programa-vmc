@@ -4,6 +4,11 @@ import { getPersonName, hasAuxRoom, isAuxRoomAssignment } from "./programHelpers
 
 const CARD_WIDTH = 536;
 const CARD_HEIGHT = 700;
+const FONT_FAMILY = "Arial, Helvetica, sans-serif";
+
+function getFont(size, weight = 400, style = "normal") {
+  return `${style} ${weight} ${size}px ${FONT_FAMILY}`;
+}
 
 function formatDate(value) {
   const [year, month, day] = String(value).split("-").map(Number);
@@ -48,13 +53,53 @@ function drawCheckbox(ctx, x, y, checked = false) {
 
 function drawField(ctx, label, value, x, y, lineStart, lineEnd) {
   ctx.fillStyle = "#000";
-  ctx.font = "700 26px Arial, Helvetica, sans-serif";
+  ctx.font = getFont(26, 700);
   ctx.fillText(label, x, y);
   drawLine(ctx, lineStart, y, lineEnd);
 
   if (!value) return;
-  ctx.font = "24px Arial, Helvetica, sans-serif";
+  ctx.font = getFont(24);
   ctx.fillText(value, lineStart + 8, y - 5, lineEnd - lineStart - 12);
+}
+
+function drawParagraphLine(ctx, segments, x, y, lineEnd, justify = true) {
+  const words = segments.flatMap((segment) => (
+    segment.keepTogether
+      ? [{ ...segment, text: segment.text.trim() }]
+      : segment.text.trim().split(/\s+/).filter(Boolean).map((text) => ({
+        ...segment,
+        text,
+      }))
+  ));
+
+  const measuredWords = words.map((word) => {
+    ctx.font = getFont(20, word.weight || 400, word.style || "normal");
+    return {
+      ...word,
+      width: ctx.measureText(word.text).width,
+    };
+  });
+  const wordsWidth = measuredWords.reduce((total, word) => total + word.width, 0);
+  const defaultSpace = ctx.measureText(" ").width;
+  const gap = justify && measuredWords.length > 1
+    ? Math.max(defaultSpace, (lineEnd - x - wordsWidth) / (measuredWords.length - 1))
+    : defaultSpace;
+
+  let cursor = x;
+  measuredWords.forEach((word, index) => {
+    const nextWord = measuredWords[index + 1];
+    ctx.font = getFont(20, word.weight || 400, word.style || "normal");
+
+    if (word.highlight) {
+      const highlightWidth = word.width + (nextWord?.highlight ? gap : 0);
+      ctx.fillStyle = "#fff39a";
+      ctx.fillRect(cursor - 1, y - 19, highlightWidth + 2, 23);
+    }
+
+    ctx.fillStyle = "#000";
+    ctx.fillText(word.text, cursor, y);
+    cursor += word.width + gap;
+  });
 }
 
 function drawCard(ctx, card, x, y) {
@@ -65,44 +110,49 @@ function drawCard(ctx, card, x, y) {
   ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
 
   ctx.fillStyle = "#000";
-  ctx.font = "700 28px Arial, Helvetica, sans-serif";
+  ctx.font = getFont(28, 700);
   ctx.textAlign = "center";
-  ctx.fillText("ASIGNACION PARA LA REUNION", CARD_WIDTH / 2, 45);
+  ctx.fillText("ASIGNACIÓN PARA LA REUNIÓN", CARD_WIDTH / 2, 45);
   ctx.fillText("VIDA Y MINISTERIO CRISTIANOS", CARD_WIDTH / 2, 78);
 
   ctx.textAlign = "left";
   drawField(ctx, "Nombre:", card.nombre, 24, 125, 145, 508);
   drawField(ctx, "Ayudante:", card.ayudante, 24, 177, 164, 508);
   drawField(ctx, "Fecha:", card.fecha, 24, 229, 120, 508);
-  drawField(ctx, "Intervencion num.:", card.numero, 24, 281, 270, 508);
+  drawField(ctx, "Intervención núm.:", card.numero, 24, 281, 270, 508);
 
-  ctx.font = "700 25px Arial, Helvetica, sans-serif";
-  ctx.fillText("Se presentara en:", 24, 355);
+  ctx.font = getFont(25, 700);
+  ctx.fillText("Se presentará en:", 24, 355);
 
-  ctx.font = "24px Arial, Helvetica, sans-serif";
+  ctx.font = getFont(24);
   drawCheckbox(ctx, 56, 377, card.sala !== "B");
   ctx.fillText("Sala principal", 94, 394);
   drawCheckbox(ctx, 56, 409, card.sala === "B");
-  ctx.fillText("Sala auxiliar num. 1", 94, 426);
+  ctx.fillText("Sala auxiliar núm. 1", 94, 426);
   drawCheckbox(ctx, 56, 441, false);
-  ctx.fillText("Sala auxiliar num. 2", 94, 458);
+  ctx.fillText("Sala auxiliar núm. 2", 94, 458);
 
-  ctx.font = "700 20px Arial, Helvetica, sans-serif";
-  ctx.fillText("Nota al estudiante:", 24, 532);
+  drawParagraphLine(ctx, [
+    { text: "Nota al estudiante:", weight: 700, keepTogether: true },
+    { text: "En la ", highlight: true },
+    { text: "Guía de actividades", style: "italic", highlight: true },
+  ], 24, 532, 510);
+  drawParagraphLine(ctx, [
+    { text: "encontrará la información que necesita para su", highlight: true },
+  ], 24, 556, 510);
+  drawParagraphLine(ctx, [
+    { text: "intervención. Repase también las indicaciones que se" },
+  ], 24, 580, 510);
+  drawParagraphLine(ctx, [
+    { text: "describen en las " },
+    { text: "Instrucciones para la reunión Vida y", style: "italic" },
+  ], 24, 604, 510);
+  drawParagraphLine(ctx, [
+    { text: "Ministerio Cristianos", style: "italic" },
+    { text: " (S-38)." },
+  ], 24, 628, 510, false);
 
-  ctx.font = "20px Arial, Helvetica, sans-serif";
-  ctx.fillStyle = "#fff39a";
-  ctx.fillRect(252, 513, 258, 24);
-  ctx.fillRect(24, 538, 486, 24);
-  ctx.fillStyle = "#000";
-  ctx.fillText("En la Guia de actividades", 254, 532);
-  ctx.fillText("encontrara la informacion que necesita para su", 24, 556);
-  ctx.fillText("intervencion.", 24, 580);
-  ctx.fillText("Repase tambien las indicaciones que se", 138, 580);
-  ctx.fillText("describen en las Instrucciones para la reunion Vida y", 24, 604);
-  ctx.fillText("Ministerio Cristianos (S-38).", 24, 628);
-
-  ctx.font = "16px Arial, Helvetica, sans-serif";
+  ctx.font = getFont(16);
   ctx.fillText("S-89-S   11/23", 24, 670);
 
   ctx.restore();
@@ -123,6 +173,15 @@ function canvasToBlob(canvas) {
   return new Promise((resolve) => {
     canvas.toBlob((blob) => resolve(blob), "image/png");
   });
+}
+
+export function createStudentAssignmentCardCanvas(card) {
+  const canvas = document.createElement("canvas");
+  canvas.width = CARD_WIDTH;
+  canvas.height = CARD_HEIGHT;
+  const ctx = canvas.getContext("2d");
+  drawCard(ctx, card, 0, 0);
+  return canvas;
 }
 
 function makeCrcTable() {
@@ -260,11 +319,7 @@ export async function downloadStudentAssignmentCardsPng(reunion, congregacion = 
   if (!cards.length) return 0;
 
   const files = await Promise.all(cards.map(async (card) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = CARD_WIDTH;
-    canvas.height = CARD_HEIGHT;
-    const ctx = canvas.getContext("2d");
-    drawCard(ctx, card, 0, 0);
+    const canvas = createStudentAssignmentCardCanvas(card);
     const blob = await canvasToBlob(canvas);
     const bytes = new Uint8Array(await blob.arrayBuffer());
     return { name: card.filename, bytes };

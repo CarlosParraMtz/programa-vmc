@@ -178,7 +178,7 @@ export default function CrudMatriculados({ agregarMatriculado, agregarAyudante, 
       </div>
 
       {/* Lista de Matriculados */}
-      <div className="max-w-4xl max-h-[55vh] overflow-auto flex flex-col gap-2">
+      <div className="max-w-4xl flex flex-col gap-2">
         {
           filteredAndSortedMatriculados.map((matriculado) => (
             <MatriculadoCollapse

@@ -60,8 +60,11 @@ export default function ThisWeek() {
 
 	return (
 		<>
-			<div className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-				<h1 className="text-2xl" >Esta semana</h1>
+			<div className="dashboard-page-header">
+				<div className="dashboard-page-heading">
+					<h1>Esta semana</h1>
+					<p>Consulta el programa de la próxima reunión y compártelo.</p>
+				</div>
 				{congregacion?.id &&
 					<button className="btn main w-full sm:w-auto" onClick={compartirEnlacePrograma}>
 						<i className="fas fa-paper-plane mr-2"></i>

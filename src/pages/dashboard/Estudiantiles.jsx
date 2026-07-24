@@ -4,8 +4,11 @@ import Tooltip from "../../components/common/Tooltip"
 export default function Estudiantiles() {
   return (
     <>
-      <div className="p-3 sm:p-4">
-        <h1 className="text-2xl" >Asignaciones estudiantiles</h1>
+      <div className="dashboard-page-header">
+        <div className="dashboard-page-heading">
+          <h1>Asignaciones estudiantiles</h1>
+          <p>Consulta y prepara las asignaciones estudiantiles de cada reunión.</p>
+        </div>
       </div>
       <div className="flex flex-col xl:flex-row gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
         <div className="w-full xl:w-1/3">

@@ -236,7 +236,7 @@ export default function CrudNombrados({
         </div>
       </div>
 
-      <div className="max-w-4xl max-h-[55vh] overflow-auto flex flex-col gap-2">
+      <div className="max-w-4xl flex flex-col gap-2">
         {nombradosFiltrados.map((nombrado) => (
           <NombradoCollapse
             nombrado={nombrado}
