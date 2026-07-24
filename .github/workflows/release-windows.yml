@@ -41,7 +41,31 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Compilar y publicar la release
-        run: npm run desktop:publish
+      - name: Compilar el instalador
+        run: npm run desktop:build
+
+      - name: Publicar todos los archivos en una sola release
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $releaseTitle = $tag.TrimStart("v")
+          $assets = @(
+            "release/Programa-VMC-Setup.exe",
+            "release/Programa-VMC-Setup.exe.blockmap",
+            "release/latest.yml"
+          )
+
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $assets --clobber --repo $env:GITHUB_REPOSITORY
+          }
+          else {
+            gh release create $tag $assets `
+              --verify-tag `
+              --title $releaseTitle `
+              --generate-notes `
+              --latest `
+              --repo $env:GITHUB_REPOSITORY
+          }
