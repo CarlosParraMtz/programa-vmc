@@ -11,7 +11,7 @@ export default function Sidebar({ useOpen }) {
 
     const cerrarMenu = () => setOpen(false)
     return (
-        <div className={`sidebar ${open ? "open" : ""} z-40`}>
+        <div className={`sidebar ${open ? "open" : ""}`}>
             <AnimatePresence>
                 {
                     open && <motion.div
@@ -20,12 +20,12 @@ export default function Sidebar({ useOpen }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed top-0 left-0 w-screen h-screen bg-[#00000060] md:hidden "
+                        className="sidebar__backdrop fixed top-0 left-0 w-screen h-screen bg-[#00000060] md:hidden"
                     >
                     </motion.div>
                 }
             </AnimatePresence>
-            <div className="card z-50">
+            <div className="card sidebar__panel">
                 <div>
                     <button onClick={() => setOpen(!open)} >
                         <i className="fas fa-bars"></i>
