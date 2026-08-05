@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import toast, { LoaderIcon } from "react-hot-toast";
@@ -10,6 +10,8 @@ import { downloadStudentAssignmentCardsPng } from "../functions/studentAssignmen
 import { getWeekKey, parseLocalDate } from "../functions/meetingDates";
 import getDia from "../functions/getDia";
 import getLunesAnterior from "../functions/getLunesAnterior";
+import InstallPWAButton from "../components/common/InstallPWAButton";
+import { savePublicProgramUrl } from "../functions/pwaPublicProgram";
 
 function addWeeks(value, weeks) {
   const date = parseLocalDate(value);
@@ -20,6 +22,7 @@ function addWeeks(value, weeks) {
 
 export default function ProgramaPublico() {
   const { congregacionId, reunionId } = useParams();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [semanaParamInicial] = useState(() => searchParams.get("semana"));
   const [programa, setPrograma] = useState(null);
@@ -30,6 +33,7 @@ export default function ProgramaPublico() {
   const [direccion, setDireccion] = useState(0);
   const [generandoAsignaciones, setGenerandoAsignaciones] = useState(false);
   const [preparandoImpresion, setPreparandoImpresion] = useState(false);
+  const [mostrarAyudaInstalacion, setMostrarAyudaInstalacion] = useState(false);
   const reducirMovimiento = useReducedMotion();
   const [semanaSeleccionada, setSemanaSeleccionada] = useState(() => {
     const semanaParam = searchParams.get("semana");
@@ -132,6 +136,10 @@ export default function ProgramaPublico() {
     }
   };
 
+  const guardarProgramaParaPwa = () => {
+    savePublicProgramUrl(location.pathname, semanaSeleccionada);
+  };
+
   if (loading) {
     return <div className="public-program"><p>Cargando programa...</p></div>;
   }
@@ -161,8 +169,27 @@ export default function ProgramaPublico() {
             <i className="fas fa-chevron-right"></i>
           </button>
         </div>
+        <div className="public-program__access">
+          <InstallPWAButton
+            variant="public"
+            onInstalled={guardarProgramaParaPwa}
+            onUnavailable={() => {
+              guardarProgramaParaPwa();
+              setMostrarAyudaInstalacion(true);
+            }}
+          />
+          <Link to="/login" className="btn bg-gray-100 hover:bg-white">
+            <i className="fas fa-right-to-bracket" aria-hidden="true"></i>
+            <span>Iniciar sesión</span>
+          </Link>
+        </div>
 
       </div>
+      {mostrarAyudaInstalacion &&
+        <div className="public-program__install-help no-print">
+          En Android, abre el menú del navegador y elige “Instalar app”. En iPhone o iPad, abre esta página en Safari, pulsa Compartir y selecciona “Agregar a pantalla de inicio”.
+        </div>
+      }
 
       <AnimatePresence initial={false} mode="wait" custom={direccion}>
       <motion.section

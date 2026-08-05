@@ -1810,6 +1810,31 @@ a {
     gap: 8px;
   }
 
+  &__access {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+  }
+
+  &__install-help {
+    width: min(920px, 100%);
+    margin-top: -8px;
+    border: 1px solid rgba(150, 95, 241, .25);
+    border-radius: 8px;
+    background: #f5f0fb;
+    color: $color_dark;
+    padding: 10px 14px;
+    font-size: .86rem;
+    text-align: center;
+  }
+
   &__nav-button {
     width: 42px;
     height: 42px;
@@ -3689,6 +3714,14 @@ a {
 
     .btn,
     a {
+      flex: 1 1 0;
+    }
+  }
+
+  .public-program__access {
+    width: 100%;
+
+    .btn {
       flex: 1 1 0;
     }
   }

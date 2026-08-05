@@ -12,8 +12,8 @@ import Login from '../pages/auth/Login'
 import Signup from '../pages/auth/Signup'
 import CargaReuniones from '../pages/CargaReuniones'
 import ProgramaPublico from '../pages/ProgramaPublico'
-import Home from '../pages/Home';
 import GuiaUso from '../pages/dashboard/GuiaUso';
+import PwaStartPage from '../pages/PwaStartPage';
 
 export default function Router() {
     return useRoutes([
@@ -22,7 +22,7 @@ export default function Router() {
             children: [
                 { 
                     path: "/",
-                    element: <Home /> 
+                    element: <PwaStartPage />
                 },
                 {
                     path: "dashboard",

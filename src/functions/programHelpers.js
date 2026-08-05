@@ -287,7 +287,8 @@ export function validateProgram(programa, congregacion = {}) {
   const used = new Map();
   programa.asignaciones?.forEach((asignacion, index) => {
     const nombre = getPersonName(asignacion.asignado);
-    if (!nombre) warnings.push(`Falta asignado en la parte ${index + 1}.`);
+    // Un video puede ser la parte completa y, por ello, no requiere asignado.
+    if (!nombre && !asignacion.video) warnings.push(`Falta asignado en la parte ${index + 1}.`);
     if (nombre) used.set(nombre, (used.get(nombre) || 0) + 1);
 
     const ayudante = getPersonName(asignacion.ayudante);

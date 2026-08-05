@@ -5,6 +5,7 @@ import atoms from '../../jotai/atoms'
 import Input from "../../components/common/Input"
 import Select from "../../components/common/Select"
 import Tooltip from "../../components/common/Tooltip"
+import InstallPWAButton from "../../components/common/InstallPWAButton"
 import toast from '../../functions/toast'
 import auth from "../../firebase/controllers/authController"
 import { setProfile } from '../../firebase/controllers/profile.controller'
@@ -26,6 +27,7 @@ export default function Config() {
   const setPeriodo = useSetAtom(atoms.periodo)
   const setReuniones = useSetAtom(atoms.reuniones)
   const navigate = useNavigate()
+  const isDesktopApp = Boolean(window.desktopAPI?.isDesktop)
   const [edicion, setEdicion] = useState({
     user: !user?.perfil,
     congregacion: ""
@@ -382,7 +384,7 @@ export default function Config() {
             }
           </div>
         </div>
-        <div className="w-full lg:max-w-md">
+        {!isDesktopApp && <div className="w-full lg:max-w-md">
           <div className="card">
             <div className="card_title">
               <h2><b>Aplicación para Windows</b></h2>
@@ -409,7 +411,27 @@ export default function Config() {
               </small>
             </div>
           </div>
-        </div>
+        </div>}
+        {!isDesktopApp && <div className="w-full lg:max-w-md">
+          <div className="card">
+            <div className="card_title">
+              <h2><b>Aplicación para teléfono</b></h2>
+              <span className="config-platform-icon" aria-hidden="true">
+                <i className="fas fa-mobile-screen-button"></i>
+              </span>
+            </div>
+            <div className="divider"></div>
+            <div className="flex flex-col gap-4">
+              <p className="text-sm text-gray-600">
+                Instala Programa VMC como aplicación web para abrirlo desde la pantalla de inicio de tu teléfono.
+              </p>
+              <InstallPWAButton variant="config" />
+              <small className="text-gray-500">
+                En iPhone o iPad, abre esta página en Safari, pulsa Compartir y elige “Agregar a pantalla de inicio”.
+              </small>
+            </div>
+          </div>
+        </div>}
       </div>
     </>
   )

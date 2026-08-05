@@ -1,42 +1,87 @@
 import { useEffect, useState } from "react"
+import { isPwaStandalone } from "../../functions/pwaPublicProgram"
 
-function isStandalone() {
-  return window.matchMedia?.("(display-mode: standalone)").matches
-    || window.navigator.standalone === true
+let deferredInstallPrompt = null
+const promptSubscribers = new Set()
+
+function notifyPromptSubscribers() {
+  promptSubscribers.forEach((notify) => notify(deferredInstallPrompt))
 }
 
-export default function InstallPWAButton({ onInstalled }) {
-  const [installPrompt, setInstallPrompt] = useState(null)
+export default function InstallPWAButton({ onInstalled, onUnavailable, variant = "sidebar" }) {
+  const [installPrompt, setInstallPrompt] = useState(deferredInstallPrompt)
+  const [isInstalled, setIsInstalled] = useState(isPwaStandalone)
 
   useEffect(() => {
-    if (isStandalone()) return undefined
+    if (isPwaStandalone()) return undefined
 
+    const syncPrompt = (prompt) => setInstallPrompt(prompt)
     const guardarPrompt = (event) => {
       event.preventDefault()
-      setInstallPrompt(event)
+      deferredInstallPrompt = event
+      notifyPromptSubscribers()
     }
     const marcarInstalada = () => {
-      setInstallPrompt(null)
+      deferredInstallPrompt = null
+      notifyPromptSubscribers()
+      setIsInstalled(true)
       onInstalled?.()
     }
 
+    promptSubscribers.add(syncPrompt)
+    syncPrompt(deferredInstallPrompt)
     window.addEventListener("beforeinstallprompt", guardarPrompt)
     window.addEventListener("appinstalled", marcarInstalada)
     return () => {
+      promptSubscribers.delete(syncPrompt)
       window.removeEventListener("beforeinstallprompt", guardarPrompt)
       window.removeEventListener("appinstalled", marcarInstalada)
     }
   }, [onInstalled])
 
-  if (!installPrompt) return null
+  const isDesktopApp = Boolean(window.desktopAPI?.isDesktop)
+  if (isDesktopApp || isInstalled || (!installPrompt && variant !== "public")) return null
 
   const instalar = async () => {
+    if (!installPrompt) {
+      onUnavailable?.()
+      return
+    }
+
     await installPrompt.prompt()
     const resultado = await installPrompt.userChoice
     if (resultado.outcome === "accepted") {
-      setInstallPrompt(null)
+      deferredInstallPrompt = null
+      notifyPromptSubscribers()
+      setIsInstalled(true)
       onInstalled?.()
     }
+  }
+
+  if (variant === "config") {
+    return (
+      <button
+        type="button"
+        className="btn main inline-flex items-center justify-center gap-2"
+        onClick={instalar}
+      >
+        <i className="fas fa-mobile-screen-button" aria-hidden="true"></i>
+        Instalar en mi teléfono
+      </button>
+    )
+  }
+
+  if (variant === "public") {
+    return (
+      <button
+        type="button"
+        className="btn main"
+        onClick={instalar}
+      >
+        <i className="fas fa-mobile-screen-button" aria-hidden="true"></i>
+        <span>Instalar app</span>
+      </button>
+    )
   }
 
   return (

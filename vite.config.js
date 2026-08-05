@@ -22,7 +22,7 @@ export default defineConfig({
         short_name: 'Programa VMC',
         description: 'Organización de la reunión Vida y Ministerio Cristianos',
         lang: 'es-MX',
-        start_url: '/login',
+        start_url: '/',
         scope: '/',
         display: 'standalone',
         orientation: 'any',
