@@ -181,7 +181,6 @@ export default function Login() {
 				<span>G</span>
 				{googleLoading ? "Conectando..." : "Iniciar sesion con Google"}
 			</button>
-			<Link to="/" className="login-panel__home-link">Volver al inicio</Link>
 		</div>
 	)
 }
