@@ -21,6 +21,7 @@ import { downloadStudentAssignmentCardsPng } from "../../functions/studentAssign
 import {
   getPersonName,
   getPublicProgramUrl,
+  isChairmanAssignment,
   rebuildMeetingHistory,
   stripUndefined,
   validateProgram,
@@ -109,6 +110,17 @@ export default function Meetings() {
     try {
       const payload = {
         ...edicion,
+        asignaciones: edicion.asignaciones.map((asignacion) => (
+          isChairmanAssignment(asignacion)
+            ? {
+              ...asignacion,
+              asignado: null,
+              ayudante: null,
+              asignadoB: null,
+              ayudanteB: null,
+            }
+            : asignacion
+        )),
         fecha: getFechaReunionDesdeSemana(edicion.fecha, congregacion, edicion),
         estado: "asignado",
         actualizado: getDia(new Date()),
@@ -350,7 +362,9 @@ export default function Meetings() {
 
   useEffect(() => {
     if (seleccion) {
-      const asignados = seleccion.asignaciones.map(asignacion => getPersonName(asignacion.asignado))
+      const asignados = seleccion.asignaciones
+        .filter(asignacion => !isChairmanAssignment(asignacion))
+        .map(asignacion => getPersonName(asignacion.asignado))
       setAsignadosVacios(asignados.includes(""))
     } else {
       setAsignadosVacios(false)

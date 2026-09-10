@@ -1,6 +1,11 @@
 import { meses } from "../constants/meses";
 import { getFechaReunionDesdeSemana } from "./meetingDates";
-import { getPersonName, hasAuxRoom, isAuxRoomAssignment } from "./programHelpers";
+import {
+  getPersonName,
+  hasAuxRoom,
+  isAuxRoomAssignment,
+  isChairmanAssignment,
+} from "./programHelpers";
 
 const CARD_WIDTH = 536;
 const CARD_HEIGHT = 700;
@@ -288,7 +293,11 @@ export function getStudentAssignmentCards(reunion, congregacion = {}) {
 
   return (reunion?.asignaciones || [])
     .map((asignacion, index) => ({ asignacion, index }))
-    .filter(({ asignacion, index }) => index >= 2 && (index === 2 || asignacion.seccion === 2))
+    .filter(({ asignacion, index }) => (
+      !isChairmanAssignment(asignacion)
+      && index >= 2
+      && (index === 2 || asignacion.seccion === 2)
+    ))
     .flatMap(({ asignacion, index }) => {
       const cards = [{
         sala: "A",

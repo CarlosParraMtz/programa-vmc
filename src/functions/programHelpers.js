@@ -15,8 +15,19 @@ export function hasAuxRoom(congregacion = {}, reunion = {}) {
   return getRoomCount(congregacion) === 2 && !reunion?.semanaVisita;
 }
 
+export function isChairmanAssignment(asignacion = {}) {
+  if (Number(asignacion.seccion) !== 2) return false;
+
+  const title = String(asignacion.titulo || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  return /\bque\s+diria\b/.test(title);
+}
+
 export function isAuxRoomAssignment(asignacion = {}, index = -1) {
-  return index === 2 || asignacion.seccion === 2;
+  return !isChairmanAssignment(asignacion) && (index === 2 || asignacion.seccion === 2);
 }
 
 export function stripUndefined(value) {
@@ -238,6 +249,8 @@ export function getDraftAssignedPersonIds(reunion = {}, target = null, congregac
 
   const usaSalaB = hasAuxRoom(congregacion, reunion);
   (reunion.asignaciones || []).forEach((asignacion, index) => {
+    if (isChairmanAssignment(asignacion)) return;
+
     addPerson(asignacion.asignado, "asignacion", "asignado", index);
     addPerson(asignacion.ayudante, "asignacion", "ayudante", index);
 
@@ -259,7 +272,8 @@ export function moveAssignedPeopleToEnd(people = [], assignedIds = new Set()) {
 }
 
 export function isStudentAssignment(asignacion = {}) {
-  return asignacion.seccion === 2 || getAssignmentType(asignacion) === "lectura";
+  return !isChairmanAssignment(asignacion)
+    && (asignacion.seccion === 2 || getAssignmentType(asignacion) === "lectura");
 }
 
 export function getPublicProgramUrl(congregacionId, reunionId) {
@@ -286,6 +300,8 @@ export function validateProgram(programa, congregacion = {}) {
 
   const used = new Map();
   programa.asignaciones?.forEach((asignacion, index) => {
+    if (isChairmanAssignment(asignacion)) return;
+
     const nombre = getPersonName(asignacion.asignado);
     // Un video puede ser la parte completa y, por ello, no requiere asignado.
     if (!nombre && !asignacion.video) warnings.push(`Falta asignado en la parte ${index + 1}.`);
@@ -411,6 +427,8 @@ export function applyMeetingHistory({ reunion, matriculados = [], nombrados = []
   touchMatriculadoPrayer(reunion.oracionFinal);
 
   reunion.asignaciones?.forEach((asignacion, index) => {
+    if (isChairmanAssignment(asignacion)) return;
+
     if (isStudentAssignment(asignacion)) {
       touchMatriculado(asignacion.asignado, asignacion, "asignado", 0, asignacion.ayudante);
       touchNombrado(

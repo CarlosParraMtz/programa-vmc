@@ -15,6 +15,7 @@ import {
   getPersonRef,
   hasAuxRoom,
   isAuxRoomAssignment,
+  isChairmanAssignment,
   isStudentAssignment,
   moveAssignedPeopleToEnd,
   sortByOldestAssignment,
@@ -259,7 +260,10 @@ export default function TableroEdicion({ useReunion }) {
   function getItems(seccion) {
     return reunion.asignaciones.map((asignacion, index) => {
       if (asignacion.seccion != seccion) return null;
-      const sugerido = sugerirPersonas({ tipo: "asignacion", index, field: "asignado" })[0];
+      const esAsignacionPresidente = isChairmanAssignment(asignacion);
+      const sugerido = esAsignacionPresidente
+        ? null
+        : sugerirPersonas({ tipo: "asignacion", index, field: "asignado" })[0];
       const aplicaSalaB = usaSalaB && isAuxRoomAssignment(asignacion, index);
       const renderParticipantes = (sala = "A") => {
         const isSalaB = sala === "B";
@@ -315,19 +319,34 @@ export default function TableroEdicion({ useReunion }) {
               }
             </div>
 
-            <div className="assignment-participants">
-              <div className="assignment-participants__heading">
-                <span>
-                  <i className="fas fa-users" aria-hidden="true"></i>
-                  Participantes
-                </span>
-                <small>Pulsa una tarjeta para seleccionar o cambiar a alguien</small>
+            {esAsignacionPresidente ? (
+              <div className="assignment-participants">
+                <div className="assignment-participants__heading">
+                  <span>
+                    <i className="fas fa-user-tie" aria-hidden="true"></i>
+                    La presenta el presidente de la reunión
+                  </span>
+                  <small>
+                    {getPersonName(reunion.presidente)
+                      || "Selecciona al presidente de la reunión en la parte superior"}
+                  </small>
+                </div>
               </div>
-              <div className={`grid gap-3 min-w-0 ${aplicaSalaB ? "md:grid-cols-2" : "grid-cols-1"}`}>
-                {renderParticipantes("A")}
-                {aplicaSalaB && renderParticipantes("B")}
+            ) : (
+              <div className="assignment-participants">
+                <div className="assignment-participants__heading">
+                  <span>
+                    <i className="fas fa-users" aria-hidden="true"></i>
+                    Participantes
+                  </span>
+                  <small>Pulsa una tarjeta para seleccionar o cambiar a alguien</small>
+                </div>
+                <div className={`grid gap-3 min-w-0 ${aplicaSalaB ? "md:grid-cols-2" : "grid-cols-1"}`}>
+                  {renderParticipantes("A")}
+                  {aplicaSalaB && renderParticipantes("B")}
+                </div>
               </div>
-            </div>
+            )}
 
             <Input
               label="Titulo"
