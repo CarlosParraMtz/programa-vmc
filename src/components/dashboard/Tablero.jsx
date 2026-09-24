@@ -5,7 +5,6 @@ import {
   getPersonName,
   hasAuxRoom,
   isAuxRoomAssignment,
-  isChairmanAssignment,
 } from "../../functions/programHelpers";
 
 export default function Tablero({ programa, congregacion = null, congregacionNombre = "", showPrintHeader = true }) {
@@ -51,18 +50,13 @@ export default function Tablero({ programa, congregacion = null, congregacionNom
 
         {programa?.asignaciones?.map((asignacion, index) => {
           if (asignacion.seccion != section) return null;
-          const esAsignacionPresidente = isChairmanAssignment(asignacion);
           const aplicaSalaB = usaSalaB && isAuxRoomAssignment(asignacion, index);
           const renderParticipantes = (sala = "A") => {
             const isSalaB = sala === "B";
-            const asignado = esAsignacionPresidente
-              ? presidente
-              : getPersonName(isSalaB ? asignacion.asignadoB : asignacion.asignado)
-                || (!isSalaB ? asignacion.nombre : "")
-                || "No asignado";
-            const ayudante = esAsignacionPresidente
-              ? ""
-              : getPersonName(isSalaB ? asignacion.ayudanteB : asignacion.ayudante);
+            const asignado = getPersonName(isSalaB ? asignacion.asignadoB : asignacion.asignado)
+              || (!isSalaB ? asignacion.nombre : "")
+              || "No asignado";
+            const ayudante = getPersonName(isSalaB ? asignacion.ayudanteB : asignacion.ayudante);
 
             return (
               <p className={`program-assignment-person program-assignment-person--room-${isSalaB ? "b" : "a"} text-left text-md break-words`}>

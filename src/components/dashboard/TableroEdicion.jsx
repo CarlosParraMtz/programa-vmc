@@ -15,8 +15,8 @@ import {
   getPersonRef,
   hasAuxRoom,
   isAuxRoomAssignment,
-  isChairmanAssignment,
   isStudentAssignment,
+  isWhatWouldYouSayAssignment,
   moveAssignedPeopleToEnd,
   sortByOldestAssignment,
   sortPrayerCandidates,
@@ -97,6 +97,8 @@ export default function TableroEdicion({ useReunion }) {
       .map((persona) => ({ ...persona, tipoPersona: "matriculado" })),
   ]);
   const esSelectorOracion = modalPersonas?.tipo === "campo" && modalPersonas.field === "oracionFinal";
+  const esSelectorQueDiria = modalPersonas?.tipo === "asignacion"
+    && isWhatWouldYouSayAssignment(reunion.asignaciones?.[modalPersonas.index]);
 
   const abrirModalPersonas = (target, sala = "A") => {
     if (typeof target === "number") {
@@ -192,6 +194,10 @@ export default function TableroEdicion({ useReunion }) {
 
   const setPersona = (persona) => {
     if (!modalPersonas) return;
+    if (
+      esSelectorQueDiria
+      && matriculados.some((matriculado) => matriculado.id === persona?.id)
+    ) return;
 
     if (modalPersonas.tipo === "asignacion") {
       setReunion((reunionActual) => {
@@ -260,10 +266,8 @@ export default function TableroEdicion({ useReunion }) {
   function getItems(seccion) {
     return reunion.asignaciones.map((asignacion, index) => {
       if (asignacion.seccion != seccion) return null;
-      const esAsignacionPresidente = isChairmanAssignment(asignacion);
-      const sugerido = esAsignacionPresidente
-        ? null
-        : sugerirPersonas({ tipo: "asignacion", index, field: "asignado" })[0];
+      const esQueDiria = isWhatWouldYouSayAssignment(asignacion);
+      const sugerido = sugerirPersonas({ tipo: "asignacion", index, field: "asignado" })[0];
       const aplicaSalaB = usaSalaB && isAuxRoomAssignment(asignacion, index);
       const renderParticipantes = (sala = "A") => {
         const isSalaB = sala === "B";
@@ -293,7 +297,7 @@ export default function TableroEdicion({ useReunion }) {
                 </small>
               }
 
-              {asignacion.seccion === 2 &&
+              {asignacion.seccion === 2 && !esQueDiria &&
                 <PersonaSelector
                   label="Ayudante"
                   persona={asignacion[ayudanteKey]}
@@ -319,34 +323,23 @@ export default function TableroEdicion({ useReunion }) {
               }
             </div>
 
-            {esAsignacionPresidente ? (
-              <div className="assignment-participants">
-                <div className="assignment-participants__heading">
-                  <span>
-                    <i className="fas fa-user-tie" aria-hidden="true"></i>
-                    La presenta el presidente de la reunión
-                  </span>
-                  <small>
-                    {getPersonName(reunion.presidente)
-                      || "Selecciona al presidente de la reunión en la parte superior"}
-                  </small>
-                </div>
+            <div className="assignment-participants">
+              <div className="assignment-participants__heading">
+                <span>
+                  <i className="fas fa-users" aria-hidden="true"></i>
+                  Participantes
+                </span>
+                <small>
+                  {esQueDiria
+                    ? "Selecciona a un hermano nombrado"
+                    : "Pulsa una tarjeta para seleccionar o cambiar a alguien"}
+                </small>
               </div>
-            ) : (
-              <div className="assignment-participants">
-                <div className="assignment-participants__heading">
-                  <span>
-                    <i className="fas fa-users" aria-hidden="true"></i>
-                    Participantes
-                  </span>
-                  <small>Pulsa una tarjeta para seleccionar o cambiar a alguien</small>
-                </div>
-                <div className={`grid gap-3 min-w-0 ${aplicaSalaB ? "md:grid-cols-2" : "grid-cols-1"}`}>
-                  {renderParticipantes("A")}
-                  {aplicaSalaB && renderParticipantes("B")}
-                </div>
+              <div className={`grid gap-3 min-w-0 ${aplicaSalaB ? "md:grid-cols-2" : "grid-cols-1"}`}>
+                {renderParticipantes("A")}
+                {aplicaSalaB && renderParticipantes("B")}
               </div>
-            )}
+            </div>
 
             <Input
               label="Titulo"
@@ -588,18 +581,20 @@ export default function TableroEdicion({ useReunion }) {
                 <i className="fas fa-user-tie" aria-hidden="true"></i>
                 Nombrados
               </button>
-              <button
-                type="button"
-                id="tab-personas-matriculados"
-                role="tab"
-                aria-selected={personasPage === "MATRICULADOS"}
-                aria-controls="panel-personas-matriculados"
-                className={personasPage === "MATRICULADOS" ? "active" : ""}
-                onClick={() => setPersonasPage("MATRICULADOS")}
-              >
-                <i className="fas fa-users" aria-hidden="true"></i>
-                Matriculados
-              </button>
+              {!esSelectorQueDiria && (
+                <button
+                  type="button"
+                  id="tab-personas-matriculados"
+                  role="tab"
+                  aria-selected={personasPage === "MATRICULADOS"}
+                  aria-controls="panel-personas-matriculados"
+                  className={personasPage === "MATRICULADOS" ? "active" : ""}
+                  onClick={() => setPersonasPage("MATRICULADOS")}
+                >
+                  <i className="fas fa-users" aria-hidden="true"></i>
+                  Matriculados
+                </button>
+              )}
             </div>
 
             {personasPage === "NOMBRADOS" &&
@@ -625,7 +620,7 @@ export default function TableroEdicion({ useReunion }) {
               </div>
             }
 
-            {personasPage === "MATRICULADOS" &&
+            {!esSelectorQueDiria && personasPage === "MATRICULADOS" &&
               <div
                 id="panel-personas-matriculados"
                 role="tabpanel"
