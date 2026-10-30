@@ -80,9 +80,6 @@ const Matriculados = forwardRef(function Matriculados({ mostrarTarjeta = true },
   )
 
   const abrirModalAgregar = () => setModalAgregar(true)
-  useImperativeHandle(ref, () => ({
-    abrirModalAgregar: () => setModalAgregar(true),
-  }), [])
   const cerrarModalAgregar = () => {
     setModalAgregar(false)
     setAgregarForm(formInicial)
@@ -149,6 +146,11 @@ const Matriculados = forwardRef(function Matriculados({ mostrarTarjeta = true },
     })
     setModalAgregar(true)
   }
+
+  useImperativeHandle(ref, () => ({
+    abrirModalAgregar: () => setModalAgregar(true),
+    editarPersona: onEdit,
+  }), [onEdit])
 
   const onDelete = async (id, nombre) => {
     setLoading(true)

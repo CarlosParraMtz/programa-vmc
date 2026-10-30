@@ -2888,6 +2888,10 @@ a {
   }
 }
 
+.people-table-row--editable {
+  cursor: pointer;
+}
+
 @media (max-width: 767px) {
   :root,
   body {
@@ -4011,9 +4015,52 @@ html[data-theme="dark"] {
       linear-gradient(135deg, #12131b 0%, #1a1a27 56%, #211b30 100%);
   }
 
+  .auth-layout__form-panel {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(150, 95, 241, .13), transparent 18rem),
+      #171821;
+  }
+
   .login-panel {
     background: rgba(32, 33, 44, .96);
     color: #e8e7ef;
+
+    &__header h1 {
+      color: #f4f1fb;
+    }
+
+    &__header span:not(.login-panel__badge),
+    &__switch {
+      color: #c4c1ce;
+    }
+
+    &__divider {
+      color: #a6a4b2;
+    }
+
+    &__divider span {
+      background: rgba(220, 216, 235, .2);
+    }
+
+    &__google {
+      border-color: #4a4b5a;
+      background: #292a37;
+      color: #f2f1f7;
+    }
+
+    .input-component label {
+      color: #dedbe8;
+    }
+
+    .input-component input {
+      background: #292a37;
+      border-color: #494a5b;
+      color: #f2f1f7;
+    }
+
+    .input-component input::placeholder {
+      color: #aaa9b8;
+    }
   }
 
   .card,
@@ -4080,6 +4127,73 @@ html[data-theme="dark"] {
     }
   }
 
+  .meeting-actions-sticky-shell {
+    background: rgba(18, 19, 27, .96);
+
+    .meeting-actions {
+      border-color: #3b3c4a;
+      background: rgba(32, 33, 44, .98);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .35);
+    }
+  }
+
+  .meeting-actions {
+    border-color: #3b3c4a;
+    background: #20212c;
+    color: #e8e7ef;
+  }
+
+  .meeting-actions__date {
+    small {
+      color: #b3b0bf;
+    }
+
+    strong {
+      color: #f0edf6;
+    }
+  }
+
+  .meeting-action {
+    color: #eeecf4;
+
+    &--secondary,
+    &--danger {
+      border-color: #4a4b5a;
+      background: #2b2c39;
+      color: #eeecf4;
+    }
+
+    &--secondary:hover {
+      border-color: rgba(177, 139, 239, .65);
+      background: #373044;
+      color: #e2d3ff;
+    }
+
+    &--danger {
+      border-color: rgba(255, 122, 142, .42);
+      color: #ffb8c1;
+    }
+
+    &--danger:hover {
+      border-color: rgba(255, 122, 142, .65);
+      background: #432831;
+      color: #ffd5da;
+    }
+  }
+
+  .app-warning {
+    border-color: #bd5363;
+    background: #3a2028;
+    color: #ffd7dc;
+  }
+
+  .app-toast {
+    border: 1px solid #414250 !important;
+    background: #20212c !important;
+    color: #f0edf6 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .4) !important;
+  }
+
   .program-board,
   .program-board__content,
   .program-assignment-row,
@@ -4112,6 +4226,48 @@ html[data-theme="dark"] {
     background-color: #30283f;
   }
 
+  [class~="bg-amber-50"] {
+    background-color: #332b1c;
+  }
+
+  [class~="bg-amber-100"] {
+    background-color: #3b311d;
+  }
+
+  [class~="bg-amber-200"] {
+    background-color: #574724;
+  }
+
+  [class~="bg-green-50"] {
+    background-color: #1e342b;
+  }
+
+  [class~="bg-green-100"] {
+    background-color: #243b31;
+  }
+
+  [class~="bg-green-200"] {
+    background-color: #315442;
+  }
+
+  [class~="text-amber-700"],
+  [class~="text-amber-900"] {
+    color: #f4d28a;
+  }
+
+  [class~="text-green-700"],
+  [class~="text-green-900"] {
+    color: #9cdbb7;
+  }
+
+  [class~="border-amber-300"] {
+    border-color: #675635;
+  }
+
+  [class~="border-green-300"] {
+    border-color: #3d6b52;
+  }
+
   [class~="text-purple-700"] {
     color: #d7c0ff;
   }
@@ -4142,6 +4298,10 @@ html[data-theme="dark"] {
 
   [class~="hover:bg-gray-200"]:hover {
     background-color: #414251;
+  }
+
+  [class~="hover:bg-gray-300"]:hover {
+    background-color: #525361;
   }
 
   table th,
@@ -4207,6 +4367,520 @@ html[data-theme="dark"] {
 
   .dashboard-settings .config-platform-icon {
     color: #d9c5ff;
+  }
+
+  .btn.gray {
+    background-color: #353643;
+    color: #f0edf6;
+  }
+
+  .program-actions__button--delete {
+    border-color: rgba(255, 122, 142, .42);
+    background: #30212a;
+    color: #ffb8c1;
+
+    &:hover {
+      background: #432831;
+      color: #ffd5da;
+    }
+  }
+
+  .program-screen-week {
+    color: #e8e7ef;
+  }
+
+  .program-room-grid .program-assignment-person {
+    background: rgba(18, 19, 27, .72);
+  }
+
+  .public-program {
+    background: #12131b;
+    color: #e8e7ef;
+
+    &__install-help {
+      border-color: #4a3a5d;
+      background: #292337;
+      color: #e2dbea;
+    }
+
+    &__nav-button {
+      background: #292a37;
+      color: #f2f1f7;
+
+      &:hover {
+        background: $color_main;
+        color: #fff;
+      }
+    }
+
+    &__sheet {
+      background: #20212c;
+      color: #e8e7ef;
+    }
+
+    &__footer {
+      border-color: #454653;
+    }
+
+    &__empty {
+      border-color: #4b4c5a;
+      background: #20212c;
+      color: #e8e7ef;
+
+      span {
+        color: #b6b5c3;
+      }
+    }
+  }
+
+  .meeting-editor__selection-hint {
+    border-color: #514063;
+    background: linear-gradient(135deg, #292337, #23212e);
+    color: #e2dbea;
+
+    strong {
+      color: #f0edf6;
+    }
+
+    p {
+      color: #c0b7ca;
+    }
+  }
+
+  .assignment-participants {
+    border-color: #414250;
+    background: rgba(32, 33, 44, .78);
+
+    &__heading > span {
+      color: #e4e1eb;
+    }
+
+    &__heading small {
+      color: #b6b3c1;
+    }
+  }
+
+  .assignment-room--divided {
+    border-color: #484956;
+    background: rgba(25, 26, 36, .82);
+  }
+
+  .assignment-room__title {
+    color: #e2dfea;
+  }
+
+  .assignment-room__suggestion {
+    color: #c0b7cb;
+  }
+
+  .person-selection {
+    border-color: color-mix(in srgb, var(--selection-accent) 56%, #414250);
+    background: #20212c;
+    color: #e8e7ef;
+
+    &.is-empty {
+      background: color-mix(in srgb, var(--selection-accent) 18%, #20212c);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, .2);
+    }
+
+    &:hover {
+      background: #2b2c39;
+    }
+
+    &__content strong {
+      color: #f0edf6;
+    }
+
+    &__content > span {
+      color: #b6b3c1;
+    }
+
+    &.is-empty &__content strong {
+      color: color-mix(in srgb, var(--selection-accent) 70%, #f0edf6);
+    }
+  }
+
+  .prayer-list-card,
+  .people-table-card {
+    border-color: #3e3f4c;
+    background: #20212c;
+    color: #e8e7ef;
+  }
+
+  .prayer-list-card {
+    &__header {
+      border-color: #414250;
+    }
+
+    &__toggle strong {
+      color: #f0edf6;
+    }
+
+    &__toggle small,
+    &__empty {
+      color: #b6b3c1;
+    }
+
+    &__actions > span {
+      background: #362c47;
+      color: #dbc6ff;
+    }
+  }
+
+  .prayer-list li,
+  .prayer-candidate-list > button,
+  .prayer-picker > button {
+    border-color: #414250;
+    background: #252633;
+    color: #e8e7ef;
+
+    &:hover {
+      border-color: #7657a4;
+      background: #30283f;
+    }
+  }
+
+  .prayer-list__person strong,
+  .prayer-candidate-list strong,
+  .prayer-picker__person strong {
+    color: #f0edf6;
+  }
+
+  .prayer-list__person small,
+  .prayer-candidate-list small,
+  .prayer-picker__person small {
+    color: #b6b3c1;
+  }
+
+  .prayer-picker > button.is-next {
+    border-color: #7657a4;
+    background: linear-gradient(135deg, #322842, #292534);
+  }
+
+  .person-picker-tabs {
+    border-color: #414250;
+    background: #252633;
+
+    button {
+      color: #c4c1ce;
+
+      &:hover {
+        background: #30283f;
+        color: #e2d3ff;
+      }
+
+      &.active {
+        background: #3a304b;
+        color: #e2d3ff;
+        box-shadow: 0 2px 7px rgba(0, 0, 0, .24);
+      }
+    }
+  }
+
+  .dashboard-page-heading p,
+  .people-page-header p {
+    color: #b6b5c3;
+  }
+
+  .scheduled-meetings-date-picker,
+  .people-table-card__toggle,
+  .people-table-sort {
+    color: #dedbe8;
+  }
+
+  .people-view-switch {
+    border-color: #414250;
+    background: #252633;
+
+    button {
+      color: #c4c1ce;
+
+      &.active {
+        background: #3a304b;
+        color: #e2d3ff;
+      }
+    }
+  }
+
+  .people-table-card__header {
+    border-color: #414250;
+  }
+
+  .people-table-card__actions > span {
+    background: #362c47;
+    color: #dbc6ff;
+  }
+
+  .people-table-card__toggle small,
+  .people-table-card__empty {
+    color: #b6b3c1;
+  }
+
+  .people-table-sort,
+  .people-table-columns,
+  .people-table-filters {
+    border-color: #414250;
+    background: #252633;
+    color: #bcb9c8;
+  }
+
+  .people-table-sort button,
+  .people-table-columns__heading button,
+  .people-table-filters__heading button {
+    color: #dbc6ff;
+
+    &:hover {
+      background: #393047;
+    }
+  }
+
+  .people-table-columns__heading strong,
+  .people-table-filters__heading strong,
+  .people-table-columns__options label,
+  .people-table-filters__options > label,
+  .people-table-filters__options fieldset {
+    color: #e1deea;
+  }
+
+  .people-table-columns__heading small,
+  .people-table-filters__heading small,
+  .people-table-columns__options label small {
+    color: #b6b3c1;
+  }
+
+  .people-table-columns__options label,
+  .people-table-filters__checks label {
+    border-color: #484956;
+    background: #20212c;
+  }
+
+  .people-table-columns__options label.is-required {
+    background: #30283f;
+  }
+
+  .people-table-filters__checks label:has(input:checked) {
+    border-color: #7657a4;
+    background: #3a304b;
+    color: #e2d3ff;
+  }
+
+  .people-table th {
+    border-color: #414250;
+    background: #292a37;
+    color: #e1deea;
+
+    button:hover {
+      background: #373044;
+      color: #e2d3ff;
+    }
+  }
+
+  .people-table td,
+  .people-table tbody tr:nth-child(even) td {
+    border-color: #3c3d4a;
+    background: #20212c;
+    color: #e8e7ef;
+  }
+
+  .people-table tbody tr:hover td {
+    background: #2b2c39;
+  }
+
+  .people-table__person small {
+    color: #b6b3c1;
+  }
+
+  .usage-guide {
+    color: #e8e7ef;
+
+    &__header span,
+    &__install-heading small,
+    &__install-options small {
+      color: #b6b3c1;
+    }
+
+    &__index a {
+      color: #d0ccd9;
+
+      &:hover {
+        background: #30283f;
+        color: #e2d3ff;
+      }
+
+      b {
+        border-color: #545565;
+        background: #2b2c39;
+        color: #efedf5;
+      }
+    }
+
+    &__install {
+      border-color: #414250;
+      background: #252633;
+    }
+
+    &__install-options > div,
+    &__after-actions > div {
+      border-color: #414250;
+      background: #20212c;
+    }
+  }
+
+  .guide-step {
+    &:not(:last-child)::before {
+      background: #454653;
+    }
+
+    &__marker span {
+      border-color: #545565;
+      background: #2b2c39;
+      color: #dbc6ff;
+    }
+
+    article {
+      border-color: #414250;
+      background: #20212c;
+
+      > p {
+        color: #c4c1ce;
+      }
+
+      > a {
+        color: #d2b9ff;
+      }
+    }
+
+    &__heading > i {
+      background: #362c47;
+      color: #dbc6ff;
+    }
+
+    &__note {
+      border-color: #545565;
+      background: #292a37;
+      color: #c4c1ce;
+
+      &--important {
+        border-color: #7657a4;
+        background: #30283f;
+        color: #e2dbea;
+      }
+    }
+  }
+
+  .guide-after {
+    border-color: #414250;
+    background: #252633;
+
+    &__heading p,
+    &__actions small {
+      color: #b6b3c1;
+    }
+
+    &__heading > i {
+      background: #244131;
+      color: #9cdbb7;
+    }
+
+    &__actions > div {
+      border-color: #414250;
+      background: #20212c;
+    }
+  }
+
+  [class~="bg-gray-300"],
+  [class~="bg-gray-400"] {
+    background-color: #454653;
+  }
+
+  [class~="bg-gray-800"] {
+    background-color: #20212c;
+  }
+
+  [class~="bg-purple-100"],
+  [class~="bg-violet-100"] {
+    background-color: #30283f;
+  }
+
+  [class~="bg-purple-200"] {
+    background-color: #393047;
+  }
+
+  [class~="bg-purple-300"] {
+    background-color: #47355e;
+  }
+
+  [class~="bg-purple-400"],
+  [class~="bg-purple-500"] {
+    background-color: #7048a8;
+  }
+
+  [class~="border-gray-50"],
+  [class~="border-gray-200"],
+  [class~="border-purple-200"],
+  [class~="border-purple-300"],
+  [class~="border-purple-400"] {
+    border-color: #454653;
+  }
+
+  [class~="border-purple-500"],
+  [class~="border-purple-600"] {
+    border-color: #8b6ab9;
+  }
+
+  [class~="border-red-500"] {
+    border-color: #bd5363;
+  }
+
+  [class~="text-green-500"] {
+    color: #9cdbb7;
+  }
+
+  [class~="text-red-400"] {
+    color: #ff9eae;
+  }
+
+  [class~="text-purple-500"],
+  [class~="text-purple-600"],
+  [class~="text-purple-700"],
+  [class~="text-purple-800"],
+  [class~="text-purple-900"] {
+    color: #d7c0ff;
+  }
+
+  [class~="hover:text-purple-700"]:hover,
+  [class~="hover:text-purple-900"]:hover {
+    color: #e9dcff;
+  }
+
+  [class~="hover:border-purple-300"]:hover,
+  [class~="hover:border-purple-500"]:hover {
+    border-color: #8b6ab9;
+  }
+
+  [class~="hover:bg-purple-50"]:hover,
+  [class~="hover:bg-purple-100"]:hover {
+    background-color: #393047;
+  }
+
+  [class~="hover:bg-white"]:hover {
+    background-color: #353643;
+  }
+}
+
+@media print {
+  html[data-theme="dark"] .public-program {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  html[data-theme="dark"] .public-program__sheet {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  html[data-theme="dark"] .public-program__sheet .program-room-grid .program-assignment-person {
+    background: transparent !important;
   }
 }
 

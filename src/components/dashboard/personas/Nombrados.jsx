@@ -22,9 +22,6 @@ const Nombrados = forwardRef(function Nombrados({ mostrarTarjeta = true }, ref) 
   })
   const [modalAgregar, setModalAgregar] = useState(false)
   const abrirModalAgregar = () => setModalAgregar(true)
-  useImperativeHandle(ref, () => ({
-    abrirModalAgregar: () => setModalAgregar(true),
-  }), [])
   const cerrarModalAgregar = () => {
     setModalAgregar(false)
     setAgregarForm(nombradoInicial)
@@ -117,6 +114,11 @@ const Nombrados = forwardRef(function Nombrados({ mostrarTarjeta = true }, ref) 
     })
     setModalAgregar(true)
   }
+
+  useImperativeHandle(ref, () => ({
+    abrirModalAgregar: () => setModalAgregar(true),
+    editarPersona: onEdit,
+  }), [onEdit])
 
   const onDelete = async (id, nombre) => {
     setLoading(true)

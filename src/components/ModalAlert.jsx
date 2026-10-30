@@ -104,7 +104,7 @@ export default function ModalAlert() {
                   }
                   <button
                     className={(modal.onConfirm)
-                      ? "btn bg-gray-200 text-gray"
+                      ? "btn bg-gray-200 text-gray-900"
                       : ` btn ${btnVariants[modal.variant]} w-full`}
                     onClick={closeModal}
                   >

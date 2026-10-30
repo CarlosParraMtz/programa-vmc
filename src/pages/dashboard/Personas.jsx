@@ -66,7 +66,7 @@ function getDefaultVisibleColumns(columnas) {
     .map((columna) => columna.key)
 }
 
-function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgregar }) {
+function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgregar, onEditar }) {
   const [orden, setOrden] = useState([])
   const [abierta, setAbierta] = useState(true)
   const [configurandoColumnas, setConfigurandoColumnas] = useState(false)
@@ -432,7 +432,12 @@ function TablaPersonas({ id, titulo, descripcion, personas = [], columnas, onAgr
                   </thead>
                   <tbody>
                     {filasOrdenadas.map((persona) => (
-                      <tr key={persona.id || persona.nombre}>
+                      <tr
+                        key={persona.id || persona.nombre}
+                        className={onEditar ? "people-table-row--editable" : ""}
+                        onDoubleClick={() => onEditar?.(persona)}
+                        title={onEditar ? "Haz doble clic para editar esta persona" : undefined}
+                      >
                         {columnasMostradas.map((columna) => (
                           <td
                             key={columna.key}
@@ -647,6 +652,7 @@ export default function Personas() {
             personas={matriculados}
             columnas={columnasMatriculados}
             onAgregar={() => matriculadosRef.current?.abrirModalAgregar()}
+            onEditar={(persona) => matriculadosRef.current?.editarPersona(persona)}
           />
           <TablaPersonas
             id="tabla-nombrados"
@@ -655,6 +661,7 @@ export default function Personas() {
             personas={nombrados}
             columnas={columnasNombrados}
             onAgregar={() => nombradosRef.current?.abrirModalAgregar()}
+            onEditar={(persona) => nombradosRef.current?.editarPersona(persona)}
           />
         </div>
       }
