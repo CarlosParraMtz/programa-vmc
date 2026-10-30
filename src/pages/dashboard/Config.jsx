@@ -11,6 +11,7 @@ import auth from "../../firebase/controllers/authController"
 import { setProfile } from '../../firebase/controllers/profile.controller'
 import congregationController, { getCongregacion } from "../../firebase/controllers/congregation.controller.js"
 import { diasSemana, getDiaSemanaLabel } from "../../constants/diasSemana"
+import { useTheme } from "../../contexts/ThemeContext"
 
 const WINDOWS_INSTALLER_URL = "https://github.com/CarlosParraMtz/programa-vmc/releases/latest/download/Programa-VMC-Setup.exe"
 
@@ -19,6 +20,7 @@ const WINDOWS_INSTALLER_URL = "https://github.com/CarlosParraMtz/programa-vmc/re
 
 export default function Config() {
 
+  const { theme, setTheme } = useTheme()
   const [user, setUser] = useAtom(atoms.user)
   const [congregacion, setCongregacion] = useAtom(atoms.congregacion)
   const setMatriculados = useSetAtom(atoms.matriculados)
@@ -177,6 +179,31 @@ export default function Config() {
         </div>
       </div>
       <div className="dashboard-settings flex flex-col lg:flex-row gap-3 sm:gap-4 px-3 sm:px-4 pb-4">
+        <div className="w-full lg:max-w-md">
+          <div className="card">
+            <div className="card_title">
+              <h2><b>Apariencia:</b></h2>
+              <span className="config-platform-icon" aria-hidden="true">
+                <i className={`fas ${theme === "dark" ? "fa-moon" : theme === "light" ? "fa-sun" : "fa-circle-half-stroke"}`}></i>
+              </span>
+            </div>
+            <div className="divider"></div>
+            <div className="flex flex-col gap-2">
+              <Select
+                name="config-theme"
+                label="Tema de la aplicación"
+                value={theme}
+                onChange={(event) => setTheme(event.target.value)}
+                fullwidth
+              >
+                <option value="system">Respetar configuración del sistema</option>
+                <option value="light">Claro</option>
+                <option value="dark">Oscuro</option>
+              </Select>
+              <p className="text-sm text-gray-600">La opción del sistema cambia automáticamente cuando cambia la apariencia de tu dispositivo.</p>
+            </div>
+          </div>
+        </div>
         <div className="w-full lg:max-w-md">
           <div className="card">
             <div className="card_title">

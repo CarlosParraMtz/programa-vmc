@@ -99,6 +99,11 @@ export default function TableroEdicion({ useReunion }) {
   const esSelectorOracion = modalPersonas?.tipo === "campo" && modalPersonas.field === "oracionFinal";
   const esSelectorQueDiria = modalPersonas?.tipo === "asignacion"
     && isWhatWouldYouSayAssignment(reunion.asignaciones?.[modalPersonas.index]);
+  const campoAsignadoActual = modalPersonas?.tipo === "asignacion"
+    ? reunion.asignaciones?.[modalPersonas.index]?.[modalPersonas.field]
+    : null;
+  const puedeQuitarAsignado = ["asignado", "asignadoB"].includes(modalPersonas?.field)
+    && !!getPersonName(campoAsignadoActual);
 
   const abrirModalPersonas = (target, sala = "A") => {
     if (typeof target === "number") {
@@ -195,7 +200,8 @@ export default function TableroEdicion({ useReunion }) {
   const setPersona = (persona) => {
     if (!modalPersonas) return;
     if (
-      esSelectorQueDiria
+      persona
+      && esSelectorQueDiria
       && matriculados.some((matriculado) => matriculado.id === persona?.id)
     ) return;
 
@@ -519,6 +525,15 @@ export default function TableroEdicion({ useReunion }) {
       </Modal>
 
       <Modal title="Selecciona una persona de la lista" open={modalPersonas != null} onClose={cerrarModalPersonas} size="xl4">
+        {puedeQuitarAsignado &&
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
+            <p className="text-sm text-amber-900">Puedes dejar esta asignación sin persona; se conservará la advertencia al guardar.</p>
+            <button type="button" className="btn error" onClick={() => setPersona(null)}>
+              <i className="fas fa-user-minus mr-2" aria-hidden="true"></i>
+              Dejar sin asignado
+            </button>
+          </div>
+        }
         {sugerencias.length > 0 &&
           <div className="mb-3 rounded-lg bg-purple-50 p-3">
             <p className="text-sm font-semibold text-purple-700">

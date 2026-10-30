@@ -3987,3 +3987,232 @@ a {
     white-space: nowrap;
   }
 }
+
+// Dark theme overrides shared by the dashboard, dialogs, forms, and tables.
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background: #12131b;
+
+  body,
+  .dashboard,
+  .dashboard_content .header,
+  .header {
+    background-color: #12131b;
+    color: #e8e7ef;
+  }
+
+  body {
+    color: #e8e7ef;
+  }
+
+  .auth-layout {
+    background:
+      radial-gradient(circle at 92% 12%, rgba(255, 90, 137, .12), transparent 24rem),
+      linear-gradient(135deg, #12131b 0%, #1a1a27 56%, #211b30 100%);
+  }
+
+  .login-panel {
+    background: rgba(32, 33, 44, .96);
+    color: #e8e7ef;
+  }
+
+  .card,
+  .modal-panel,
+  [class~="bg-white"] {
+    background-color: #20212c;
+    color: #e8e7ef;
+  }
+
+  .header .card,
+  .sidebar .card,
+  .sidebar__panel {
+    background-color: #20212c;
+  }
+
+  .header {
+    box-shadow: 4px 4px 10px #090a1080;
+  }
+
+  .sidebar_link,
+  .sidebar button,
+  .icon-button {
+    color: #e8e7ef;
+  }
+
+  .icon-button,
+  .header_periodo select,
+  .input-component input,
+  select,
+  textarea,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]) {
+    background-color: #292a37;
+    border-color: #494a5b;
+    color: #f2f1f7;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #aaa9b8;
+  }
+
+  select option {
+    background: #292a37;
+    color: #f2f1f7;
+  }
+
+  .divider,
+  .separator {
+    background-color: #454653;
+  }
+
+  .program-actions {
+    background: #20212c;
+    border-color: #393a49;
+    color: #e8e7ef;
+
+    &__summary {
+      color: #e8e7ef;
+    }
+
+    &__delete {
+      background: #30212a;
+      color: #ff9aae;
+    }
+  }
+
+  .program-board,
+  .program-board__content,
+  .program-assignment-row,
+  .dashboard-page-header,
+  .personas-page,
+  .dashboard-settings .card {
+    color: #e8e7ef;
+  }
+
+  .program-assignment-row {
+    border-color: #4a4b59;
+  }
+
+  .assignment-participants,
+  [class~="bg-[#ffffff77]"],
+  [class~="bg-gray-50"] {
+    background-color: #272834;
+    color: #e8e7ef;
+  }
+
+  [class~="bg-gray-100"] {
+    background-color: #2b2c39;
+  }
+
+  [class~="bg-gray-200"] {
+    background-color: #353643;
+  }
+
+  [class~="bg-purple-50"] {
+    background-color: #30283f;
+  }
+
+  [class~="text-purple-700"] {
+    color: #d7c0ff;
+  }
+
+  [class~="text-gray-900"],
+  [class~="text-gray-800"],
+  [class~="text-gray-700"] {
+    color: #e8e7ef;
+  }
+
+  [class~="text-gray-600"],
+  [class~="text-gray-500"] {
+    color: #b6b5c3;
+  }
+
+  [class~="text-gray-400"] {
+    color: #9695a4;
+  }
+
+  [class~="border-gray-300"],
+  [class~="border-gray-400"] {
+    border-color: #4b4c5a;
+  }
+
+  [class~="hover:bg-gray-100"]:hover {
+    background-color: #393a49;
+  }
+
+  [class~="hover:bg-gray-200"]:hover {
+    background-color: #414251;
+  }
+
+  table th,
+  table td {
+    border-color: #424350;
+  }
+
+  table th {
+    background-color: #282936;
+    color: #ecebf2;
+  }
+
+  table td,
+  table tbody tr:nth-child(even) td {
+    background-color: #20212c;
+    color: #dedde7;
+  }
+
+  table tbody tr:hover td {
+    background-color: #2b2c3a;
+  }
+
+  .person-selection {
+    color: #e8e7ef;
+  }
+
+  .person-selection.is-empty {
+    background-color: #252633;
+  }
+
+  .usage-guide {
+    color: #e8e7ef;
+
+    &__header,
+    &__index,
+    &__step article,
+    &__install,
+    &__after {
+      border-color: #414250;
+      background-color: #20212c;
+    }
+
+    &__header span,
+    &__index a {
+      color: #c3c1ce;
+    }
+
+    &__index a b {
+      border-color: #545565;
+      background-color: #2b2c39;
+      color: #efedf5;
+    }
+  }
+
+  .guide-card,
+  .guide-step article,
+  .prayer-picker button,
+  .crud-person-card,
+  .person-card {
+    background-color: #252633;
+    color: #e8e7ef;
+  }
+
+  .dashboard-settings .config-platform-icon {
+    color: #d9c5ff;
+  }
+}
+
+@media print {
+  html[data-theme="dark"] {
+    background: #fff !important;
+    color-scheme: light;
+  }
+}

@@ -30,9 +30,9 @@ export default function Loader() {
             <div className="app-loader__mark" aria-hidden="true">
               <span className="app-loader__halo" />
               <span className="app-loader__orbit" />
-              <i className="fas fa-calendar-alt app-loader__icon app-loader__icon--calendar" />
-              <i className="fas fa-users app-loader__icon app-loader__icon--people" />
-              <i className="fas fa-book-open app-loader__icon app-loader__icon--book" />
+              <span className="app-loader__core">
+                <i className="fas fa-calendar-alt app-loader__icon" />
+              </span>
             </div>
             <p>Cargando...</p>
           </motion.div>
