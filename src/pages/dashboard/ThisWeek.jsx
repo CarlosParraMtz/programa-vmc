@@ -6,7 +6,7 @@ import atoms from "../../jotai/atoms"
 import getDia from "../../functions/getDia"
 import formatearRangoSemanal from "../../functions/formatearRangoSemanal"
 import { getWeekKey, parseLocalDate } from "../../functions/meetingDates"
-import { getCurrentWeekPublicProgramUrl, getPublicProgramUrl } from "../../functions/programHelpers"
+import { getCurrentWeekPublicProgramUrl } from "../../functions/programHelpers"
 
 function addWeeks(value, weeks) {
 	const date = parseLocalDate(value)
@@ -48,9 +48,7 @@ export default function ThisWeek() {
 
 	const compartirEnlacePrograma = async () => {
 		if (!congregacion?.id) return
-		const url = reunionSeleccionada?.id
-			? getPublicProgramUrl(congregacion.id, reunionSeleccionada.id)
-			: getCurrentWeekPublicProgramUrl(congregacion.id)
+		const url = getCurrentWeekPublicProgramUrl(congregacion.id)
 		try {
 			if (navigator.share) {
 				await navigator.share({
