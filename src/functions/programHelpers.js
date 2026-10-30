@@ -112,9 +112,11 @@ export function getNombradoRole(asignacion = {}) {
 export function getLastAssignmentDate(person, role = null) {
   if (!person) return null;
 
-  if (role && person.ultimasAsignaciones?.[role]?.length) {
-    const dates = person.ultimasAsignaciones[role].map(parseDateValue).filter(Boolean);
+  if (role) {
+    const datesForRole = person.ultimasAsignaciones?.[role] || [];
+    const dates = datesForRole.map(parseDateValue).filter(Boolean);
     if (dates.length) return new Date(Math.max(...dates.map((date) => date.getTime())));
+    return null;
   }
 
   return parseDateValue(person.ultimaAsignacion);

@@ -19,6 +19,15 @@ const OPCIONES_ORDEN = [
   { key: "estudio", label: "Estudio" },
   { key: "necesidades", label: "Necesidades" },
 ]
+const CLAVES_ORDEN_POR_TIPO = new Set([
+  "presidir",
+  "salaAux",
+  "tesoros",
+  "perlas",
+  "analisis",
+  "estudio",
+  "necesidades",
+])
 
 function ultimaFechaDeRol(persona, rol) {
   const fechas = (persona?.ultimasAsignaciones?.[rol] || [])
@@ -81,7 +90,22 @@ export default function CrudNombrados({
   const cambiarOrden = (key) => {
     setOrden((actual) => {
       const indice = actual.findIndex((nivel) => nivel.key === key)
-      if (indice === -1) return [...actual, { key, direction: "asc" }]
+      if (indice === -1) {
+        const nuevoNivel = { key, direction: "asc" }
+        if (CLAVES_ORDEN_POR_TIPO.has(key)) {
+          const indiceGeneral = actual.findIndex((nivel) => (
+            nivel.key === "ultimaAsignacion" || nivel.key === "nombre"
+          ))
+          if (indiceGeneral >= 0) {
+            return [
+              ...actual.slice(0, indiceGeneral),
+              nuevoNivel,
+              ...actual.slice(indiceGeneral),
+            ]
+          }
+        }
+        return [...actual, nuevoNivel]
+      }
 
       if (actual[indice].direction === "asc") {
         return actual.map((nivel, index) => (
@@ -116,7 +140,10 @@ export default function CrudNombrados({
           const vacioA = valorA == null || valorA === ""
           const vacioB = valorB == null || valorB === ""
 
-          if (vacioA !== vacioB) return vacioA ? 1 : -1
+          if (vacioA !== vacioB) {
+            const emptiesFirst = nivel.direction === "asc"
+            return vacioA === emptiesFirst ? -1 : 1
+          }
           if (vacioA) continue
 
           const comparacion = compararValores(valorA, valorB)
@@ -190,7 +217,7 @@ export default function CrudNombrados({
             <div>
               <p className="text-xs font-semibold text-gray-700">Ordenar por prioridad</p>
               <p className="text-[11px] text-gray-500">
-                Selecciona primero “Última asignación” y después las demás.
+                Elige primero el tipo que quieras priorizar, por ejemplo “Estudio”. Puedes añadir “Última asignación” después como desempate.
               </p>
             </div>
             {orden.length > 0 && (
